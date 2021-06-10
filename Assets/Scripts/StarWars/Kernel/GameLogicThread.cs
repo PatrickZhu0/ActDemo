@@ -44,7 +44,7 @@ namespace StarWars
                 {
                     //NetworkSystem.Instance.Tick();
                     //LobbyNetworkSystem.Instance.Tick();
-                    //PlayerControl.Instance.Tick();
+                    PlayerControl.Instance.Tick();
                     //WorldSystem.Instance.Tick();
                 }
                 GameControler.LogicLoggerInstance.Tick();
