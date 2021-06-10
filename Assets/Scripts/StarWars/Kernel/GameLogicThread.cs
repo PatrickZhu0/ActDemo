@@ -18,7 +18,7 @@ namespace StarWars
                 TimeUtility.SampleClientTick();
 
                 long curTime = TimeUtility.GetLocalMilliseconds();
-         
+                LogSystem.Error("GameLogicThread.Tick = {0}", curTime);
                 if (m_LastLogTime + 10000 < curTime)
                 {
   

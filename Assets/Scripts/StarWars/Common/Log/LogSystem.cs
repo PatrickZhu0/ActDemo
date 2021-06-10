@@ -64,24 +64,22 @@ namespace StarWars
             if (null != OnOutput)
             {
                 OnOutput(type, msg);
-
-                switch (type)
-                {
-                    case Log_Type.LT_Debug:
-                        UnityEngine.Debug.Log(msg);
-                        break;
-                    case Log_Type.LT_Error:
-                        UnityEngine.Debug.LogError(msg);
-                        break;
-                    case Log_Type.LT_Warn:
-                        UnityEngine.Debug.LogWarning(msg);
-                        break;
-                    default:
-                        UnityEngine.Debug.Log(msg);
-                        break;
-                }
             }
-
+            switch (type)
+            {
+                case Log_Type.LT_Debug:
+                    UnityEngine.Debug.Log(msg);
+                    break;
+                case Log_Type.LT_Error:
+                    UnityEngine.Debug.LogError(msg);
+                    break;
+                case Log_Type.LT_Warn:
+                    UnityEngine.Debug.LogWarning(msg);
+                    break;
+                default:
+                    UnityEngine.Debug.Log(msg);
+                    break;
+            }
         }
     }
 }

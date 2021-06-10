@@ -1,0 +1,8 @@
+Library/
+Temp/
+Logs/
+obj/
+Assembly-CSharp.csproj
+.vs/ActDemo/v16/.suo
+ActDemo.sln
+.vsconfig

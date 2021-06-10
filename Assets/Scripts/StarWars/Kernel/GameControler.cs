@@ -48,6 +48,7 @@ namespace StarWars
             {
 #if !USE_DISK_LOG
                 long curTime = TimeUtility.GetLocalMilliseconds();
+                LogSystem.Error("GameControler Tick " + curTime);
                 if (m_LastFlushTime + 10000 < curTime)
                 {
                     m_LastFlushTime = curTime;
