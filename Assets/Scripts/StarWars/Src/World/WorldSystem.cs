@@ -404,180 +404,187 @@ namespace StarWars
         //    else
         //        return m_CurScene.IsServerSelectScene;
         //}
-        ///**
-        // * @brief 逻辑循环
-        // */
-        //public void Tick()
-        //{
-        //    //逻辑限帧率10帧
-        //    long curTime = TimeUtility.GetLocalMilliseconds();
-        //    if (m_LastLogicTickTime + 40 <= curTime)
-        //    {
-        //        m_LastLogicTickTime = curTime;
-        //    }
-        //    else
-        //    {
-        //        return;
-        //    }
-        //    TimeSnapshot.Start();
-        //    TimeSnapshot.DoCheckPoint();
-        //    if (m_CurScene == null)
-        //    {
-        //        return;
-        //    }
-        //    //处理延迟调用
-        //    m_DelayActionProcessor.HandleActions(100);
-        //    //角色进场景逻辑
-        //    if (!m_CurScene.IsWaitSceneLoad && m_CurScene.IsWaitRoomServerConnect)
-        //    {
-        //        if (this.IsPureClientScene() || this.IsPveScene() || this.IsServerSelectScene() || NetworkSystem.Instance.CanSendMessage)
-        //        {
-        //            GfxSystem.PublishGfxEvent("ge_enter_scene", "ui", m_CurScene.ResId);
-        //            //if (this.IsPureClientScene()) {
-        //            //  GfxSystem.PublishGfxEvent("ge_ShowCYGTSDK", "gt");
-        //            //} else {
-        //            //  GfxSystem.PublishGfxEvent("ge_HideCYGTSDK", "gt");
-        //            //}
 
-        //            StorySystem.StoryConfigManager.Instance.Clear();
-        //            ClientStorySystem.Instance.ClearStoryInstancePool();
-        //            for (int i = 1; i < 10; ++i)
-        //            {
-        //                ClientStorySystem.Instance.PreloadStoryInstance(1);
-        //            }
-        //            PlayerControl.Instance.Reset();
 
-        //            if (IsObserver)
-        //            {
-        //                DestroyHero();
-        //                CreateSceneLogics();
-        //                UserInfo myself = CreatePlayerSelf(0x0ffffffe, 1);
-        //                if (null != myself)
-        //                {//观战客户端创建一个虚拟玩家（不关联view，血量不要为0，主要目的是为了适应客户端代码里对主角的判断）
-        //                    myself.SetLevel(16);
-        //                    myself.SetHp(Operate_Type.OT_Absolute, 999999);
-        //                }
-        //                m_CurScene.NotifyUserEnter();
+        //逻辑循环
+        public void Tick()
+        {
+            //逻辑限帧率10帧
+            long curTime = TimeUtility.GetLocalMilliseconds();
+            if (m_LastLogicTickTime + 40 <= curTime)
+            {
+                m_LastLogicTickTime = curTime;
+            }
+            else
+            {
+                return;
+            }
+            TimeSnapshot.Start();
+            TimeSnapshot.DoCheckPoint();
+            if (m_CurScene == null)
+            {
+                return;
+            }
+            //处理延迟调用
+            m_DelayActionProcessor.HandleActions(100);
 
-        //                StarWarsMessage.Msg_CR_Observer build = new StarWarsMessage.Msg_CR_Observer();
-        //                NetworkSystem.Instance.SendMessage(build);
-        //                LogSystem.Debug("send Msg_CR_Observer to roomserver");
-        //            }
-        //            else if (this.IsPureClientScene() || IsPveScene())
-        //            {
-        //                //单机游戏逻辑启动
-        //                CreateSceneLogics();
-        //                if (IsExpeditionScene())
-        //                    ExpeditionStartGame();
-        //                else
-        //                    StartGame();
-        //                m_CurScene.NotifyUserEnter();
-        //                ClientStorySystem.Instance.StartStory(1);
-        //            }
-        //            else
-        //            {
-        //                //下副本时玩家的角色ID与本地客户端的角色不一致，所以下副本前先删掉本地角色
-        //                DestroyHero();
-        //                CreateSceneLogics();
+            //单机游戏逻辑启动
+            CreateSceneLogics();
+     
+            StartGame();
+            m_CurScene.NotifyUserEnter();
 
-        //                if (IsPvpScene() || IsMultiPveScene())
-        //                {
-        //                    StarWarsMessage.Msg_CRC_Create build = new StarWarsMessage.Msg_CRC_Create();
-        //                    NetworkSystem.Instance.SendMessage(build);
-        //                    LogSystem.Debug("send Msg_CRC_Create to roomserver");
-        //                }
-        //            }
+            //    //角色进场景逻辑
+            //    if (!m_CurScene.IsWaitSceneLoad && m_CurScene.IsWaitRoomServerConnect)
+            //    {
+            //        if (this.IsPureClientScene() || this.IsPveScene() || this.IsServerSelectScene() || NetworkSystem.Instance.CanSendMessage)
+            //        {
+            //            GfxSystem.PublishGfxEvent("ge_enter_scene", "ui", m_CurScene.ResId);
+            //            //if (this.IsPureClientScene()) {
+            //            //  GfxSystem.PublishGfxEvent("ge_ShowCYGTSDK", "gt");
+            //            //} else {
+            //            //  GfxSystem.PublishGfxEvent("ge_HideCYGTSDK", "gt");
+            //            //}
 
-        //            if (IsPveScene() || IsPureClientScene())
-        //            {
-        //                SyncGfxUsersInfo();
-        //            }
+            //            StorySystem.StoryConfigManager.Instance.Clear();
+            //            ClientStorySystem.Instance.ClearStoryInstancePool();
+            //            for (int i = 1; i < 10; ++i)
+            //            {
+            //                ClientStorySystem.Instance.PreloadStoryInstance(1);
+            //            }
+            //            PlayerControl.Instance.Reset();
 
-        //            m_CurScene.IsWaitRoomServerConnect = false;
-        //        }
-        //    }
-        //    if (!m_CurScene.IsSuccessEnter)
-        //    {
-        //        if (curTime > m_LastTryChangeSceneTime + c_ChangeSceneTimeout)
-        //        {
-        //            m_LastTryChangeSceneTime = curTime;
-        //            PromptExceptionAndGotoMainCity();
-        //        }
-        //        return;
-        //    }
-        //    m_Profiler.sceneTickTime = TimeSnapshot.DoCheckPoint();
+            //            if (IsObserver)
+            //            {
+            //                DestroyHero();
+            //                CreateSceneLogics();
+            //                UserInfo myself = CreatePlayerSelf(0x0ffffffe, 1);
+            //                if (null != myself)
+            //                {//观战客户端创建一个虚拟玩家（不关联view，血量不要为0，主要目的是为了适应客户端代码里对主角的判断）
+            //                    myself.SetLevel(16);
+            //                    myself.SetHp(Operate_Type.OT_Absolute, 999999);
+            //                }
+            //                m_CurScene.NotifyUserEnter();
 
-        //    EntityManager.Instance.Tick();
-        //    m_Profiler.entityMgrTickTime = TimeSnapshot.DoCheckPoint();
+            //                StarWarsMessage.Msg_CR_Observer build = new StarWarsMessage.Msg_CR_Observer();
+            //                NetworkSystem.Instance.SendMessage(build);
+            //                LogSystem.Debug("send Msg_CR_Observer to roomserver");
+            //            }
+            //            else if (this.IsPureClientScene() || IsPveScene())
+            //            {
+            //                //单机游戏逻辑启动
+            //                CreateSceneLogics();
+            //                if (IsExpeditionScene())
+            //                    ExpeditionStartGame();
+            //                else
+            //                    StartGame();
+            //                m_CurScene.NotifyUserEnter();
+            //                ClientStorySystem.Instance.StartStory(1);
+            //            }
+            //            else
+            //            {
+            //                //下副本时玩家的角色ID与本地客户端的角色不一致，所以下副本前先删掉本地角色
+            //                DestroyHero();
+            //                CreateSceneLogics();
 
-        //    ControlSystemOperation.Tick();
-        //    m_Profiler.controlSystemTickTime = TimeSnapshot.DoCheckPoint();
+            //                if (IsPvpScene() || IsMultiPveScene())
+            //                {
+            //                    StarWarsMessage.Msg_CRC_Create build = new StarWarsMessage.Msg_CRC_Create();
+            //                    NetworkSystem.Instance.SendMessage(build);
+            //                    LogSystem.Debug("send Msg_CRC_Create to roomserver");
+            //                }
+            //            }
 
-        //    m_Profiler.movementSystemTickTime = TimeSnapshot.DoCheckPoint();
+            //            if (IsPveScene() || IsPureClientScene())
+            //            {
+            //                SyncGfxUsersInfo();
+            //            }
 
-        //    m_SpatialSystem.Tick();
-        //    m_Profiler.spatialSystemTickTime = TimeSnapshot.DoCheckPoint();
-        //    if (m_Profiler.spatialSystemTickTime > 50000)
-        //    {
-        //        LogSystem.Warn("*** SpatialSystem tick time is {0}", m_Profiler.spatialSystemTickTime);
-        //        for (LinkedListNode<UserInfo> node = UserManager.Users.FirstValue; null != node; node = node.Next)
-        //        {
-        //            UserInfo userInfo = node.Value;
-        //            if (null != userInfo)
-        //            {
-        //                LogSystem.Warn("===>User:{0} Pos:{1}", userInfo.GetId(), userInfo.GetMovementStateInfo().GetPosition3D().ToString());
-        //            }
-        //        }
-        //        for (LinkedListNode<NpcInfo> node = NpcManager.Npcs.FirstValue; null != node; node = node.Next)
-        //        {
-        //            NpcInfo npcInfo = node.Value;
-        //            if (null != npcInfo)
-        //            {
-        //                LogSystem.Warn("===>Npc:{0} Pos:{1}", npcInfo.GetId(), npcInfo.GetMovementStateInfo().GetPosition3D().ToString());
-        //            }
-        //        }
-        //    }
+            //            m_CurScene.IsWaitRoomServerConnect = false;
+            //        }
+            //    }
+            //    if (!m_CurScene.IsSuccessEnter)
+            //    {
+            //        if (curTime > m_LastTryChangeSceneTime + c_ChangeSceneTimeout)
+            //        {
+            //            m_LastTryChangeSceneTime = curTime;
+            //            PromptExceptionAndGotoMainCity();
+            //        }
+            //        return;
+            //    }
+            //    m_Profiler.sceneTickTime = TimeSnapshot.DoCheckPoint();
 
-        //    TickMoveMeetObstacle();
-        //    //obj特殊逻辑处理
-        //    TickUsers();
-        //    m_Profiler.usersTickTime = TimeSnapshot.DoCheckPoint();
+            //    EntityManager.Instance.Tick();
+            //    m_Profiler.entityMgrTickTime = TimeSnapshot.DoCheckPoint();
 
-        //    TickNpcs();
-        //    m_Profiler.npcsTickTime = TimeSnapshot.DoCheckPoint();
+            //    ControlSystemOperation.Tick();
+            //    m_Profiler.controlSystemTickTime = TimeSnapshot.DoCheckPoint();
 
-        //    try
-        //    {
-        //        TickSystemByCharacters();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        LogSystem.Error("Exception:{0}\n{1}", e.Message, e.StackTrace);
-        //    }
-        //    m_Profiler.combatSystemTickTime = TimeSnapshot.DoCheckPoint();
+            //    m_Profiler.movementSystemTickTime = TimeSnapshot.DoCheckPoint();
 
-        //    if (IsPureClientScene() || IsPveScene())
-        //    {
-        //        //TickInteraction();
-        //        TickPve();
-        //    }
+            //    m_SpatialSystem.Tick();
+            //    m_Profiler.spatialSystemTickTime = TimeSnapshot.DoCheckPoint();
+            //    if (m_Profiler.spatialSystemTickTime > 50000)
+            //    {
+            //        LogSystem.Warn("*** SpatialSystem tick time is {0}", m_Profiler.spatialSystemTickTime);
+            //        for (LinkedListNode<UserInfo> node = UserManager.Users.FirstValue; null != node; node = node.Next)
+            //        {
+            //            UserInfo userInfo = node.Value;
+            //            if (null != userInfo)
+            //            {
+            //                LogSystem.Warn("===>User:{0} Pos:{1}", userInfo.GetId(), userInfo.GetMovementStateInfo().GetPosition3D().ToString());
+            //            }
+            //        }
+            //        for (LinkedListNode<NpcInfo> node = NpcManager.Npcs.FirstValue; null != node; node = node.Next)
+            //        {
+            //            NpcInfo npcInfo = node.Value;
+            //            if (null != npcInfo)
+            //            {
+            //                LogSystem.Warn("===>Npc:{0} Pos:{1}", npcInfo.GetId(), npcInfo.GetMovementStateInfo().GetPosition3D().ToString());
+            //            }
+            //        }
+            //    }
 
-        //    if (IsPveScene())
-        //    {
-        //        TickRecover();
-        //    }
+            //    TickMoveMeetObstacle();
+            //    //obj特殊逻辑处理
+            //    TickUsers();
+            //    m_Profiler.usersTickTime = TimeSnapshot.DoCheckPoint();
 
-        //    GmCommands.ClientGmStorySystem.Instance.Tick();
+            //    TickNpcs();
+            //    m_Profiler.npcsTickTime = TimeSnapshot.DoCheckPoint();
 
-        //    m_SceneLogicSystem.Tick();
-        //    m_Profiler.sceneLogicSystemTickTime = TimeSnapshot.DoCheckPoint();
+            //    try
+            //    {
+            //        TickSystemByCharacters();
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        LogSystem.Error("Exception:{0}\n{1}", e.Message, e.StackTrace);
+            //    }
+            //    m_Profiler.combatSystemTickTime = TimeSnapshot.DoCheckPoint();
 
-        //    long tickTime = TimeSnapshot.End();
-        //    if (tickTime > 30000)
-        //    {
-        //        LogSystem.Debug("*** PerformanceWarning: {0}", m_Profiler.GenerateLogString(tickTime));
-        //    }
-        //}
+            //    if (IsPureClientScene() || IsPveScene())
+            //    {
+            //        //TickInteraction();
+            //        TickPve();
+            //    }
+
+            //    if (IsPveScene())
+            //    {
+            //        TickRecover();
+            //    }
+
+            //    GmCommands.ClientGmStorySystem.Instance.Tick();
+
+            //    m_SceneLogicSystem.Tick();
+            //    m_Profiler.sceneLogicSystemTickTime = TimeSnapshot.DoCheckPoint();
+
+            //    long tickTime = TimeSnapshot.End();
+            //    if (tickTime > 30000)
+            //    {
+            //        LogSystem.Debug("*** PerformanceWarning: {0}", m_Profiler.GenerateLogString(tickTime));
+            //    }
+        }
 
         //public void SwitchDebug()
         //{
@@ -974,99 +981,99 @@ namespace StarWars
         //    }
         //}
 
-        //public void StartGame()
-        //{
-        //    m_SceneStartTime = TimeUtility.GetServerMilliseconds();
-        //    UserInfo user = GetPlayerSelf();
-        //    if (null != user)
-        //    {
-        //        EntityManager.Instance.DestroyUserView(user.GetId());
-        //        DestroyCharacterById(user.GetId());
-        //    }
-        //    user = CreatePlayerSelf(1, NetworkSystem.Instance.HeroId);
-        //    user.SetAIEnable(true);
-        //    user.SetCampId(NetworkSystem.Instance.CampId);
-        //    Data_Unit unit = m_CurScene.StaticData.ExtractData(DataMap_Type.DT_Unit, GlobalVariables.GetUnitIdByCampId(NetworkSystem.Instance.CampId)) as Data_Unit;
-        //    if (null != unit)
-        //    {
-        //        user.GetMovementStateInfo().SetPosition(unit.m_Pos);
-        //        user.GetMovementStateInfo().SetFaceDir(unit.m_RotAngle);
-        //        user.SetHp(Operate_Type.OT_Absolute, user.GetActualProperty().HpMax);
-        //        user.SetEnergy(Operate_Type.OT_Absolute, user.GetActualProperty().EnergyMax);
-        //    }
-        //    EntityManager.Instance.CreatePlayerSelfView(1);
-        //    UserView view = EntityManager.Instance.GetUserViewById(1);
-        //    if (null != view)
-        //    {
-        //        view.Visible = true;
-        //    }
+        public void StartGame()
+        {
+            m_SceneStartTime = TimeUtility.GetServerMilliseconds();
+            UserInfo user = GetPlayerSelf();
+            if (null != user)
+            {
+                EntityManager.Instance.DestroyUserView(user.GetId());
+                DestroyCharacterById(user.GetId());
+            }
+            //    user = CreatePlayerSelf(1, NetworkSystem.Instance.HeroId);
+            //    user.SetAIEnable(true);
+            //    user.SetCampId(NetworkSystem.Instance.CampId);
+            //    Data_Unit unit = m_CurScene.StaticData.ExtractData(DataMap_Type.DT_Unit, GlobalVariables.GetUnitIdByCampId(NetworkSystem.Instance.CampId)) as Data_Unit;
+            //    if (null != unit)
+            //    {
+            //        user.GetMovementStateInfo().SetPosition(unit.m_Pos);
+            //        user.GetMovementStateInfo().SetFaceDir(unit.m_RotAngle);
+            //        user.SetHp(Operate_Type.OT_Absolute, user.GetActualProperty().HpMax);
+            //        user.SetEnergy(Operate_Type.OT_Absolute, user.GetActualProperty().EnergyMax);
+            //    }
+            //    EntityManager.Instance.CreatePlayerSelfView(1);
+            //    UserView view = EntityManager.Instance.GetUserViewById(1);
+            //    if (null != view)
+            //    {
+            //        view.Visible = true;
+            //    }
 
-        //    if (null != LobbyClient.Instance.CurrentRole)
-        //    {
-        //        RoleInfo role_info = LobbyClient.Instance.CurrentRole;
-        //        if (role_info.Nickname.Length > 0)
-        //        {
-        //            user.SetNickName(role_info.Nickname);
-        //        }
-        //        /// level
-        //        if (role_info.Level > 0)
-        //        {
-        //            user.SetLevel(role_info.Level);
-        //        }
-        //        /// equips
-        //        if (null != role_info.Equips)
-        //        {
-        //            for (int i = 0; i < role_info.Equips.Length; i++)
-        //            {
-        //                if (null != role_info.Equips[i])
-        //                {
-        //                    int item_id = role_info.Equips[i].ItemId;
-        //                    if (item_id > 0)
-        //                    {
-        //                        ItemDataInfo info = new ItemDataInfo();
-        //                        info.Level = role_info.Equips[i].Level;
-        //                        info.ItemNum = role_info.Equips[i].ItemNum;
-        //                        info.RandomProperty = role_info.Equips[i].RandomProperty;
-        //                        info.ItemConfig = ItemConfigProvider.Instance.GetDataById(item_id);
-        //                        if (null != info.ItemConfig)
-        //                        {
-        //                            user.GetEquipmentStateInfo().SetEquipmentData(i, info);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        /// skills
-        //        RefixSkills(user);
-        //        /// legacys
-        //        if (null != role_info.Legacys)
-        //        {
-        //            for (int i = 0; i < role_info.Legacys.Length; i++)
-        //            {
-        //                if (null != role_info.Legacys[i] && role_info.Legacys[i].IsUnlock)
-        //                {
-        //                    user.GetLegacyStateInfo().ResetLegacyData(i);
-        //                    int item_id = role_info.Legacys[i].ItemId;
-        //                    if (item_id > 0)
-        //                    {
-        //                        ItemDataInfo info = new ItemDataInfo();
-        //                        info.Level = role_info.Legacys[i].Level;
-        //                        info.ItemNum = role_info.Legacys[i].ItemNum;
-        //                        info.RandomProperty = role_info.Legacys[i].RandomProperty;
-        //                        info.ItemConfig = ItemConfigProvider.Instance.GetDataById(item_id);
-        //                        if (null != info.ItemConfig)
-        //                        {
-        //                            user.GetLegacyStateInfo().SetLegacyData(i, info);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        ///
-        //        UserAttrCalculator.Calc(user);
-        //        user.SetHp(Operate_Type.OT_Absolute, user.GetActualProperty().HpMax);
-        //        user.SetEnergy(Operate_Type.OT_Absolute, user.GetActualProperty().EnergyMax);
-        //    }
+            //    if (null != LobbyClient.Instance.CurrentRole)
+            //    {
+            //        RoleInfo role_info = LobbyClient.Instance.CurrentRole;
+            //        if (role_info.Nickname.Length > 0)
+            //        {
+            //            user.SetNickName(role_info.Nickname);
+            //        }
+            //        /// level
+            //        if (role_info.Level > 0)
+            //        {
+            //            user.SetLevel(role_info.Level);
+            //        }
+            //        /// equips
+            //        if (null != role_info.Equips)
+            //        {
+            //            for (int i = 0; i < role_info.Equips.Length; i++)
+            //            {
+            //                if (null != role_info.Equips[i])
+            //                {
+            //                    int item_id = role_info.Equips[i].ItemId;
+            //                    if (item_id > 0)
+            //                    {
+            //                        ItemDataInfo info = new ItemDataInfo();
+            //                        info.Level = role_info.Equips[i].Level;
+            //                        info.ItemNum = role_info.Equips[i].ItemNum;
+            //                        info.RandomProperty = role_info.Equips[i].RandomProperty;
+            //                        info.ItemConfig = ItemConfigProvider.Instance.GetDataById(item_id);
+            //                        if (null != info.ItemConfig)
+            //                        {
+            //                            user.GetEquipmentStateInfo().SetEquipmentData(i, info);
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        /// skills
+            //        RefixSkills(user);
+            //        /// legacys
+            //        if (null != role_info.Legacys)
+            //        {
+            //            for (int i = 0; i < role_info.Legacys.Length; i++)
+            //            {
+            //                if (null != role_info.Legacys[i] && role_info.Legacys[i].IsUnlock)
+            //                {
+            //                    user.GetLegacyStateInfo().ResetLegacyData(i);
+            //                    int item_id = role_info.Legacys[i].ItemId;
+            //                    if (item_id > 0)
+            //                    {
+            //                        ItemDataInfo info = new ItemDataInfo();
+            //                        info.Level = role_info.Legacys[i].Level;
+            //                        info.ItemNum = role_info.Legacys[i].ItemNum;
+            //                        info.RandomProperty = role_info.Legacys[i].RandomProperty;
+            //                        info.ItemConfig = ItemConfigProvider.Instance.GetDataById(item_id);
+            //                        if (null != info.ItemConfig)
+            //                        {
+            //                            user.GetLegacyStateInfo().SetLegacyData(i, info);
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        ///
+            //        UserAttrCalculator.Calc(user);
+            //        user.SetHp(Operate_Type.OT_Absolute, user.GetActualProperty().HpMax);
+            //        user.SetEnergy(Operate_Type.OT_Absolute, user.GetActualProperty().EnergyMax);
+        }
 
         //    /// create npc
         //    foreach (Data_Unit npcUnit in m_CurScene.StaticData.m_UnitMgr.GetData().Values)
@@ -1532,25 +1539,17 @@ namespace StarWars
         //        DestroyCharacterById(m_PlayerSelfId);
         //    }
         //}
-        //private void CreateSceneLogics()
-        //{
-        //    MyDictionary<int, object> slogics = m_CurScene.StaticData.m_SceneLogicMgr.GetData();
-        //    foreach (SceneLogicConfig sc in slogics.Values)
-        //    {
-        //        if (null != sc)
-        //        {
-        //            if (sc.m_IsClient)
-        //            {
-        //                m_SceneLogicInfoMgr.AddSceneLogicInfo(sc.GetId(), sc);
-        //            }
-        //            else if (sc.m_IsServer)
-        //            {
-        //                if (IsPureClientScene() || IsPveScene())
-        //                    m_SceneLogicInfoMgr.AddSceneLogicInfo(sc.GetId(), sc);
-        //            }
-        //        }
-        //    }
-        //}
+        private void CreateSceneLogics()
+        {
+            Dictionary<int, object> slogics = m_CurScene.StaticData.m_SceneLogicMgr.GetData();
+            foreach (SceneLogicConfig sc in slogics.Values)
+            {
+                if (null != sc)
+                {
+                    m_SceneLogicInfoMgr.AddSceneLogicInfo(sc.GetId(), sc);
+                }
+            }
+        }
 
         //private void TickInteraction()
         //{
@@ -2453,30 +2452,27 @@ namespace StarWars
         {
             return m_PlayerSelf;
         }
-        //public void DestroyCharacterById(int id)
-        //{
-        //    if (m_NpcMgr.Npcs.Contains(id))
-        //    {
-        //        m_NpcMgr.RemoveNpc(id);
-        //    }
-        //    if (m_PlayerSelfId == id)
-        //    {
-        //        m_PlayerSelf = null;
-        //    }
-        //    if (m_UserMgr.Users.Contains(id))
-        //    {
-        //        if (null != m_SpatialSystem)
-        //        {
-        //            CharacterInfo info = m_UserMgr.Users[id];
-        //            if (null != info)
-        //            {
-        //                info.SceneContext = null;
-        //                m_SpatialSystem.RemoveObj(info.SpaceObject);
-        //            }
-        //        }
-        //        m_UserMgr.RemoveUser(id);
-        //    }
-        //}
+        public void DestroyCharacterById(int id)
+        {
+
+            if (m_PlayerSelfId == id)
+            {
+                m_PlayerSelf = null;
+            }
+            if (m_UserMgr.Users.Contains(id))
+            {
+                if (null != m_SpatialSystem)
+                {
+                    CharacterInfo info = m_UserMgr.Users[id];
+                    if (null != info)
+                    {
+                        info.SceneContext = null;
+                        m_SpatialSystem.RemoveObj(info.SpaceObject);
+                    }
+                }
+                m_UserMgr.RemoveUser(id);
+            }
+        }
         //public void SetAIEnable(int characterId, bool enable)
         //{
         //    CharacterInfo info = WorldSystem.Instance.GetCharacterById(characterId);
@@ -2995,13 +2991,13 @@ namespace StarWars
             };
 
             m_SceneContext.SpatialSystem = m_SpatialSystem;
-            //m_SceneContext.SceneLogicInfoManager = m_SceneLogicInfoMgr;
+            m_SceneContext.SceneLogicInfoManager = m_SceneLogicInfoMgr;
             //m_SceneContext.NpcManager = m_NpcMgr;
             m_SceneContext.UserManager = m_UserMgr;
             m_SceneContext.BlackBoard = m_BlackBoard;
 
             //m_NpcMgr.SetSceneContext(m_SceneContext);
-            //m_SceneLogicInfoMgr.SetSceneContext(m_SceneContext);
+            m_SceneLogicInfoMgr.SetSceneContext(m_SceneContext);
 
             //m_AiSystem.SetNpcManager(m_NpcMgr);
             //m_AiSystem.SetUserManager(m_UserMgr);
@@ -3010,7 +3006,7 @@ namespace StarWars
 
         //private NpcManager m_NpcMgr = new NpcManager(256);
         private UserManager m_UserMgr = new UserManager(16);
-        //private SceneLogicInfoManager m_SceneLogicInfoMgr = new SceneLogicInfoManager(256);
+        private SceneLogicInfoManager m_SceneLogicInfoMgr = new SceneLogicInfoManager(256);
 
         //private AiSystem m_AiSystem = new AiSystem();
         //private SceneLogicSystem m_SceneLogicSystem = new SceneLogicSystem();
@@ -3022,22 +3018,22 @@ namespace StarWars
 
         private SceneContextInfo m_SceneContext = new SceneContextInfo();
 
-        //private const long c_InteractionCheckInterval = 1000;
-        //private long m_LastInteractionCheckTime = 0;
-        //private long m_SceneStartTime = 0;
-        //private long m_LastLogicTickTime = 0;
+        private const long c_InteractionCheckInterval = 1000;
+        private long m_LastInteractionCheckTime = 0;
+        private long m_SceneStartTime = 0;
+        private long m_LastLogicTickTime = 0;
 
-        //private const long c_ChangeSceneTimeout = 60000;
-        //private long m_LastTryChangeSceneTime = 0;
+        private const long c_ChangeSceneTimeout = 60000;
+        private long m_LastTryChangeSceneTime = 0;
 
-        //private bool m_IsObserver = false;
-        //private bool m_IsFollowObserver = false;
-        //private int m_FollowTargetId = 0;
+        private bool m_IsObserver = false;
+        private bool m_IsFollowObserver = false;
+        private int m_FollowTargetId = 0;
 
-        //private bool m_IsWaitMatch = false;
+        private bool m_IsWaitMatch = false;
 
-        //private WorldSystemProfiler m_Profiler = new WorldSystemProfiler();
-        //private SceneResource m_CurScene;
+        private WorldSystemProfiler m_Profiler = new WorldSystemProfiler();
+        private SceneResource m_CurScene;
 
         private bool m_IsAlreadyNotifyMeetObstacle = false;
         private long m_LastNotifyMoveMeetObstacleTime = 0;

@@ -15,13 +15,13 @@ namespace StarWars
                 return m_SceneResId;
             }
         }
-        //public MapDataProvider StaticData
-        //{
-        //    get
-        //    {
-        //        return m_SceneStaticData;
-        //    }
-        //}
+        public MapDataProvider StaticData
+        {
+            get
+            {
+                return m_SceneStaticData;
+            }
+        }
         //public Data_SceneConfig SceneConfig
         //{
         //    get
@@ -316,7 +316,7 @@ namespace StarWars
         }
 
         private int m_SceneResId;
-        //private MapDataProvider m_SceneStaticData;
+        private MapDataProvider m_SceneStaticData;
         //private Data_SceneConfig m_SceneConfig;
         //private Data_SceneDropOut m_SceneDropOut;
         private Dictionary<int, int> m_DropMoneyData = new Dictionary<int, int>();

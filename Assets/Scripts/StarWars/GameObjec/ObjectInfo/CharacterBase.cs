@@ -175,13 +175,10 @@ namespace StarWars
             return m_CastUserInfo;
         }
 
-        /**
-         * @brief 构造函数
-         *
-         * @param id
-         *
-         * @return 
-         */
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="id"></param>
         public CharacterInfo(int id)
         {
             m_Id = id;
@@ -195,31 +192,28 @@ namespace StarWars
             IsFlying = false;
         }
 
-        /**
-         * @brief 获取id
-         *
-         * @return 
-         */
+        /// <summary>
+        /// 获取id
+        /// </summary>
+        /// <returns></returns>
         public int GetId()
         {
             return m_Id;
         }
 
-        /**
-         * @brief 单位id
-         *
-         * @return 
-         */
+        /// <summary>
+        /// 单位id
+        /// </summary>
+        /// <returns></returns>
         public int GetUnitId()
         {
             return m_UnitId;
         }
 
-        /**
-         * @brief 设置单位id
-         *
-         * @return 
-         */
+        /// <summary>
+        ///  设置单位id
+        /// </summary>
+        /// <param name="id"></param>
         public void SetUnitId(int id)
         {
             m_UnitId = id;
@@ -235,23 +229,19 @@ namespace StarWars
             m_LinkId = id;
         }
 
-        /**
-         * @brief 设置名字
-         *
-         * @param name
-         *
-         * @return 
-         */
+        /// <summary>
+        /// 设置名字
+        /// </summary>
+        /// <param name="name"></param>
         public void SetName(string name)
         {
             m_Name = name;
         }
 
-        /**
-         * @brief 获取名字
-         *
-         * @return 
-         */
+        /// <summary>
+        ///  获取名字
+        /// </summary>
+        /// <returns></returns>
         public string GetName()
         {
             return m_Name;

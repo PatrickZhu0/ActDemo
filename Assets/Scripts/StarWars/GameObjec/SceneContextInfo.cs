@@ -21,11 +21,11 @@ namespace StarWars
         //    get { return m_SightManager; }
         //    set { m_SightManager = value; }
         //}
-        //public SceneLogicInfoManager SceneLogicInfoManager
-        //{
-        //    get { return m_SceneLogicInfoManager; }
-        //    set { m_SceneLogicInfoManager = value; }
-        //}
+        public SceneLogicInfoManager SceneLogicInfoManager
+        {
+            get { return m_SceneLogicInfoManager; }
+            set { m_SceneLogicInfoManager = value; }
+        }
         //public NpcManager NpcManager
         //{
         //    get { return m_NpcMgr; }
@@ -97,7 +97,7 @@ namespace StarWars
 
         private StarWarsSpatial.ISpatialSystem m_SpatialSystem = null;
         //private SightManager m_SightManager = null;
-        //private SceneLogicInfoManager m_SceneLogicInfoManager = null;
+        private SceneLogicInfoManager m_SceneLogicInfoManager = null;
         //private NpcManager m_NpcMgr = null;
         private UserManager m_UserMgr = null;
         private BlackBoard m_BlackBoard = null;
