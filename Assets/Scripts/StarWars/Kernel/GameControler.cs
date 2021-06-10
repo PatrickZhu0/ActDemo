@@ -48,7 +48,6 @@ namespace StarWars
             {
 #if !USE_DISK_LOG
                 long curTime = TimeUtility.GetLocalMilliseconds();
-                LogSystem.Error("GameControler Tick " + curTime);
                 if (m_LastFlushTime + 10000 < curTime)
                 {
                     m_LastFlushTime = curTime;
@@ -149,7 +148,7 @@ namespace StarWars
             //ClientStorySystem.Instance.Init();
             //GmCommands.ClientGmStorySystem.Instance.Init();
 
-            //PlayerControl.Instance.Init();
+            PlayerControl.Instance.Init();
             //LobbyNetworkSystem.Instance.Init(s_LogicThread);
             //NetworkSystem.Instance.Init();
             //AiViewManager.Instance.Init();

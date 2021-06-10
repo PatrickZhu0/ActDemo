@@ -1059,20 +1059,20 @@ namespace StarWars
         {
             get { return m_SpaceObject; }
         }
-        //public SceneContextInfo SceneContext
-        //{
-        //    get { return m_SceneContext; }
-        //    set { m_SceneContext = value; }
-        //}
+        public SceneContextInfo SceneContext
+        {
+            get { return m_SceneContext; }
+            set { m_SceneContext = value; }
+        }
         public ISpatialSystem SpatialSystem
         {
             get
             {
                 ISpatialSystem sys = null;
-                //if (null != m_SceneContext)
-                //{
-                //    sys = m_SceneContext.SpatialSystem;
-                //}
+                if (null != m_SceneContext)
+                {
+                    sys = m_SceneContext.SpatialSystem;
+                }
                 return sys;
             }
         }
@@ -1100,30 +1100,30 @@ namespace StarWars
         //        return mgr;
         //    }
         //}
-        //public UserManager UserManager
-        //{
-        //    get
-        //    {
-        //        UserManager mgr = null;
-        //        if (null != m_SceneContext)
-        //        {
-        //            mgr = m_SceneContext.UserManager;
-        //        }
-        //        return mgr;
-        //    }
-        //}
-        //public BlackBoard BlackBoard
-        //{
-        //    get
-        //    {
-        //        BlackBoard blackBoard = null;
-        //        if (null != m_SceneContext)
-        //        {
-        //            blackBoard = m_SceneContext.BlackBoard;
-        //        }
-        //        return blackBoard;
-        //    }
-        //}
+        public UserManager UserManager
+        {
+            get
+            {
+                UserManager mgr = null;
+                if (null != m_SceneContext)
+                {
+                    mgr = m_SceneContext.UserManager;
+                }
+                return mgr;
+            }
+        }
+        public BlackBoard BlackBoard
+        {
+            get
+            {
+                BlackBoard blackBoard = null;
+                if (null != m_SceneContext)
+                {
+                    blackBoard = m_SceneContext.BlackBoard;
+                }
+                return blackBoard;
+            }
+        }
 
         public float Cross2StandTime
         {
@@ -1347,7 +1347,7 @@ namespace StarWars
         //private ISkillController m_SkillController = null;
         //private EquipmentStateInfo m_EquipmentStateInfo = new EquipmentStateInfo();
         //private LegacyStateInfo m_LegacyStateInfo = new LegacyStateInfo();
-        //private SceneContextInfo m_SceneContext = null;
+        private SceneContextInfo m_SceneContext = null;
         protected ISpaceObject m_SpaceObject = null;
         //protected LevelupConfig m_LevelupConfig = null;
 

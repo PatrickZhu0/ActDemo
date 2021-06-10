@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-//using DashFire.Network;
-//using ScriptRuntime;
+//using StarWars.Network;
+//using UnityEngine;
 
-namespace DashFire
+namespace StarWars
 {
     public class SceneResource
     {

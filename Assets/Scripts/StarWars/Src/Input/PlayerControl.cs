@@ -1,6 +1,6 @@
 using System;
-//using DashFire.Network;
-//using ScriptRuntime;
+//using StarWars.Network;
+//using UnityEngine;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -233,13 +233,13 @@ namespace StarWars
         private bool IsKeyboardControl()
         {
             bool ret = false;
-            if (GfxSystem.IsKeyPressed(Keyboard.Code.W)
-                || GfxSystem.IsKeyPressed(Keyboard.Code.A)
-                || GfxSystem.IsKeyPressed(Keyboard.Code.S)
-                || GfxSystem.IsKeyPressed(Keyboard.Code.D))
-            {
-                ret = true;
-            }
+            //if (GfxSystem.IsKeyPressed(Keyboard.Code.W)
+            //    || GfxSystem.IsKeyPressed(Keyboard.Code.A)
+            //    || GfxSystem.IsKeyPressed(Keyboard.Code.S)
+            //    || GfxSystem.IsKeyPressed(Keyboard.Code.D))
+            //{
+            //    ret = true;
+            //}
             return ret;
         }
 
@@ -248,22 +248,22 @@ namespace StarWars
             UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
             if (null == playerself)
                 return;
-            float dir = GfxSystem.GetJoystickDir();
-            if (dir < 0)
-            {
-                dir += c_2PI;
-            }
-            Vector3 target_pos = new Vector3(GfxSystem.GetJoystickTargetPosX(), GfxSystem.GetJoystickTargetPosY(), GfxSystem.GetJoystickTargetPosZ());
-            UpdateMoveState(playerself, target_pos, dir);
+            //float dir = GfxSystem.GetJoystickDir();
+            //if (dir < 0)
+            //{
+            //    dir += c_2PI;
+            //}
+            //Vector3 target_pos = new Vector3(GfxSystem.GetJoystickTargetPosX(), GfxSystem.GetJoystickTargetPosY(), GfxSystem.GetJoystickTargetPosZ());
+            //UpdateMoveState(playerself, target_pos, dir);
         }
 
         private void OnPlaySkill(int key_code, int what)
         {
-            if (what == (int)Keyboard.Event.Down)
-            {
-                UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
-                playerself.SkillController.ForceInterruptCurSkill();
-            }
+            //if (what == (int)Keyboard.Event.Down)
+            //{
+            //    UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
+            //    playerself.SkillController.ForceInterruptCurSkill();
+            //}
         }
 
         private void SwitchHero(int key_code, int what)
@@ -272,38 +272,38 @@ namespace StarWars
             if (null == playerself)
                 return;
             ///
-            if ((int)Keyboard.Event.Up == what)
-            {
-                if (WorldSystem.Instance.IsPureClientScene() || WorldSystem.Instance.IsPveScene())
-                {
-                    WorldSystem.Instance.ChangeHero();
-                }
-                else
-                {
-                    //多人情形切英雄还不知道需求
-                }
-            }
+            //if ((int)Keyboard.Event.Up == what)
+            //{
+            //    if (WorldSystem.Instance.IsPureClientScene() || WorldSystem.Instance.IsPveScene())
+            //    {
+            //        WorldSystem.Instance.ChangeHero();
+            //    }
+            //    else
+            //    {
+            //        //多人情形切英雄还不知道需求
+            //    }
+            //}
         }
 
 
-        private void StopFindPath(UserInfo playerself, UserAiStateInfo aiInfo)
-        {
-            if (null == playerself || null == aiInfo)
-            {
-                return;
-            }
-            AiData_UserSelf_General data = playerself.GetAiStateInfo().AiDatas.GetData<AiData_UserSelf_General>();
-            if (null == data)
-            {
-                data = new AiData_UserSelf_General();
-                playerself.GetAiStateInfo().AiDatas.AddData(data);
-            }
-            playerself.GetMovementStateInfo().IsMoving = false;
-            aiInfo.Time = 0;
-            data.Time = 0;
-            data.FoundPath.Clear();
-            aiInfo.ChangeToState((int)AiStateId.Idle);
-        }
+        //private void StopFindPath(UserInfo playerself, UserAiStateInfo aiInfo)
+        //{
+        //    if (null == playerself || null == aiInfo)
+        //    {
+        //        return;
+        //    }
+        //    AiData_UserSelf_General data = playerself.GetAiStateInfo().AiDatas.GetData<AiData_UserSelf_General>();
+        //    if (null == data)
+        //    {
+        //        data = new AiData_UserSelf_General();
+        //        playerself.GetAiStateInfo().AiDatas.AddData(data);
+        //    }
+        //    playerself.GetMovementStateInfo().IsMoving = false;
+        //    aiInfo.Time = 0;
+        //    data.Time = 0;
+        //    data.FoundPath.Clear();
+        //    aiInfo.ChangeToState((int)AiStateId.Idle);
+        //}
 
         private void UpdateMoveState(UserInfo playerself, Vector3 targetpos, float towards)
         {
@@ -549,25 +549,25 @@ namespace StarWars
             KeyHit kh = KeyHit.None;
             if (move_enable)
             {
-                if (DashFireSpatial.SpatialObjType.kNPC == playerself.GetRealControlledObject().SpaceObject.GetObjType())
-                {
-                    NpcInfo npcInfo = playerself.GetRealControlledObject().CastNpcInfo();
-                    if (null != npcInfo)
-                    {
-                        if (!npcInfo.CanMove)
-                        {
-                            return;
-                        }
-                    }
-                }
-                if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.W)))
-                    kh |= KeyHit.Up;
-                if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.A)))
-                    kh |= KeyHit.Left;
-                if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.S)))
-                    kh |= KeyHit.Down;
-                if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.D)))
-                    kh |= KeyHit.Right;
+                //if (StarWarsSpatial.SpatialObjType.kNPC == playerself.GetRealControlledObject().SpaceObject.GetObjType())
+                //{
+                //    NpcInfo npcInfo = playerself.GetRealControlledObject().CastNpcInfo();
+                //    if (null != npcInfo)
+                //    {
+                //        if (!npcInfo.CanMove)
+                //        {
+                //            return;
+                //        }
+                //    }
+                //}
+                //if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.W)))
+                //    kh |= KeyHit.Up;
+                //if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.A)))
+                //    kh |= KeyHit.Left;
+                //if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.S)))
+                //    kh |= KeyHit.Down;
+                //if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.D)))
+                //    kh |= KeyHit.Right;
             }
 
             Motion m = kh == KeyHit.None ? Motion.Stop : Motion.Moving;
@@ -597,23 +597,23 @@ namespace StarWars
         public Motion JoyStickMotionStatus { get; set; }
         public bool JoyStickMotionChanged { get; set; }
 
-        private Keyboard.Code GetKeyCode(KeyIndex index)
-        {
-            Keyboard.Code ret = Keyboard.Code.W;
-            if (index >= KeyIndex.W && index <= KeyIndex.D)
-            {
-                Keyboard.Code[] list = s_Normal;
-                /*if (WorldSystem.Instance.IsPvpScene()) {
-                  int campId = WorldSystem.Instance.CampId;
-                  if (campId == (int)CampIdEnum.Blue)
-                    list = s_Blue;
-                  else if (campId == (int)CampIdEnum.Red)
-                    list = s_Red;
-                }*/
-                ret = list[(int)index];
-            }
-            return ret;
-        }
+        //private Keyboard.Code GetKeyCode(KeyIndex index)
+        //{
+        //    Keyboard.Code ret = Keyboard.Code.W;
+        //    if (index >= KeyIndex.W && index <= KeyIndex.D)
+        //    {
+        //        Keyboard.Code[] list = s_Normal;
+        //        /*if (WorldSystem.Instance.IsPvpScene()) {
+        //          int campId = WorldSystem.Instance.CampId;
+        //          if (campId == (int)CampIdEnum.Blue)
+        //            list = s_Blue;
+        //          else if (campId == (int)CampIdEnum.Red)
+        //            list = s_Red;
+        //        }*/
+        //        ret = list[(int)index];
+        //    }
+        //    return ret;
+        //}
 
         /**
           * @brief 计算移动方向
@@ -633,9 +633,9 @@ namespace StarWars
 
         public KeyHit last_key_hit_;
 
-        private static readonly Keyboard.Code[] s_Normal = new Keyboard.Code[] { Keyboard.Code.W, Keyboard.Code.A, Keyboard.Code.S, Keyboard.Code.D };
-        private static readonly Keyboard.Code[] s_Blue = new Keyboard.Code[] { Keyboard.Code.A, Keyboard.Code.S, Keyboard.Code.D, Keyboard.Code.W };
-        private static readonly Keyboard.Code[] s_Red = new Keyboard.Code[] { Keyboard.Code.D, Keyboard.Code.W, Keyboard.Code.A, Keyboard.Code.S };
+        //private static readonly Keyboard.Code[] s_Normal = new Keyboard.Code[] { Keyboard.Code.W, Keyboard.Code.A, Keyboard.Code.S, Keyboard.Code.D };
+        //private static readonly Keyboard.Code[] s_Blue = new Keyboard.Code[] { Keyboard.Code.A, Keyboard.Code.S, Keyboard.Code.D, Keyboard.Code.W };
+        //private static readonly Keyboard.Code[] s_Red = new Keyboard.Code[] { Keyboard.Code.D, Keyboard.Code.W, Keyboard.Code.A, Keyboard.Code.S };
         //                                                          N   U  D        UD  L            UL           DL
         private static readonly float[] s_MoveDirs = new float[] { -1,  0, (float)Math.PI, -1, 3*(float)Math.PI/2, 7*(float)Math.PI/4, 5*(float)Math.PI/4, 
       //                    UDL          R          UR         DR           UDR        LR  ULR  LRD      UDLR
