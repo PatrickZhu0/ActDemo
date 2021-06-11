@@ -123,15 +123,14 @@ namespace StarWars
 
         public void OnCombat2IdleSkillOver()
         {
-            //m_IsCombatState = false;
-            //m_IsWeaponMoved = false;
-            //m_IdleState = IdleState.kNotIdle;
+            m_IsCombatState = false;
+            m_IsWeaponMoved = false;
+            m_IdleState = IdleState.kNotIdle;
         }
 
         protected bool IsInCombatState()
         {
-            //SkillStateInfo state = GetOwner().GetSkillStateInfo();
-            SkillStateInfo state = new SkillStateInfo();
+            SkillStateInfo state = GetOwner().GetSkillStateInfo();
             if (state == null)
             {
                 return false;
@@ -149,49 +148,49 @@ namespace StarWars
 
         protected void UpdateState()
         {
-            //if (GetOwner().IsDead())
-            //{
-            //    return;
-            //}
-            //long now = TimeUtility.GetServerMilliseconds();
-            //if (IsInCombatState())
-            //{
-            //    m_LastLeaveCombatTime = now;
-            //    m_IsCombat2IdleChanging = false;
-            //    m_IsCombatState = true;
-            //}
-            //else if (m_IsCombatState)
-            //{
-            //    if (GetOwner().GetMovementStateInfo().IsMoving)
-            //    {
-            //        m_LastLeaveCombatTime = now;
-            //        m_IsCombat2IdleChanging = false;
-            //    }
-            //}
-            //if (GetOwner().GetId() == WorldSystem.Instance.GetPlayerSelf().GetId())
-            //{
-            //    if (m_LastLeaveCombatTime + GetOwner().Combat2IdleTime * 1000 <= now && !m_IsCombat2IdleChanging)
-            //    {
-            //        GetOwner().SkillController.PushSkill(SkillCategory.kCombat2Idle, Vector3.Zero);
-            //        m_IsCombat2IdleChanging = true;
-            //    }
-            //}
-            //if (m_IsCombatState && !m_IsWeaponMoved)
-            //{
-            //    EnterCombatState();
-            //}
+            if (GetOwner().IsDead())
+            {
+                return;
+            }
+            long now = TimeUtility.GetServerMilliseconds();
+            if (IsInCombatState())
+            {
+                m_LastLeaveCombatTime = now;
+                m_IsCombat2IdleChanging = false;
+                m_IsCombatState = true;
+            }
+            else if (m_IsCombatState)
+            {
+                if (GetOwner().GetMovementStateInfo().IsMoving)
+                {
+                    m_LastLeaveCombatTime = now;
+                    m_IsCombat2IdleChanging = false;
+                }
+            }
+            if (GetOwner().GetId() == WorldSystem.Instance.GetPlayerSelf().GetId())
+            {
+                if (m_LastLeaveCombatTime + GetOwner().Combat2IdleTime * 1000 <= now && !m_IsCombat2IdleChanging)
+                {
+                    //GetOwner().SkillController.PushSkill(SkillCategory.kCombat2Idle, Vector3.Zero);
+                    m_IsCombat2IdleChanging = true;
+                }
+            }
+            if (m_IsCombatState && !m_IsWeaponMoved)
+            {
+                EnterCombatState();
+            }
         }
 
         public void EnterCombatState()
         {
-            //m_IsCombatState = true;
-            //string[] weapon_moves = GetOwner().Idle2CombatWeaponMoves.Split('|');
-            //for (int i = 1; i < weapon_moves.Length; i += 2)
-            //{
-            //    string child = weapon_moves[i - 1];
-            //    string node = weapon_moves[i];
-            //    GfxSystem.QueueGfxAction(GfxModule.Skill.Trigers.TriggerUtil.MoveChildToNode, Actor, child, node);
-            //}
+            m_IsCombatState = true;
+            string[] weapon_moves = GetOwner().Idle2CombatWeaponMoves.Split('|');
+            for (int i = 1; i < weapon_moves.Length; i += 2)
+            {
+                string child = weapon_moves[i - 1];
+                string node = weapon_moves[i];
+                //GfxSystem.QueueGfxAction(GfxModule.Skill.Trigers.TriggerUtil.MoveChildToNode, Actor, child, node);
+            }
             m_IsWeaponMoved = true;
         }
 
@@ -242,22 +241,22 @@ namespace StarWars
 
         protected void UpdateAffectPlayerSelf(Vector3 pos)
         {
-            //if (null != WorldSystem.Instance.GetPlayerSelf())
-            //{
-            //    Vector3 myselfPos = WorldSystem.Instance.GetPlayerSelf().GetMovementStateInfo().GetPosition3D();
-            //    if (Geometry.DistanceSquare(pos, myselfPos) < c_AffectPlayerSelfDistanceSquare)
-            //    {
-            //        CanAffectPlayerSelf = true;
-            //    }
-            //    else
-            //    {
-            //        CanAffectPlayerSelf = false;
-            //    }
-            //}
-            //else
-            //{
-            //    CanAffectPlayerSelf = false;
-            //}
+            if (null != WorldSystem.Instance.GetPlayerSelf())
+            {
+                Vector3 myselfPos = WorldSystem.Instance.GetPlayerSelf().GetMovementStateInfo().GetPosition3D();
+                if (Geometry.DistanceSquare(pos, myselfPos) < c_AffectPlayerSelfDistanceSquare)
+                {
+                    CanAffectPlayerSelf = true;
+                }
+                else
+                {
+                    CanAffectPlayerSelf = false;
+                }
+            }
+            else
+            {
+                CanAffectPlayerSelf = false;
+            }
         }
 
         private void Init()

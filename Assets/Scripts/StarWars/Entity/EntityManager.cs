@@ -30,29 +30,14 @@ namespace StarWars
         }
         #endregion
 
-        /**
-         * @brief 构筑函数
-         *
-         * @return 
-         */
         private EntityManager()
         {
         }
 
-        /**
-         * @brief 初始化
-         *
-         * @return 
-         */
         public void Init()
         {
         }
 
-        /**
-         * @brief 销毁
-         *
-         * @return 
-         */
         public void Release()
         {
         }
@@ -96,14 +81,13 @@ namespace StarWars
         {
             if (!m_UserViews.ContainsKey(objId))
             {
-
-                //UserInfo obj = WorldSystem.Instance.UserManager.GetUserInfo(objId);
-                //if (null != obj)
-                //{
-                //    UserView view = new UserView();
-                //    view.Create(obj);
-                //    m_UserViews.Add(objId, view);
-                //}
+                UserInfo obj = WorldSystem.Instance.UserManager.GetUserInfo(objId);
+                if (null != obj)
+                {
+                    UserView view = new UserView();
+                    view.Create(obj);
+                    m_UserViews.Add(objId, view);
+                }
             }
         }
 

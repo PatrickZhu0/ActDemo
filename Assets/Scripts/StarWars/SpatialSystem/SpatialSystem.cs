@@ -1,10 +1,9 @@
 /**
  * @file   SpaceManager.cs
- * @author carl <zhangnaisheng@cyou-inc.com>
- * @date   Wed Apr 24 11:38:21 2013
+ * @author 
+ * @date   
  * 
- * @brief collide module class. It provide operate api to other module. It
- * major function is collide detect and provide other collide query API.
+ * @brief 空间管理系统
  * 
  */
 using System;
@@ -49,7 +48,8 @@ namespace StarWarsSpatial
         public void LoadObstacle(string file, float scale)
         {
             if (!GlobalVariables.Instance.IsClient)
-            {//客户端暂时不读避让信息（xml库在ios上有问题。。）
+            {
+                //客户端暂时不读避让信息（xml库在ios上有问题。。）
                 float mapwidth = cell_manager_.GetMapWidth();
                 float mapheight = cell_manager_.GetMapHeight();
                 MapParser mapParser = new MapParser();
@@ -69,9 +69,9 @@ namespace StarWarsSpatial
             m_KdObstacleTree.Clear();
         }
 
-        /** 
-         * collide module 心跳tick, 处理相关计算
-         */
+        /// <summary>
+        /// collide module 心跳tick, 处理相关计算
+        /// </summary>
         public void Tick()
         {
             // remove objects in delete buffer
@@ -146,12 +146,6 @@ namespace StarWarsSpatial
                             break;
                     }
                 }
-                /*m_KdTree.Query(hiter, (float)hiter.GetRadius(), (float distSqr, KdTreeObject obj) => {
-                  ISpaceObject dest = obj.SpaceObject;
-                  if (null != dest && IsPassableCollide(hiter, dest)) {
-                    CheckCollide(hiter, dest);
-                  }
-                });*/
             }
             if (isCountTick && !GlobalVariables.Instance.IsClient)
             {
@@ -174,11 +168,11 @@ namespace StarWarsSpatial
             }
         }
 
-        /** 
-         * 增加物体
-         * @param obj 增加的物体
-         * @return 成功返回SUCCESS，失败返回其它错误码
-         */
+        /// <summary>
+        /// 增加物体
+        /// </summary>
+        /// <param name="obj">增加的物体</param>
+        /// <returns>成功返回SUCCESS，失败返回其它错误码</returns>
         public RetCode AddObj(ISpaceObject obj)
         {
             if (obj == null)

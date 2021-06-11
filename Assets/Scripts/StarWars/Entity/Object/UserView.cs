@@ -26,11 +26,11 @@ namespace StarWars
                 CreateActor(m_User.GetId(), m_User.GetModel(), pos, dir, m_User.Scale);
                 CreateIndicatorActor(m_User.GetId(), m_User.GetIndicatorModel());
                 //InitAnimationSets();
-                //ObjectInfo.IsPlayer = true;
-                //if (user.GetId() == WorldSystem.Instance.PlayerSelfId)
-                //{
+                ObjectInfo.IsPlayer = true;
+                if (user.GetId() == WorldSystem.Instance.PlayerSelfId)
+                {
                 //    GfxSystem.MarkPlayerSelf(Actor);
-                //}
+                }
             }
         }
         public void Destroy()
