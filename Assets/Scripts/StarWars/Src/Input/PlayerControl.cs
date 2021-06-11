@@ -110,7 +110,6 @@ namespace StarWars
 
 
             UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
-            Debug.LogError(" ---- " + playerself);
             if (null == playerself)
                 return;
             // if move input is disable
@@ -130,7 +129,7 @@ namespace StarWars
             }
             MovementStateInfo msi = playerself.GetMovementStateInfo();
             Vector3 pos = msi.GetPosition3D();
-
+            Debug.LogError(pos);
             //LogSystem.Debug("Pos : {0}, Dir : {1}", pos.ToString(), playerself.GetMovementStateInfo().GetFaceDir());
             bool reface = false;
             if (m_LastTickIsSkillMoving && !msi.IsSkillMoving)
