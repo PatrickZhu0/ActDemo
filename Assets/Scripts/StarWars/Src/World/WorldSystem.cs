@@ -313,11 +313,9 @@ namespace StarWars
             GfxSystem.PublishGfxEvent("ge_ui_connect_hint", "ui", false, false);
         }
 
-        /**
-         * @brief 释放
-         *
-         * @return 
-         */
+        /// <summary>
+        /// 释放
+        /// </summary>
         public void Release()
         {
             if (null != m_CurScene)
@@ -360,6 +358,7 @@ namespace StarWars
                 return m_CurScene.IsPureClientScene;
         }
 
+
         public bool IsPveScene()
         {
             if (null == m_CurScene)
@@ -368,6 +367,7 @@ namespace StarWars
                 return m_CurScene.IsPve;
         }
 
+        //多人场景
         public bool IsMultiPveScene()
         {
             if (null == m_CurScene)
@@ -376,6 +376,7 @@ namespace StarWars
                 return m_CurScene.IsMultiPve;
         }
 
+        //Pvp场景
         public bool IsPvpScene()
         {
             if (null == m_CurScene)
@@ -384,6 +385,7 @@ namespace StarWars
                 return m_CurScene.IsPvp;
         }
 
+        //远征关卡
         public bool IsExpeditionScene()
         {
             if (null == m_CurScene)
@@ -391,6 +393,8 @@ namespace StarWars
             else
                 return m_CurScene.IsExpedition;
         }
+
+        //精英关卡
         public bool IsELiteScene()
         {
             if (null == m_CurScene)
@@ -398,6 +402,8 @@ namespace StarWars
             else
                 return m_CurScene.IsELite;
         }
+
+        //服务器切场景
         public bool IsServerSelectScene()
         {
             if (null == m_CurScene)
@@ -420,101 +426,38 @@ namespace StarWars
             {
                 return;
             }
+
             TimeSnapshot.Start();
             TimeSnapshot.DoCheckPoint();
             if (m_CurScene == null)
             {
                 return;
             }
+
             //处理延迟调用
             m_DelayActionProcessor.HandleActions(100);
 
             //单机游戏逻辑启动
             CreateSceneLogics();
 
+            //角色进入场景逻辑
+            GfxSystem.PublishGfxEvent("ge_enter_scene", "ui", m_CurScene.ResId);
+            PlayerControl.Instance.Reset();
             StartGame();
             m_CurScene.NotifyUserEnter();
 
-            //角色进场景逻辑
-            if (!m_CurScene.IsWaitSceneLoad && m_CurScene.IsWaitRoomServerConnect)
-            {
-                //if (this.IsPureClientScene() || this.IsPveScene() || this.IsServerSelectScene() || NetworkSystem.Instance.CanSendMessage)
-                //{
-                if (this.IsPureClientScene() || this.IsPveScene() || this.IsServerSelectScene())
-                {
-                    GfxSystem.PublishGfxEvent("ge_enter_scene", "ui", m_CurScene.ResId);
-                    //if (this.IsPureClientScene()) {
-                    //  GfxSystem.PublishGfxEvent("ge_ShowCYGTSDK", "gt");
-                    //} else {
-                    //  GfxSystem.PublishGfxEvent("ge_HideCYGTSDK", "gt");
-                    //}
 
-                    //StorySystem.StoryConfigManager.Instance.Clear();
-                    //ClientStorySystem.Instance.ClearStoryInstancePool();
-                    //for (int i = 1; i < 10; ++i)
-                    //{
-                    //    ClientStorySystem.Instance.PreloadStoryInstance(1);
-                    //}
-                    PlayerControl.Instance.Reset();
-
-                    //if (IsObserver)
-                    //{
-                    //    DestroyHero();
-                    //    CreateSceneLogics();
-                    //    UserInfo myself = CreatePlayerSelf(0x0ffffffe, 1);
-                    //    if (null != myself)
-                    //    {//观战客户端创建一个虚拟玩家（不关联view，血量不要为0，主要目的是为了适应客户端代码里对主角的判断）
-                    //        myself.SetLevel(16);
-                    //        myself.SetHp(Operate_Type.OT_Absolute, 999999);
-                    //    }
-                    //    m_CurScene.NotifyUserEnter();
-
-                    //    StarWarsMessage.Msg_CR_Observer build = new StarWarsMessage.Msg_CR_Observer();
-                    //    NetworkSystem.Instance.SendMessage(build);
-                    //    LogSystem.Debug("send Msg_CR_Observer to roomserver");
-                    //}
-                    //else if (this.IsPureClientScene() || IsPveScene())
-                    //{
-                    //单机游戏逻辑启动
-                    CreateSceneLogics();
-                    //if (IsExpeditionScene())
-                    //ExpeditionStartGame();
-                    //else
-                    StartGame();
-                    m_CurScene.NotifyUserEnter();
-                    //ClientStorySystem.Instance.StartStory(1);
-                    //}
-                    //else
-                    //{
-                    //    //下副本时玩家的角色ID与本地客户端的角色不一致，所以下副本前先删掉本地角色
-                    //    //DestroyHero();
-                    //    CreateSceneLogics();
-
-                    //    if (IsPvpScene() || IsMultiPveScene())
-                    //    {
-                    //        //StarWarsMessage.Msg_CRC_Create build = new StarWarsMessage.Msg_CRC_Create();
-                    //        //NetworkSystem.Instance.SendMessage(build);
-                    //        LogSystem.Debug("send Msg_CRC_Create to roomserver");
-                    //    }
-                    //}
-
-                    if (IsPveScene() || IsPureClientScene())
-                    {
-                        //SyncGfxUsersInfo();
-                    }
-
-                    m_CurScene.IsWaitRoomServerConnect = false;
-                }
-            }
             if (!m_CurScene.IsSuccessEnter)
             {
                 if (curTime > m_LastTryChangeSceneTime + c_ChangeSceneTimeout)
                 {
                     m_LastTryChangeSceneTime = curTime;
-                    //PromptExceptionAndGotoMainCity();
+
+                    //todo：退回主场景
                 }
                 return;
             }
+
             m_Profiler.sceneTickTime = TimeSnapshot.DoCheckPoint();
 
             EntityManager.Instance.Tick();
@@ -2637,83 +2580,83 @@ namespace StarWars
         //        GetCurScene().UpdateObserverCamera(x, y);
         //    }
         //}
-        //public void HighlightPrompt(int id, params object[] args)
-        //{
-        //    var str = Dict.Format(id, args);
-        //}
-        //public void RefixSkills(UserInfo user)
-        //{
-        //    if (null != user)
-        //    {
-        //        if (null != LobbyClient.Instance.CurrentRole && null != LobbyClient.Instance.CurrentRole.SkillInfos)
-        //        {
-        //            List<SkillInfo> skill_info_list = LobbyClient.Instance.CurrentRole.SkillInfos;
-        //            SkillInfo[] skill_assit = new SkillInfo[] { new SkillInfo(0), new SkillInfo(0), new SkillInfo(0), new SkillInfo(0) };
-        //            int cur_preset_index = 0;
-        //            if (cur_preset_index >= 0)
-        //            {
-        //                for (int i = 0; i < skill_assit.Length; i++)
-        //                {
-        //                    for (int j = 0; j < skill_info_list.Count; j++)
-        //                    {
-        //                        if (skill_info_list[j].Postions.Presets[cur_preset_index] == (SlotPosition)(i + 1))
-        //                        {
-        //                            skill_assit[i].SkillId = skill_info_list[j].SkillId;
-        //                            skill_assit[i].SkillLevel = skill_info_list[j].SkillLevel;
-        //                            break;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            ///
-        //            user.GetSkillStateInfo().RemoveAllSkill();
-        //            for (int i = 0; i < skill_assit.Length; i++)
-        //            {
-        //                if (skill_assit[i].SkillId > 0)
-        //                {
-        //                    SkillInfo info = new SkillInfo(skill_assit[i].SkillId);
-        //                    info.SkillLevel = skill_assit[i].SkillLevel;
-        //                    info.Postions.SetCurSkillSlotPos(0, (SlotPosition)(i + 1));
-        //                    SkillCategory cur_skill_pos = SkillCategory.kNone;
-        //                    if ((i + 1) == (int)SlotPosition.SP_A)
-        //                    {
-        //                        cur_skill_pos = SkillCategory.kSkillA;
-        //                    }
-        //                    else if ((i + 1) == (int)SlotPosition.SP_B)
-        //                    {
-        //                        cur_skill_pos = SkillCategory.kSkillB;
-        //                    }
-        //                    else if ((i + 1) == (int)SlotPosition.SP_C)
-        //                    {
-        //                        cur_skill_pos = SkillCategory.kSkillC;
-        //                    }
-        //                    else if ((i + 1) == (int)SlotPosition.SP_D)
-        //                    {
-        //                        cur_skill_pos = SkillCategory.kSkillD;
-        //                    }
-        //                    info.ConfigData.Category = cur_skill_pos;
-        //                    user.GetSkillStateInfo().AddSkill(info);
-        //                    ///
-        //                    AddSubSkill(user, info.SkillId, cur_skill_pos, info.SkillLevel);
-        //                }
-        //            }
-        //            Data_PlayerConfig playerData = PlayerConfigProvider.Instance.GetPlayerConfigById(user.GetLinkId());
-        //            if (null != playerData && null != playerData.m_FixedSkillList
-        //              && playerData.m_FixedSkillList.Count > 0)
-        //            {
-        //                foreach (int skill_id in playerData.m_FixedSkillList)
-        //                {
-        //                    if (null == user.GetSkillStateInfo().GetSkillInfoById(skill_id))
-        //                    {
-        //                        SkillInfo info = new SkillInfo(skill_id, 1);
-        //                        user.GetSkillStateInfo().AddSkill(info);
-        //                    }
-        //                }
-        //            }
-        //            user.ResetSkill();
-        //        }
-        //    }
-        //}
+        public void HighlightPrompt(int id, params object[] args)
+        {
+            //var str = Dict.Format(id, args);
+        }
+        public void RefixSkills(UserInfo user)
+        {
+            //if (null != user)
+            //{
+            //    if (null != LobbyClient.Instance.CurrentRole && null != LobbyClient.Instance.CurrentRole.SkillInfos)
+            //    {
+            //        List<SkillInfo> skill_info_list = LobbyClient.Instance.CurrentRole.SkillInfos;
+            //        SkillInfo[] skill_assit = new SkillInfo[] { new SkillInfo(0), new SkillInfo(0), new SkillInfo(0), new SkillInfo(0) };
+            //        int cur_preset_index = 0;
+            //        if (cur_preset_index >= 0)
+            //        {
+            //            for (int i = 0; i < skill_assit.Length; i++)
+            //            {
+            //                for (int j = 0; j < skill_info_list.Count; j++)
+            //                {
+            //                    if (skill_info_list[j].Postions.Presets[cur_preset_index] == (SlotPosition)(i + 1))
+            //                    {
+            //                        skill_assit[i].SkillId = skill_info_list[j].SkillId;
+            //                        skill_assit[i].SkillLevel = skill_info_list[j].SkillLevel;
+            //                        break;
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        ///
+            //        user.GetSkillStateInfo().RemoveAllSkill();
+            //        for (int i = 0; i < skill_assit.Length; i++)
+            //        {
+            //            if (skill_assit[i].SkillId > 0)
+            //            {
+            //                SkillInfo info = new SkillInfo(skill_assit[i].SkillId);
+            //                info.SkillLevel = skill_assit[i].SkillLevel;
+            //                info.Postions.SetCurSkillSlotPos(0, (SlotPosition)(i + 1));
+            //                SkillCategory cur_skill_pos = SkillCategory.kNone;
+            //                if ((i + 1) == (int)SlotPosition.SP_A)
+            //                {
+            //                    cur_skill_pos = SkillCategory.kSkillA;
+            //                }
+            //                else if ((i + 1) == (int)SlotPosition.SP_B)
+            //                {
+            //                    cur_skill_pos = SkillCategory.kSkillB;
+            //                }
+            //                else if ((i + 1) == (int)SlotPosition.SP_C)
+            //                {
+            //                    cur_skill_pos = SkillCategory.kSkillC;
+            //                }
+            //                else if ((i + 1) == (int)SlotPosition.SP_D)
+            //                {
+            //                    cur_skill_pos = SkillCategory.kSkillD;
+            //                }
+            //                info.ConfigData.Category = cur_skill_pos;
+            //                user.GetSkillStateInfo().AddSkill(info);
+            //                ///
+            //                AddSubSkill(user, info.SkillId, cur_skill_pos, info.SkillLevel);
+            //            }
+            //        }
+            //        Data_PlayerConfig playerData = PlayerConfigProvider.Instance.GetPlayerConfigById(user.GetLinkId());
+            //        if (null != playerData && null != playerData.m_FixedSkillList
+            //          && playerData.m_FixedSkillList.Count > 0)
+            //        {
+            //            foreach (int skill_id in playerData.m_FixedSkillList)
+            //            {
+            //                if (null == user.GetSkillStateInfo().GetSkillInfoById(skill_id))
+            //                {
+            //                    SkillInfo info = new SkillInfo(skill_id, 1);
+            //                    user.GetSkillStateInfo().AddSkill(info);
+            //                }
+            //            }
+            //        }
+            //        user.ResetSkill();
+            //    }
+            //}
+        }
         //public void PromptExceptionAndGotoMainCity()
         //{
         //    if (WorldSystem.Instance.IsPvpScene() || WorldSystem.Instance.IsMultiPveScene())
@@ -2742,21 +2685,21 @@ namespace StarWars
         //        }
         //    }
         //}
-        //public bool AddSubSkill(UserInfo user, int skill_id, SkillCategory pos, int level)
-        //{
-        //    if (null == user)
-        //        return false;
-        //    SkillLogicData skill_data = SkillConfigProvider.Instance.ExtractData(SkillConfigType.SCT_SKILL, skill_id) as SkillLogicData;
-        //    if (null != skill_data && skill_data.NextSkillId > 0)
-        //    {
-        //        SkillInfo info = new SkillInfo(skill_data.NextSkillId);
-        //        info.SkillLevel = level;
-        //        info.ConfigData.Category = pos;
-        //        user.GetSkillStateInfo().AddSkill(info);
-        //        AddSubSkill(user, info.SkillId, pos, level);
-        //    }
-        //    return true;
-        //}
+        public bool AddSubSkill(UserInfo user, int skill_id, SkillCategory pos, int level)
+        {
+            if (null == user)
+                return false;
+            //SkillLogicData skill_data = SkillConfigProvider.Instance.ExtractData(SkillConfigType.SCT_SKILL, skill_id) as SkillLogicData;
+            //if (null != skill_data && skill_data.NextSkillId > 0)
+            //{
+            //    SkillInfo info = new SkillInfo(skill_data.NextSkillId);
+            //    info.SkillLevel = level;
+            //    info.ConfigData.Category = pos;
+            //    user.GetSkillStateInfo().AddSkill(info);
+            //    AddSubSkill(user, info.SkillId, pos, level);
+            //}
+            return true;
+        }
 
         public void QueueAction(MyAction action)
         {
@@ -2979,17 +2922,15 @@ namespace StarWars
         //    get { return m_IsWaitMatch; }
         //    set { m_IsWaitMatch = value; }
         //}
-
-        /**
-         * @brief 构造函数
-         *
-         * @return 
-         */
+        
+        /// <summary>
+        /// 构造
+        /// </summary>
         private WorldSystem()
         {
             m_SceneContext.OnHighlightPrompt = (int userId, int dict, object[] args) =>
             {
-                //WorldSystem.Instance.HighlightPrompt(dict, args);
+                WorldSystem.Instance.HighlightPrompt(dict, args);
             };
 
             m_SceneContext.SpatialSystem = m_SpatialSystem;

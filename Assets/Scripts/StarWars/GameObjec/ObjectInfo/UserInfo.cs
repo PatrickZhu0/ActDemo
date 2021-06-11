@@ -316,10 +316,10 @@ namespace StarWars
             }
             removeImpacts.Clear();
         }
-        //public UserAiStateInfo GetAiStateInfo()
-        //{
-        //    return m_AiStateInfo;
-        //}
+        public UserAiStateInfo GetAiStateInfo()
+        {
+            return m_AiStateInfo;
+        }
         //public CombatStatisticInfo GetCombatStatisticInfo()
         //{
         //    return m_CombatStatisticInfo;
@@ -354,7 +354,7 @@ namespace StarWars
         private float m_IndicatorDis = 10.0f;
         private int m_IndicatorActor = 0;
 
-        //private UserAiStateInfo m_AiStateInfo = new UserAiStateInfo();
+        private UserAiStateInfo m_AiStateInfo = new UserAiStateInfo();
         //private CombatStatisticInfo m_CombatStatisticInfo = new CombatStatisticInfo();
     }
 }

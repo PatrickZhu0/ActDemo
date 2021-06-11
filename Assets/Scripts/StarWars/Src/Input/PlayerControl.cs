@@ -1,6 +1,5 @@
 using System;
-//using StarWars.Network;
-//using UnityEngine;
+
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -41,36 +40,36 @@ namespace StarWars
         }
         public void Init()
         {
-            //GfxSystem.ListenKeyPressState(
-            //  Keyboard.Code.Z,
-            //  Keyboard.Code.X,
-            //  Keyboard.Code.Space,
-            //  Keyboard.Code.Period,
-            //  Keyboard.Code.W,
-            //  Keyboard.Code.S,
-            //  Keyboard.Code.A,
-            //  Keyboard.Code.D,
-            //  Keyboard.Code.P,
-            //  Keyboard.Code.M,
-            //  Keyboard.Code.F1,
-            //  Keyboard.Code.B,
-            //  Keyboard.Code.F2,
-            //  Keyboard.Code.F3,
-            //  Keyboard.Code.F4,
-            //  Keyboard.Code.F6);
-            //GfxSystem.ListenKeyboardEvent(Keyboard.Code.F6, this.FillRage);
-            //GfxSystem.ListenKeyboardEvent(Keyboard.Code.F4, this.FillHp);
-            //GfxSystem.ListenKeyboardEvent(Keyboard.Code.F3, this.KillAll);
-            //GfxSystem.ListenKeyboardEvent(Keyboard.Code.F2, this.ToolPool);
-            //GfxSystem.ListenKeyboardEvent(Keyboard.Code.F1, this.DebugLog);
-            //GfxSystem.ListenKeyboardEvent(Keyboard.Code.B, this.BuyStamina);
-            //GfxSystem.ListenKeyboardEvent(Keyboard.Code.P, this.SwitchHero);
-            //GfxSystem.ListenKeyboardEvent(Keyboard.Code.Z, this.SwitchDebug);
-            //GfxSystem.ListenKeyboardEvent(Keyboard.Code.X, this.SwitchObserver);
-            //GfxSystem.ListenKeyboardEvent(Keyboard.Code.Space, this.InteractObject);
-            //GfxSystem.ListenKeyboardEvent(Keyboard.Code.Period, this.PrintPosition);
-            //GfxSystem.ListenTouchEvent(TouchEvent.Cesture, this.TouchHandle);
-            //GfxSystem.ListenKeyboardEvent(Keyboard.Code.M, this.OnPlaySkill);
+            GfxSystem.ListenKeyPressState(
+              Keyboard.Code.Z,
+              Keyboard.Code.X,
+              Keyboard.Code.Space,
+              Keyboard.Code.Period,
+              Keyboard.Code.W,
+              Keyboard.Code.S,
+              Keyboard.Code.A,
+              Keyboard.Code.D,
+              Keyboard.Code.P,
+              Keyboard.Code.M,
+              Keyboard.Code.F1,
+              Keyboard.Code.B,
+              Keyboard.Code.F2,
+              Keyboard.Code.F3,
+              Keyboard.Code.F4,
+              Keyboard.Code.F6);
+            GfxSystem.ListenKeyboardEvent(Keyboard.Code.F6, this.FillRage);
+            GfxSystem.ListenKeyboardEvent(Keyboard.Code.F4, this.FillHp);
+            GfxSystem.ListenKeyboardEvent(Keyboard.Code.F3, this.KillAll);
+            GfxSystem.ListenKeyboardEvent(Keyboard.Code.F2, this.ToolPool);
+            GfxSystem.ListenKeyboardEvent(Keyboard.Code.F1, this.DebugLog);
+            GfxSystem.ListenKeyboardEvent(Keyboard.Code.B, this.BuyStamina);
+            GfxSystem.ListenKeyboardEvent(Keyboard.Code.P, this.SwitchHero);
+            GfxSystem.ListenKeyboardEvent(Keyboard.Code.Z, this.SwitchDebug);
+            GfxSystem.ListenKeyboardEvent(Keyboard.Code.X, this.SwitchObserver);
+            GfxSystem.ListenKeyboardEvent(Keyboard.Code.Space, this.InteractObject);
+            GfxSystem.ListenKeyboardEvent(Keyboard.Code.Period, this.PrintPosition);
+            GfxSystem.ListenTouchEvent(TouchEvent.Cesture, this.TouchHandle);
+            GfxSystem.ListenKeyboardEvent(Keyboard.Code.M, this.OnPlaySkill);
         }
 
         public void Tick()
@@ -79,7 +78,7 @@ namespace StarWars
             m_LastTickIntervalMs = now - m_LastTickTime;
 
             m_LastTickTime = now;
-
+            //观战逻辑
             //if (WorldSystem.Instance.IsObserver && !WorldSystem.Instance.IsFollowObserver)
             //{
             //    bool keyPressed = false;
@@ -139,7 +138,7 @@ namespace StarWars
             }
 
             //操作同步机制改为发给服务器同时本地就开始执行（服务器转发给其它客户端，校验失败则同时发回原客户端进行位置调整）
-            //Vector3 mouse_pos = new Vector3(GfxSystem.GetMouseX(), GfxSystem.GetMouseY(), GfxSystem.GetMouseZ());
+            Vector3 mouse_pos = new Vector3(GfxSystem.GetMouseX(), GfxSystem.GetMouseY(), GfxSystem.GetMouseZ());
             if (pm_.MotionStatus == PlayerMovement.Motion.Moving || pm_.JoyStickMotionStatus == PlayerMovement.Motion.Moving)
             {
                 if (pm_.MotionChanged || pm_.JoyStickMotionChanged || !m_LastTickIsMoving)
@@ -147,7 +146,7 @@ namespace StarWars
                     //playerself.SkillController.AddBreakSkillTask();
                     float moveDir = RoundMoveDir(pm_.MoveDir);
 
-                    //GfxSystem.GfxLog("PlayerControl.Tick MoveDir:{0} RoundMoveDir:{1}", pm_.MoveDir, moveDir);
+                    GfxSystem.GfxLog("PlayerControl.Tick MoveDir:{0} RoundMoveDir:{1}", pm_.MoveDir, moveDir);
 
                     if (!m_LastTickIsMoving || !Geometry.IsSameFloat(moveDir, m_lastMoveDir))
                     {
@@ -156,10 +155,10 @@ namespace StarWars
                         msi.IsMoving = true;
                         msi.TargetPosition = Vector3.zero;
 
-                        //if (WorldSystem.Instance.IsPvpScene() || WorldSystem.Instance.IsMultiPveScene())
-                        //{
-                        //    NetworkSystem.Instance.SyncPlayerMoveStart(moveDir);
-                        //}
+                        if (WorldSystem.Instance.IsPvpScene() || WorldSystem.Instance.IsMultiPveScene())
+                        {
+                            //NetworkSystem.Instance.SyncPlayerMoveStart(moveDir);
+                        }
                     }
                     if (EnableRotateInput)
                     {
@@ -169,10 +168,10 @@ namespace StarWars
                             //ControlSystemOperation.AdjustCharacterFaceDir(playerself.GetId(), pm_.MoveDir);
                             msi.SetWantFaceDir(pm_.MoveDir);
 
-                            //if (WorldSystem.Instance.IsPvpScene() || WorldSystem.Instance.IsMultiPveScene())
-                            //{
-                            //    NetworkSystem.Instance.SyncFaceDirection(pm_.MoveDir);
-                            //}
+                            if (WorldSystem.Instance.IsPvpScene() || WorldSystem.Instance.IsMultiPveScene())
+                            {
+                                //NetworkSystem.Instance.SyncFaceDirection(pm_.MoveDir);
+                            }
                         }
                     }
                     m_lastDir = pm_.MoveDir;
@@ -185,33 +184,33 @@ namespace StarWars
                 if (m_LastTickIsMoving)
                 {
                     //playerself.SkillController.CancelBreakSkillTask();
-                    //playerself.GetMovementStateInfo().IsMoving = false;
-                    //if (WorldSystem.Instance.IsPvpScene() || WorldSystem.Instance.IsMultiPveScene())
-                    //{
-                    //    NetworkSystem.Instance.SyncPlayerMoveStop();
-                    //}
-                    //if (EnableRotateInput)
-                    //{
-                    //    if (reface)
-                    //    {
-                    //        msi.SetFaceDir(m_lastDir);
-                    //        //ControlSystemOperation.AdjustCharacterFaceDir(playerself.GetId(), m_lastDir);
-                    //        msi.SetWantFaceDir(m_lastDir);
+                    playerself.GetMovementStateInfo().IsMoving = false;
+                    if (WorldSystem.Instance.IsPvpScene() || WorldSystem.Instance.IsMultiPveScene())
+                    {
+                        //NetworkSystem.Instance.SyncPlayerMoveStop();
+                    }
+                    if (EnableRotateInput)
+                    {
+                        if (reface)
+                        {
+                            msi.SetFaceDir(m_lastDir);
+                            //ControlSystemOperation.AdjustCharacterFaceDir(playerself.GetId(), m_lastDir);
+                            msi.SetWantFaceDir(m_lastDir);
 
-                    //        if (WorldSystem.Instance.IsPvpScene() || WorldSystem.Instance.IsMultiPveScene())
-                    //        {
-                    //            NetworkSystem.Instance.SyncFaceDirection(m_lastDir);
-                    //        }
-                    //    }
-                    //}
+                            if (WorldSystem.Instance.IsPvpScene() || WorldSystem.Instance.IsMultiPveScene())
+                            {
+                                //NetworkSystem.Instance.SyncFaceDirection(m_lastDir);
+                            }
+                        }
+                    }
                 }
                 m_LastTickIsMoving = false;
             }
             m_LastTickIsSkillMoving = msi.IsSkillMoving;
 
             old_mouse_pos_ = mouse_pos_;
-            //mouse_pos_.X = GfxSystem.GetMouseX();
-            //mouse_pos_.Y = GfxSystem.GetMouseY();
+            mouse_pos_.x = GfxSystem.GetMouseX();
+            mouse_pos_.y = GfxSystem.GetMouseY();
 
             //UserAiStateInfo aiInfo = playerself.GetAiStateInfo();
             //if (null != aiInfo && (int)AiStateId.Idle == aiInfo.CurState)
@@ -233,13 +232,13 @@ namespace StarWars
         private bool IsKeyboardControl()
         {
             bool ret = false;
-            //if (GfxSystem.IsKeyPressed(Keyboard.Code.W)
-            //    || GfxSystem.IsKeyPressed(Keyboard.Code.A)
-            //    || GfxSystem.IsKeyPressed(Keyboard.Code.S)
-            //    || GfxSystem.IsKeyPressed(Keyboard.Code.D))
-            //{
-            //    ret = true;
-            //}
+            if (GfxSystem.IsKeyPressed(Keyboard.Code.W)
+                || GfxSystem.IsKeyPressed(Keyboard.Code.A)
+                || GfxSystem.IsKeyPressed(Keyboard.Code.S)
+                || GfxSystem.IsKeyPressed(Keyboard.Code.D))
+            {
+                ret = true;
+            }
             return ret;
         }
 
@@ -248,22 +247,22 @@ namespace StarWars
             UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
             if (null == playerself)
                 return;
-            //float dir = GfxSystem.GetJoystickDir();
-            //if (dir < 0)
-            //{
-            //    dir += c_2PI;
-            //}
-            //Vector3 target_pos = new Vector3(GfxSystem.GetJoystickTargetPosX(), GfxSystem.GetJoystickTargetPosY(), GfxSystem.GetJoystickTargetPosZ());
-            //UpdateMoveState(playerself, target_pos, dir);
+            float dir = GfxSystem.GetJoystickDir();
+            if (dir < 0)
+            {
+                dir += c_2PI;
+            }
+            Vector3 target_pos = new Vector3(GfxSystem.GetJoystickTargetPosX(), GfxSystem.GetJoystickTargetPosY(), GfxSystem.GetJoystickTargetPosZ());
+            UpdateMoveState(playerself, target_pos, dir);
         }
 
         private void OnPlaySkill(int key_code, int what)
         {
-            //if (what == (int)Keyboard.Event.Down)
-            //{
-            //    UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
-            //    playerself.SkillController.ForceInterruptCurSkill();
-            //}
+            if (what == (int)Keyboard.Event.Down)
+            {
+                UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
+                //playerself.SkillController.ForceInterruptCurSkill();
+            }
         }
 
         private void SwitchHero(int key_code, int what)
@@ -272,38 +271,170 @@ namespace StarWars
             if (null == playerself)
                 return;
             ///
-            //if ((int)Keyboard.Event.Up == what)
-            //{
-            //    if (WorldSystem.Instance.IsPureClientScene() || WorldSystem.Instance.IsPveScene())
-            //    {
-            //        WorldSystem.Instance.ChangeHero();
-            //    }
-            //    else
-            //    {
-            //        //多人情形切英雄还不知道需求
-            //    }
-            //}
+            if ((int)Keyboard.Event.Up == what)
+            {
+                if (WorldSystem.Instance.IsPureClientScene() || WorldSystem.Instance.IsPveScene())
+                {
+                    WorldSystem.Instance.ChangeHero();
+                }
+                else
+                {
+                    //多人情形切英雄还不知道需求
+                }
+            }
         }
 
+        private void KillAll(int key_code, int what)
+        {
+            UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
+            if (null == playerself)
+                return;
+            ///
+            if ((int)Keyboard.Event.Up == what)
+            {
+                for (LinkedListNode<UserInfo> linkNode = WorldSystem.Instance.UserManager.Users.FirstValue; null != linkNode; linkNode = linkNode.Next)
+                {
+                    UserInfo info = linkNode.Value;
+                    if (info.GetId() != playerself.GetId())
+                    {
+                        info.SetHp(Operate_Type.OT_Absolute, 0);
+                    }
+                }
+                //for (LinkedListNode<NpcInfo> linkNode = WorldSystem.Instance.NpcManager.Npcs.FirstValue; null != linkNode; linkNode = linkNode.Next)
+                //{
+                //    NpcInfo info = linkNode.Value;
+                //    info.SetHp(Operate_Type.OT_Absolute, 0);
+                //}
+            }
+        }
 
-        //private void StopFindPath(UserInfo playerself, UserAiStateInfo aiInfo)
-        //{
-        //    if (null == playerself || null == aiInfo)
-        //    {
-        //        return;
-        //    }
-        //    AiData_UserSelf_General data = playerself.GetAiStateInfo().AiDatas.GetData<AiData_UserSelf_General>();
-        //    if (null == data)
-        //    {
-        //        data = new AiData_UserSelf_General();
-        //        playerself.GetAiStateInfo().AiDatas.AddData(data);
-        //    }
-        //    playerself.GetMovementStateInfo().IsMoving = false;
-        //    aiInfo.Time = 0;
-        //    data.Time = 0;
-        //    data.FoundPath.Clear();
-        //    aiInfo.ChangeToState((int)AiStateId.Idle);
-        //}
+        private void FillRage(int key_code, int what)
+        {
+            UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
+            if (null == playerself)
+                return;
+            ///
+            if ((int)Keyboard.Event.Up == what)
+            {
+                playerself.SetRage(Operate_Type.OT_Absolute, playerself.GetActualProperty().RageMax);
+            }
+        }
+
+        private void FillHp(int key_code, int what)
+        {
+            UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
+            if (null == playerself)
+                return;
+            ///
+            if ((int)Keyboard.Event.Up == what)
+            {
+                playerself.SetHp(Operate_Type.OT_Absolute, playerself.GetActualProperty().HpMax);
+            }
+        }
+
+        private void ToolPool(int key_code, int what)
+        {
+            UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
+            if (null == playerself)
+                return;
+            ///
+            if ((int)Keyboard.Event.Up == what)
+            {
+                //LobbyNetworkSystem.Instance.AddAssets(0, 0, 20000, 0);
+            }
+        }
+
+        private void DebugLog(int key_code, int what)
+        {
+            UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
+            if (null == playerself)
+                return;
+            ///
+            if ((int)Keyboard.Event.Up == what)
+            {
+                List<SkillInfo> skill_info = playerself.GetSkillStateInfo().GetAllSkill();
+                if (null != skill_info)
+                {
+                    foreach (SkillInfo value in skill_info)
+                    {
+                        LogSystem.Debug("skill id : {0}, skill level : {1}, skill pos : {2}", value.SkillId, value.SkillLevel, (SlotPosition)value.Postions.Presets[0]);
+                    }
+                }
+                CharacterProperty info = playerself.GetActualProperty();
+                if (null != info)
+                {
+                    //LogSystem.Debug("PlayerInfo ||| HpMax : {0}, MpMax : {1}, Ad : {2}, ADp : {3}, Mdp : {4}, CriRate : {5}, CriDamage : {6}, bHitDR : {7}, cHitDR : {8}, fireDam : {9}, iceDam : {10}, poisonDam : {11}, fireERD : {12}, iceERD : {13}, poisonERD : {14}, ||| Level : {15}, Money : {16}, Gold : {17}, Stamina : {18}, AttrScore : {19}, CurExp : {20}",
+                    //  info.HpMax, info.EnergyMax, info.AttackBase, info.ADefenceBase, info.MDefenceBase,
+                    //  info.Critical, info.CriticalPow, info.CriticalBackHitPow, info.CriticalCrackPow,
+                    //  info.FireDamage, info.IceDamage, info.PoisonDamage, info.FireERD, info.IceERD, info.PoisonERD,
+                    //  playerself.GetLevel(), LobbyClient.Instance.CurrentRole.Money, LobbyClient.Instance.CurrentRole.Gold, LobbyClient.Instance.CurrentRole.CurStamina, playerself.FightingScore, LobbyClient.Instance.CurrentRole.Exp);
+                }
+            }
+        }
+
+        private void BuyStamina(int key_code, int what)
+        {
+            if ((int)Keyboard.Event.Up == what)
+            {
+                WorldSystem.Instance.SwitchDebug();
+            }
+        }
+
+        private void SwitchDebug(int key_code, int what)
+        {
+            if ((int)Keyboard.Event.Up == what)
+            {
+                WorldSystem.Instance.SwitchDebug();
+            }
+        }
+
+        private void SwitchObserver(int key_code, int what)
+        {
+            if ((int)Keyboard.Event.Up == what)
+            {
+                //LobbyNetworkSystem.Instance.BuyStamina();
+                //WorldSystem.Instance.SwitchObserver();
+            }
+        }
+
+        private void InteractObject(int key_code, int what)
+        {
+            UserInfo myself = WorldSystem.Instance.GetPlayerSelf();
+            if (myself != null && myself.IsDead())
+            {
+            }
+            WorldSystem.Instance.InteractObject();
+        }
+
+        private void PrintPosition(int key_code, int what)
+        {
+            UserInfo myself = WorldSystem.Instance.GetPlayerSelf();
+            if (null != myself && what == (int)Keyboard.Event.Down)
+            {
+                Vector3 pos = myself.GetMovementStateInfo().GetPosition3D();
+                float dir = myself.GetMovementStateInfo().GetFaceDir();
+                LogSystem.Info("PrintPosition {0:F2} {1:F2} {2:F2} {3:F2}", pos.x, pos.y, pos.z, dir);
+            }
+        }
+
+        private void StopFindPath(UserInfo playerself, UserAiStateInfo aiInfo)
+        {
+            if (null == playerself || null == aiInfo)
+            {
+                return;
+            }
+            AiData_UserSelf_General data = playerself.GetAiStateInfo().AiDatas.GetData<AiData_UserSelf_General>();
+            if (null == data)
+            {
+                data = new AiData_UserSelf_General();
+                playerself.GetAiStateInfo().AiDatas.AddData(data);
+            }
+            playerself.GetMovementStateInfo().IsMoving = false;
+            aiInfo.Time = 0;
+            data.Time = 0;
+            data.FoundPath.Clear();
+            aiInfo.ChangeToState((int)AiStateId.Idle);
+        }
 
         private void UpdateMoveState(UserInfo playerself, Vector3 targetpos, float towards)
         {
@@ -334,13 +465,13 @@ namespace StarWars
             {
                 return;
             }
-            //UserAiStateInfo aiInfo = playerself.GetAiStateInfo();
-            //if (null != aiInfo)
-            //{
-            //    StopFindPath(playerself, aiInfo);
-            //}
-            //aiInfo.TargetPos = targetpos;
-            //aiInfo.ChangeToState((int)AiStateId.Move);
+            UserAiStateInfo aiInfo = playerself.GetAiStateInfo();
+            if (null != aiInfo)
+            {
+                StopFindPath(playerself, aiInfo);
+            }
+            aiInfo.TargetPos = targetpos;
+            aiInfo.ChangeToState((int)AiStateId.Move);
         }
 
         private void UpdateTowards(UserInfo playerself, float towards)
@@ -352,140 +483,140 @@ namespace StarWars
             }
         }
 
-        //private void RevokeSkill(UserInfo playerself, UserAiStateInfo aiInfo)
-        //{
-        //    if (null == playerself || null == aiInfo)
-        //    {
-        //        return;
-        //    }
-        //    StopFindPath(playerself, aiInfo);
-        //    aiInfo.Target = 0;
-        //    aiInfo.IsAttacked = false;
-        //    aiInfo.Time = 0;
-        //    aiInfo.TargetPos = Vector3.Zero;
-        //    aiInfo.AttackRange = 0;
-        //    aiInfo.ChangeToState((int)AiStateId.Idle);
-        //}
+        private void RevokeSkill(UserInfo playerself, UserAiStateInfo aiInfo)
+        {
+            if (null == playerself || null == aiInfo)
+            {
+                return;
+            }
+            StopFindPath(playerself, aiInfo);
+            aiInfo.Target = 0;
+            aiInfo.IsAttacked = false;
+            aiInfo.Time = 0;
+            aiInfo.TargetPos = Vector3.zero;
+            aiInfo.AttackRange = 0;
+            aiInfo.ChangeToState((int)AiStateId.Idle);
+        }
 
-        //private void PushSkill(UserInfo playerself, Vector3 targetpos, float attackrange)
-        //{
-        //    if (null != playerself && Vector3.Zero != targetpos)
-        //    {
-        //        UserAiStateInfo info = playerself.GetAiStateInfo();
-        //        RevokeSkill(playerself, info);
-        //        info.Time = 0;
-        //        info.TargetPos = targetpos;
-        //        info.AttackRange = attackrange;
-        //        info.IsAttacked = false;
-        //        info.ChangeToState((int)AiStateId.Combat);
-        //    }
-        //}
+        private void PushSkill(UserInfo playerself, Vector3 targetpos, float attackrange)
+        {
+            if (null != playerself && Vector3.zero != targetpos)
+            {
+                UserAiStateInfo info = playerself.GetAiStateInfo();
+                RevokeSkill(playerself, info);
+                info.Time = 0;
+                info.TargetPos = targetpos;
+                info.AttackRange = attackrange;
+                info.IsAttacked = false;
+                info.ChangeToState((int)AiStateId.Combat);
+            }
+        }
 
-        //private void Combat(UserInfo playerself, int targetId, float attackrange)
-        //{
-        //    if (null != playerself && m_lastSelectObjId != targetId)
-        //    {
-        //        UserAiStateInfo info = playerself.GetAiStateInfo();
-        //        if ((int)AiStateId.Move == info.CurState)
-        //        {
-        //            StopFindPath(playerself, info);
-        //        }
-        //        info.Time = 0;
-        //        info.Target = targetId;
-        //        info.IsAttacked = false;
-        //        info.AttackRange = attackrange;
+        private void Combat(UserInfo playerself, int targetId, float attackrange)
+        {
+            if (null != playerself && m_lastSelectObjId != targetId)
+            {
+                UserAiStateInfo info = playerself.GetAiStateInfo();
+                if ((int)AiStateId.Move == info.CurState)
+                {
+                    StopFindPath(playerself, info);
+                }
+                info.Time = 0;
+                info.Target = targetId;
+                info.IsAttacked = false;
+                info.AttackRange = attackrange;
 
-        //        info.ChangeToState((int)AiStateId.Combat);
-        //    }
-        //}
+                info.ChangeToState((int)AiStateId.Combat);
+            }
+        }
 
-        //private void TouchHandle(int what, GestureArgs e)
-        //{
-        //    UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
-        //    if (null == playerself || null == e)
-        //        return;
-        //    if ((int)TouchEvent.Cesture == what)
-        //    {
-        //        string ename = e.name;
-        //        if (GestureEvent.OnSingleTap.ToString() == ename)
-        //        {
-        //            if (EnableMoveInput)
-        //            {
-        //                if (WorldSystem.Instance.IsPureClientScene() || WorldSystem.Instance.IsPveScene())
-        //                {
-        //                    if (e.selectedObjID < 0)
-        //                    {
-        //                        if (InputType.Touch == e.inputType)
-        //                        {
-        //                            FindPath(playerself, new Vector3(e.airWelGamePosX, e.airWelGamePosY, e.airWelGamePosZ));
-        //                        }
-        //                        else if (InputType.Joystick == e.inputType)
-        //                        {
-        //                            UpdateMoveState(playerself, new Vector3(e.airWelGamePosX, e.airWelGamePosY, e.airWelGamePosZ), e.towards);
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        Combat(playerself, e.selectedObjID, e.attackRange);
-        //                    }
-        //                    m_lastSelectObjId = e.selectedObjID;
-        //                    ///
-        //                    // GfxSystem.PublishGfxEvent("Op_InputEffect", "Input", GestureEvent.OnSingleTap, e.airWelGamePosX, e.airWelGamePosY, e.airWelGamePosZ, e.selectedObjID < 0 ? false : true, true);
-        //                }
-        //                else if (WorldSystem.Instance.IsPvpScene() || WorldSystem.Instance.IsMultiPveScene())
-        //                {
-        //                    if (e.selectedObjID < 0)
-        //                    {
-        //                        if (InputType.Touch == e.inputType)
-        //                        {
-        //                            NetworkSystem.Instance.SyncPlayerMoveToPos(new Vector3(e.airWelGamePosX, e.airWelGamePosY, e.airWelGamePosZ));
-        //                        }
-        //                        else if (InputType.Joystick == e.inputType)
-        //                        {
-        //                            UpdateMoveState(playerself, new Vector3(e.airWelGamePosX, e.airWelGamePosY, e.airWelGamePosZ), e.towards);
-        //                            playerself.SkillController.AddBreakSkillTask();
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        NetworkSystem.Instance.SyncPlayerMoveToAttack(e.selectedObjID, e.attackRange);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        else if (GestureEvent.OnFingerMove.ToString() == ename)
-        //        {
-        //            if (EnableMoveInput)
-        //            {
-        //                if (TouchType.Attack == e.moveType)
-        //                {
-        //                    UpdateTowards(playerself, e.towards);
-        //                }
-        //            }
-        //        }
-        //        else if (GestureEvent.OnSkillStart.ToString() == ename)
-        //        {
-        //            if (null != playerself)
-        //            {
-        //                UserAiStateInfo info = playerself.GetAiStateInfo();
-        //                if ((int)AiStateId.Move == info.CurState)
-        //                {
-        //                    StopFindPath(playerself, info);
-        //                }
-        //            }
-        //        }
-        //        else if (GestureEvent.OnEasyGesture.ToString() == ename)
-        //        {
-        //            Vector3 targetpos = new Vector3(e.startGamePosX, e.startGamePosY, e.startGamePosZ);
-        //            if (Vector3.Zero != targetpos)
-        //            {
-        //                PushSkill(playerself, targetpos, e.attackRange);
-        //            }
-        //        }
+        private void TouchHandle(int what, GestureArgs e)
+        {
+            UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
+            if (null == playerself || null == e)
+                return;
+            if ((int)TouchEvent.Cesture == what)
+            {
+                string ename = e.name;
+                if (GestureEvent.OnSingleTap.ToString() == ename)
+                {
+                    if (EnableMoveInput)
+                    {
+                        if (WorldSystem.Instance.IsPureClientScene() || WorldSystem.Instance.IsPveScene())
+                        {
+                            if (e.selectedObjID < 0)
+                            {
+                                if (InputType.Touch == e.inputType)
+                                {
+                                    FindPath(playerself, new Vector3(e.airWelGamePosX, e.airWelGamePosY, e.airWelGamePosZ));
+                                }
+                                else if (InputType.Joystick == e.inputType)
+                                {
+                                    UpdateMoveState(playerself, new Vector3(e.airWelGamePosX, e.airWelGamePosY, e.airWelGamePosZ), e.towards);
+                                }
+                            }
+                            else
+                            {
+                                Combat(playerself, e.selectedObjID, e.attackRange);
+                            }
+                            m_lastSelectObjId = e.selectedObjID;
+                            ///
+                            // GfxSystem.PublishGfxEvent("Op_InputEffect", "Input", GestureEvent.OnSingleTap, e.airWelGamePosX, e.airWelGamePosY, e.airWelGamePosZ, e.selectedObjID < 0 ? false : true, true);
+                        }
+                        else if (WorldSystem.Instance.IsPvpScene() || WorldSystem.Instance.IsMultiPveScene())
+                        {
+                            if (e.selectedObjID < 0)
+                            {
+                                if (InputType.Touch == e.inputType)
+                                {
+                                    //NetworkSystem.Instance.SyncPlayerMoveToPos(new Vector3(e.airWelGamePosX, e.airWelGamePosY, e.airWelGamePosZ));
+                                }
+                                else if (InputType.Joystick == e.inputType)
+                                {
+                                    UpdateMoveState(playerself, new Vector3(e.airWelGamePosX, e.airWelGamePosY, e.airWelGamePosZ), e.towards);
+                                    //playerself.SkillController.AddBreakSkillTask();
+                                }
+                            }
+                            else
+                            {
+                                //NetworkSystem.Instance.SyncPlayerMoveToAttack(e.selectedObjID, e.attackRange);
+                            }
+                        }
+                    }
+                }
+                else if (GestureEvent.OnFingerMove.ToString() == ename)
+                {
+                    if (EnableMoveInput)
+                    {
+                        if (TouchType.Attack == e.moveType)
+                        {
+                            UpdateTowards(playerself, e.towards);
+                        }
+                    }
+                }
+                else if (GestureEvent.OnSkillStart.ToString() == ename)
+                {
+                    if (null != playerself)
+                    {
+                        UserAiStateInfo info = playerself.GetAiStateInfo();
+                        if ((int)AiStateId.Move == info.CurState)
+                        {
+                            StopFindPath(playerself, info);
+                        }
+                    }
+                }
+                else if (GestureEvent.OnEasyGesture.ToString() == ename)
+                {
+                    Vector3 targetpos = new Vector3(e.startGamePosX, e.startGamePosY, e.startGamePosZ);
+                    if (Vector3.zero != targetpos)
+                    {
+                        PushSkill(playerself, targetpos, e.attackRange);
+                    }
+                }
 
-        //        //LogSystem.Debug("userid:{0}, input event:{1}", playerself.GetId(), e.name);
-        //    }
-        //}
+                //LogSystem.Debug("userid:{0}, input event:{1}", playerself.GetId(), e.name);
+            }
+        }
 
         // members
         private bool m_IsJoystickControl = false;
@@ -549,25 +680,25 @@ namespace StarWars
             KeyHit kh = KeyHit.None;
             if (move_enable)
             {
-                //if (StarWarsSpatial.SpatialObjType.kNPC == playerself.GetRealControlledObject().SpaceObject.GetObjType())
-                //{
-                //    NpcInfo npcInfo = playerself.GetRealControlledObject().CastNpcInfo();
-                //    if (null != npcInfo)
-                //    {
-                //        if (!npcInfo.CanMove)
-                //        {
-                //            return;
-                //        }
-                //    }
-                //}
-                //if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.W)))
-                //    kh |= KeyHit.Up;
-                //if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.A)))
-                //    kh |= KeyHit.Left;
-                //if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.S)))
-                //    kh |= KeyHit.Down;
-                //if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.D)))
-                //    kh |= KeyHit.Right;
+                if (StarWarsSpatial.SpatialObjType.kNPC == playerself.GetRealControlledObject().SpaceObject.GetObjType())
+                {
+                    //NpcInfo npcInfo = playerself.GetRealControlledObject().CastNpcInfo();
+                    //if (null != npcInfo)
+                    //{
+                    //    if (!npcInfo.CanMove)
+                    //    {
+                    //        return;
+                    //    }
+                    //}
+                }
+                if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.W)))
+                    kh |= KeyHit.Up;
+                if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.A)))
+                    kh |= KeyHit.Left;
+                if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.S)))
+                    kh |= KeyHit.Down;
+                if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.D)))
+                    kh |= KeyHit.Right;
             }
 
             Motion m = kh == KeyHit.None ? Motion.Stop : Motion.Moving;
@@ -597,23 +728,23 @@ namespace StarWars
         public Motion JoyStickMotionStatus { get; set; }
         public bool JoyStickMotionChanged { get; set; }
 
-        //private Keyboard.Code GetKeyCode(KeyIndex index)
-        //{
-        //    Keyboard.Code ret = Keyboard.Code.W;
-        //    if (index >= KeyIndex.W && index <= KeyIndex.D)
-        //    {
-        //        Keyboard.Code[] list = s_Normal;
-        //        /*if (WorldSystem.Instance.IsPvpScene()) {
-        //          int campId = WorldSystem.Instance.CampId;
-        //          if (campId == (int)CampIdEnum.Blue)
-        //            list = s_Blue;
-        //          else if (campId == (int)CampIdEnum.Red)
-        //            list = s_Red;
-        //        }*/
-        //        ret = list[(int)index];
-        //    }
-        //    return ret;
-        //}
+        private Keyboard.Code GetKeyCode(KeyIndex index)
+        {
+            Keyboard.Code ret = Keyboard.Code.W;
+            if (index >= KeyIndex.W && index <= KeyIndex.D)
+            {
+                Keyboard.Code[] list = s_Normal;
+                /*if (WorldSystem.Instance.IsPvpScene()) {
+                  int campId = WorldSystem.Instance.CampId;
+                  if (campId == (int)CampIdEnum.Blue)
+                    list = s_Blue;
+                  else if (campId == (int)CampIdEnum.Red)
+                    list = s_Red;
+                }*/
+                ret = list[(int)index];
+            }
+            return ret;
+        }
 
         /**
           * @brief 计算移动方向
@@ -633,9 +764,9 @@ namespace StarWars
 
         public KeyHit last_key_hit_;
 
-        //private static readonly Keyboard.Code[] s_Normal = new Keyboard.Code[] { Keyboard.Code.W, Keyboard.Code.A, Keyboard.Code.S, Keyboard.Code.D };
-        //private static readonly Keyboard.Code[] s_Blue = new Keyboard.Code[] { Keyboard.Code.A, Keyboard.Code.S, Keyboard.Code.D, Keyboard.Code.W };
-        //private static readonly Keyboard.Code[] s_Red = new Keyboard.Code[] { Keyboard.Code.D, Keyboard.Code.W, Keyboard.Code.A, Keyboard.Code.S };
+        private static readonly Keyboard.Code[] s_Normal = new Keyboard.Code[] { Keyboard.Code.W, Keyboard.Code.A, Keyboard.Code.S, Keyboard.Code.D };
+        private static readonly Keyboard.Code[] s_Blue = new Keyboard.Code[] { Keyboard.Code.A, Keyboard.Code.S, Keyboard.Code.D, Keyboard.Code.W };
+        private static readonly Keyboard.Code[] s_Red = new Keyboard.Code[] { Keyboard.Code.D, Keyboard.Code.W, Keyboard.Code.A, Keyboard.Code.S };
         //                                                          N   U  D        UD  L            UL           DL
         private static readonly float[] s_MoveDirs = new float[] { -1,  0, (float)Math.PI, -1, 3*(float)Math.PI/2, 7*(float)Math.PI/4, 5*(float)Math.PI/4, 
       //                    UDL          R          UR         DR           UDR        LR  ULR  LRD      UDLR

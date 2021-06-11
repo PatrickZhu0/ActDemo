@@ -100,7 +100,7 @@ namespace StarWars
     //            {
     //                if (ObjectInfo.DataChangedByGfx)
     //                {
-    //                    msi.PositionX = ObjectInfo.X;
+    //                    msi.PositionX = ObjectInfox;
     //                    msi.PositionY = ObjectInfo.Y;
     //                    msi.PositionZ = ObjectInfo.Z;
     //                    msi.SetFaceDir(ObjectInfo.FaceDir);
@@ -116,7 +116,7 @@ namespace StarWars
     //            {
     //                if (ObjectInfo.DataChangedByGfx)
     //                {
-    //                    msi.PositionX = ObjectInfo.X;
+    //                    msi.PositionX = ObjectInfox;
     //                    msi.PositionY = ObjectInfo.Y;
     //                    msi.PositionZ = ObjectInfo.Z;
     //                    //msi.SetFaceDir(ObjectInfo.FaceDir);

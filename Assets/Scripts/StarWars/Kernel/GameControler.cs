@@ -140,11 +140,11 @@ namespace StarWars
 
         public static void InitLogic()
         {
-            //GfxSystem.GfxLog("GameControler.InitLogic");
+            GfxSystem.GfxLog("GameControler.InitLogic");
             EntityManager.Instance.Init();
 
-            //WorldSystem.Instance.Init();
-            //WorldSystem.Instance.LoadData();
+            WorldSystem.Instance.Init();
+            WorldSystem.Instance.LoadData();
             //ClientStorySystem.Instance.Init();
             //GmCommands.ClientGmStorySystem.Instance.Init();
 
@@ -158,13 +158,13 @@ namespace StarWars
 
         public static void StartLogic()
         {
-            //GfxSystem.GfxLog("GameControler.StartLogic");
+            GfxSystem.GfxLog("GameControler.StartLogic");
             s_LogicThread.Start();
         }
         public static void ChangeScene(int sceneId)
         {
             LogSystem.Info("GameControler.ChangeScene {0}", sceneId);
-            //WorldSystem.Instance.ChangeScene(sceneId);
+            WorldSystem.Instance.ChangeScene(sceneId);
         }
         public static void PauseLogic(bool isPause)
         {
@@ -172,19 +172,19 @@ namespace StarWars
         }
         public static void StopLogic()
         {
-            //GfxSystem.GfxLog("GameControler.StopLogic");
+            GfxSystem.GfxLog("GameControler.StopLogic");
             s_LogicThread.Stop();
             //LobbyNetworkSystem.Instance.QuitClient();
             //NetworkSystem.Instance.QuitClient();
         }
         public static void Release()
         {
-            //GfxSystem.GfxLog("GameControler.Release");
+            GfxSystem.GfxLog("GameControler.Release");
 
-            //WorldSystem.Instance.Release();
+            WorldSystem.Instance.Release();
             EntityManager.Instance.Release();
             //NetworkSystem.Instance.Release();
-            //GfxSystem.Release();
+            GfxSystem.Release();
             s_LogicLogger.Dispose();
         }
 

@@ -22,10 +22,10 @@ public class TestSkillInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (gameObject != LogicSystem.PlayerSelf)
-        //{
-        //    return;
-        //}
+        if (gameObject != LogicSystem.PlayerSelf)
+        {
+            return;
+        }
         //if (Input.GetKeyDown(m_AttackKey))
         //{
         //    GfxSkillSystem.Instance.StartAttack(gameObject, Vector3.zero);

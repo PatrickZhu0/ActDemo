@@ -92,6 +92,7 @@ public class GameLogic : MonoBehaviour
                     m_IsSettingModified = true;
                 }
             }
+            m_IsInit = true;
             if (m_IsInit)
             {
                 //bool isLastHitUi = (UICamera.lastHit.collider != null);
@@ -125,6 +126,7 @@ public class GameLogic : MonoBehaviour
     private void LogToConsole(string msg)
     {
         //DebugConsole.Log(msg);
+        UnityEngine.Debug.Log(msg);
     }
 
     private void OnResetDsl(string script)
@@ -355,7 +357,7 @@ public class GameLogic : MonoBehaviour
         //    m_IsInit = true;
         //}
 
-        //StarWars.LogicSystem.EventChannelForGfx.Publish("ge_show_login", "ui");
+        StarWars.LogicSystem.EventChannelForGfx.Publish("ge_show_login", "ui");
     }
     internal void RestartLocgic()
     {

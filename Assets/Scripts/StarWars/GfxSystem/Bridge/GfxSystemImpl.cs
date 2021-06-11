@@ -13,7 +13,6 @@ namespace StarWars
 
     /// <summary>
     /// 显示层 引擎渲染实施类
-    /// 
     /// </summary>
     public sealed partial class GfxSystem
     {
@@ -645,7 +644,7 @@ namespace StarWars
                 return;
 
             Animation animation = obj.GetComponent<Animation>();
-            if( null != animation)
+            if (null != animation)
             {
                 try
                 {

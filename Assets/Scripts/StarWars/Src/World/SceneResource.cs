@@ -140,7 +140,7 @@ namespace StarWars
             //Data_Unit unit = m_SceneStaticData.ExtractData(DataMap_Type.DT_Unit, GlobalVariables.GetUnitIdByCampId(NetworkSystem.Instance.CampId)) as Data_Unit;
             //if (null != unit)
             //{
-            //    m_CameraLookAtHeight = unit.m_Pos.Y;
+            //    m_CameraLookAtHeight = unit.m_Pos.y;
             //}
             //CalculateDropOut();
 
@@ -249,27 +249,27 @@ namespace StarWars
             if (m_IsSuccessEnter) {
               Vector3 pos = GfxSystemExt.GfxSystem.Instance.MainCamera.Position;
               if (x <= 0.2f) {
-                pos.X -= c_drag_velocity; 
+                pos.x -= c_drag_velocity; 
               } else if (x >= 0.8f) {
-                pos.X += c_drag_velocity;
+                pos.x += c_drag_velocity;
               }
               if (y <= 0.2f) {
-                pos.Z -= c_drag_velocity;
+                pos.z -= c_drag_velocity;
               } else if (y >= 0.8f) {
-                pos.Z += c_drag_velocity;
+                pos.z += c_drag_velocity;
               }
-              if (pos.X < 0)
-                pos.X = 0;
-              if (pos.Z < 0)
-                pos.Z = 0;
-              float xsize = StaticData.m_MapInfo.m_MapSize.X;
-              float ysize = StaticData.m_MapInfo.m_MapSize.Y;
-              if (pos.X > xsize)
-                pos.X = xsize;
-              if (pos.Z > ysize)
-                pos.Z = ysize;
-              pos.Y = m_CameraLookAtHeight;
-              GfxSystem.SendMessage("GfxGameRoot", "CameraLookat", new float[]{ pos.X, pos.Y, pos.Z });
+              if (pos.x < 0)
+                pos.x = 0;
+              if (pos.z < 0)
+                pos.z = 0;
+              float xsize = StaticData.m_MapInfo.m_MapSize.x;
+              float ysize = StaticData.m_MapInfo.m_MapSize.y;
+              if (pos.x > xsize)
+                pos.x = xsize;
+              if (pos.z > ysize)
+                pos.z = ysize;
+              pos.y = m_CameraLookAtHeight;
+              GfxSystem.SendMessage("GfxGameRoot", "CameraLookat", new float[]{ pos.x, pos.y, pos.z });
             }*/
         }
         private void OnLoadFinish()
@@ -288,7 +288,7 @@ namespace StarWars
             //Data_Unit unit = m_SceneStaticData.ExtractData(DataMap_Type.DT_Unit, GlobalVariables.GetUnitIdByCampId(NetworkSystem.Instance.CampId)) as Data_Unit;
             //if (null != unit)
             //{
-            //    GfxSystem.SendMessage("GfxGameRoot", "CameraLookatImmediately", new float[] { unit.m_Pos.X, unit.m_Pos.Y, unit.m_Pos.Z });
+            //    GfxSystem.SendMessage("GfxGameRoot", "CameraLookatImmediately", new float[] { unit.m_Pos.x, unit.m_Pos.y, unit.m_Pos.z });
             //}
         }
         private bool LoadSceneData(int sceneResId)
