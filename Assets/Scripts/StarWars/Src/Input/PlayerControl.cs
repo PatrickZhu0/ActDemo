@@ -110,6 +110,7 @@ namespace StarWars
 
 
             UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
+            Debug.LogError(" ---- " + playerself);
             if (null == playerself)
                 return;
             // if move input is disable
@@ -122,7 +123,7 @@ namespace StarWars
                     CheckJoystickControl();
                 }
             }
-
+            m_IsJoystickControl = false;
             if (!m_IsJoystickControl)
             {
                 pm_.Update(EnableMoveInput);
@@ -672,6 +673,7 @@ namespace StarWars
 
         public void Update(bool move_enable)
         {
+            GfxSystem.GfxLog("PlayerControl Update");
             UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
             if (playerself == null || playerself.IsDead())
             {
