@@ -70,12 +70,12 @@ namespace StarWars
         public bool IsItemSkill;
         public bool IsMarkToRemove;
         public PresetInfo Postions;         // 技能挂载位置信息
-        //public SkillLogicData ConfigData = null;
+        public SkillLogicData ConfigData = null;
 
         public float StartTime;
         public bool IsInterrupted;
         private List<BreakSection> BreakSections = new List<BreakSection>();
-        //private Dictionary<SkillCategory, float> m_CategoryLockinputTime = new Dictionary<SkillCategory, float>();
+        private Dictionary<SkillCategory, float> m_CategoryLockinputTime = new Dictionary<SkillCategory, float>();
         private float m_CDEndTime;
 
         //校验数据
@@ -97,6 +97,7 @@ namespace StarWars
             IsInterrupted = false;
             Postions = new PresetInfo();
             //ConfigData = SkillConfigProvider.Instance.ExtractData(SkillConfigType.SCT_SKILL, skillId) as SkillLogicData;
+            ConfigData = new SkillLogicData();
         }
 
         public virtual void Reset()
@@ -106,12 +107,12 @@ namespace StarWars
             IsMarkToRemove = false;
             IsInterrupted = false;
             BreakSections.Clear();
-            //m_CategoryLockinputTime.Clear();
+            m_CategoryLockinputTime.Clear();
         }
 
         public void BeginCD()
         {
-            // m_CDEndTime = StartTime + ConfigData.CoolDownTime;
+            m_CDEndTime = StartTime + ConfigData.CoolDownTime;
         }
 
         public void AddCD(float time)
@@ -142,29 +143,29 @@ namespace StarWars
             BreakSections.Add(section);
         }
 
-        //public void AddLockInputTime(SkillCategory category, float lockinputtime)
-        //{
-        //    if (m_CategoryLockinputTime.ContainsKey(category))
-        //    {
-        //        m_CategoryLockinputTime[category] = lockinputtime;
-        //    }
-        //    else
-        //    {
-        //        m_CategoryLockinputTime.Add(category, lockinputtime);
-        //    }
-        //}
+        public void AddLockInputTime(SkillCategory category, float lockinputtime)
+        {
+            if (m_CategoryLockinputTime.ContainsKey(category))
+            {
+                m_CategoryLockinputTime[category] = lockinputtime;
+            }
+            else
+            {
+                m_CategoryLockinputTime.Add(category, lockinputtime);
+            }
+        }
 
-        //public float GetLockInputTime(SkillCategory category)
-        //{
-        //    if (m_CategoryLockinputTime.ContainsKey(category))
-        //    {
-        //        return m_CategoryLockinputTime[category];
-        //    }
-        //    else
-        //    {
-        //        return ConfigData.LockInputTime;
-        //    }
-        //}
+        public float GetLockInputTime(SkillCategory category)
+        {
+            if (m_CategoryLockinputTime.ContainsKey(category))
+            {
+                return m_CategoryLockinputTime[category];
+            }
+            else
+            {
+                return ConfigData.LockInputTime;
+            }
+        }
 
         public bool CanBreak(int breaktype, long time, out bool isInterrupt)
         {

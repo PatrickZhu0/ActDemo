@@ -1656,7 +1656,7 @@ namespace StarWars
                     LoadSceneImpl(m_TargetScene, m_TargetChapter, m_TargetSceneId, m_TargetSceneLimitList, m_LevelLoadedCallback);
                 }
             });
-            StarWars.LogicSystem.EventChannelForGfx.Publish("ge_show_yesornot", "ui", info, fun);
+            LogicSystem.EventChannelForGfx.Publish("ge_show_yesornot", "ui", info, fun);
         }
         private GameObjectInfo GetGameObjectInfo(int id)
         {

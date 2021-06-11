@@ -14,47 +14,47 @@ namespace StarWars
         //{
         //    return ItemConfigProvider.Instance.GetDataById(id);
         //}
-        //public static void SetLoadingBarScene(string name)
-        //{
-        //    GfxSystem.Instance.SetLoadingBarScene(name);
-        //}
-        //public static float SampleTerrainHeight(float x, float z)
-        //{
-        //    return GfxSystem.Instance.SampleTerrainHeight(x, z);
-        //}
-        //public static GameObject GetGameObject(int id)
-        //{
-        //    return GfxSystem.Instance.GetGameObject(id);
-        //}
-        //public static SharedGameObjectInfo GetSharedGameObjectInfo(int id)
-        //{
-        //    return GfxSystem.Instance.GetSharedGameObjectInfo(id);
-        //}
-        //public static SharedGameObjectInfo GetSharedGameObjectInfo(GameObject obj)
-        //{
-        //    return GfxSystem.Instance.GetSharedGameObjectInfo(obj);
-        //}
-        //public static bool ExistGameObject(GameObject obj)
-        //{
-        //    return GfxSystem.Instance.ExistGameObject(obj);
-        //}
-        //public static void VisitGameObject(MyAction<GameObject, SharedGameObjectInfo> visitor)
-        //{
-        //    GfxSystem.Instance.VisitGameObject(visitor);
-        //}
-        //public static GameObject PlayerSelf
-        //{
-        //    get { return GfxSystem.Instance.PlayerSelf; }
-        //}
-        //public static SharedGameObjectInfo PlayerSelfInfo
-        //{
-        //    get { return GfxSystem.Instance.PlayerSelfInfo; }
-        //}
-        //public static bool IsLastHitUi
-        //{
-        //    get { return GfxSystem.Instance.IsLastHitUi; }
-        //    set { GfxSystem.Instance.IsLastHitUi = value; }
-        //}
+        public static void SetLoadingBarScene(string name)
+        {
+            GfxSystem.Instance.SetLoadingBarScene(name);
+        }
+        public static float SampleTerrainHeight(float x, float z)
+        {
+            return GfxSystem.Instance.SampleTerrainHeight(x, z);
+        }
+        public static GameObject GetGameObject(int id)
+        {
+            return GfxSystem.Instance.GetGameObject(id);
+        }
+        public static SharedGameObjectInfo GetSharedGameObjectInfo(int id)
+        {
+            return GfxSystem.Instance.GetSharedGameObjectInfo(id);
+        }
+        public static SharedGameObjectInfo GetSharedGameObjectInfo(GameObject obj)
+        {
+            return GfxSystem.Instance.GetSharedGameObjectInfo(obj);
+        }
+        public static bool ExistGameObject(GameObject obj)
+        {
+            return GfxSystem.Instance.ExistGameObject(obj);
+        }
+        public static void VisitGameObject(MyAction<GameObject, SharedGameObjectInfo> visitor)
+        {
+            GfxSystem.Instance.VisitGameObject(visitor);
+        }
+        public static GameObject PlayerSelf
+        {
+            get { return GfxSystem.Instance.PlayerSelf; }
+        }
+        public static SharedGameObjectInfo PlayerSelfInfo
+        {
+            get { return GfxSystem.Instance.PlayerSelfInfo; }
+        }
+        public static bool IsLastHitUi
+        {
+            get { return GfxSystem.Instance.IsLastHitUi; }
+            set { GfxSystem.Instance.IsLastHitUi = value; }
+        }
         public static void LogicLog(string format, params object[] args)
         {
             GfxSystem.Instance.CallLogicLog(format, args);
@@ -335,7 +335,7 @@ namespace StarWars
                 {
                     info.IsImpactGfxAnimation = true;
                 }
-                //GfxLog("NotifyGfxAnimationStart:{0}", info.m_LogicObjectId);
+                GfxLog("NotifyGfxAnimationStart:{0}", info.m_LogicObjectId);
             }
             else
             {
@@ -356,7 +356,7 @@ namespace StarWars
                     info.IsImpactGfxAnimation = false;
                 }
 
-                //GfxLog("NotifyGfxAnimationFinish:{0}", info.m_LogicObjectId);
+                GfxLog("NotifyGfxAnimationFinish:{0}", info.m_LogicObjectId);
             }
             else
             {
@@ -382,7 +382,7 @@ namespace StarWars
                     QueueLogicAction(GfxSystem.Instance.GameLogicNotification.OnGfxControlMoveStart, info.m_LogicObjectId, id, isSkill);
                 }
 
-                //GfxLog("NotifyGfxMoveControlStart:{0}", info.m_LogicObjectId);
+                GfxLog("NotifyGfxMoveControlStart:{0}", info.m_LogicObjectId);
             }
             else
             {
@@ -410,7 +410,7 @@ namespace StarWars
                     QueueLogicAction(GfxSystem.Instance.GameLogicNotification.OnGfxControlMoveStop, info.m_LogicObjectId, id, isSkill);
                 }
 
-                //GfxLog("NotifyGfxMoveControlFinish:{0}", info.m_LogicObjectId);
+                GfxLog("NotifyGfxMoveControlFinish:{0}", info.m_LogicObjectId);
             }
             else
             {
@@ -528,7 +528,7 @@ namespace StarWars
                         QueueLogicAction(GfxSystem.Instance.GameLogicNotification.OnGfxStartSkill, info.m_LogicObjectId,
                                                                                    category, targetpos.x,
                                                                                    targetpos.y, targetpos.z);
-                        //GfxLog("NotifyGfxStartSkill:{0} {1}", obj.name, category);
+                        GfxLog("NotifyGfxStartSkill:{0} {1}", obj.name, category);
                     }
                 }
                 else
@@ -567,7 +567,7 @@ namespace StarWars
                     {
                         QueueLogicAction(GfxSystem.Instance.GameLogicNotification.OnGfxStopSkill, info.m_LogicObjectId, skillId);
 
-                        //GfxLog("NotifyGfxStopSkill:{0} {1}", obj.name, skillId);
+                        GfxLog("NotifyGfxStopSkill:{0} {1}", obj.name, skillId);
                     }
                 }
                 else

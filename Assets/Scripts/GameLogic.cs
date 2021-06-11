@@ -335,8 +335,8 @@ public class GameLogic : MonoBehaviour
     }
     private void UpdateProgress(float progress, string tip)
     {
-        //LogicSystem.UpdateLoadingTip(tip);
-        //LogicSystem.UpdateLoadingProgress(progress);
+        LogicSystem.UpdateLoadingTip(tip);
+        LogicSystem.UpdateLoadingProgress(progress);
     }
     private void StartLogic()
     {

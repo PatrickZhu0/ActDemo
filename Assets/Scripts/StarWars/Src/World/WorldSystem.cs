@@ -82,328 +82,329 @@ namespace StarWars
          *
          * @return 
          */
-        //public void Init()
-        //{
-        //    m_IsObserver = false;
-        //    m_CurScene = null;
+        public void Init()
+        {
+            m_IsObserver = false;
+            m_CurScene = null;
 
-        //    GfxSystem.EventChannelForLogic.Subscribe("ge_change_hero", "game", ChangeHeroFromGfx);
-        //    GfxSystem.EventChannelForLogic.Subscribe<int>("ge_change_player_movemode", "game", ChangePlayerMoveMode);
-        //    GfxSystem.EventChannelForLogic.Subscribe<int, int>("ge_change_npc_movemode", "game", ChangeNpcMoveMode);
-        //    GfxSystem.EventChannelForLogic.Subscribe<int>("ge_change_scene", "game", ChangeSceneFromGfx);
-        //    GfxSystem.EventChannelForLogic.Subscribe("ge_resetdsl", "game", ResetDsl);
-        //    GfxSystem.EventChannelForLogic.Subscribe<string>("ge_execscript", "game", ExecScript);
-        //    GfxSystem.EventChannelForLogic.Subscribe<string>("ge_execcommand", "game", ExecCommand);
+            GfxSystem.EventChannelForLogic.Subscribe("ge_change_hero", "game", ChangeHeroFromGfx);
+            GfxSystem.EventChannelForLogic.Subscribe<int>("ge_change_player_movemode", "game", ChangePlayerMoveMode);
+            GfxSystem.EventChannelForLogic.Subscribe<int, int>("ge_change_npc_movemode", "game", ChangeNpcMoveMode);
+            GfxSystem.EventChannelForLogic.Subscribe<int>("ge_change_scene", "game", ChangeSceneFromGfx);
+            GfxSystem.EventChannelForLogic.Subscribe("ge_resetdsl", "game", ResetDsl);
+            GfxSystem.EventChannelForLogic.Subscribe<string>("ge_execscript", "game", ExecScript);
+            GfxSystem.EventChannelForLogic.Subscribe<string>("ge_execcommand", "game", ExecCommand);
 
-        //    NpcManager.OnDamage = new DamageDelegation(NpcManager_OnDamage);
-        //    UserManager.OnDamage = new DamageDelegation(UserManager_OnDamage);
-        //    UserManager.OnGainMoney = new GainMoneyDelegation(UserManager_GainMoney);
+            //NpcManager.OnDamage = new DamageDelegation(NpcManager_OnDamage);
+            UserManager.OnDamage = new DamageDelegation(UserManager_OnDamage);
+            UserManager.OnGainMoney = new GainMoneyDelegation(UserManager_GainMoney);
 
-        //    ResUpdateHandler.HandleGetPlayerCurSkillInfo = GetPlayerInfoForCache;
-        //}
+            ResUpdateHandler.HandleGetPlayerCurSkillInfo = GetPlayerInfoForCache;
+        }
 
-        //private void UserManager_OnDamage(int receiver, int caster, bool isOrdinaryDamage, bool isCritical, int hpDamage, int npDamage)
-        //{
-        //    if (IsPvpScene())
-        //    {
-        //        if (caster == PlayerSelfId || receiver == PlayerSelfId)
-        //        {
-        //            UserInfo charObj = WorldSystem.Instance.GetCharacterById(receiver) as UserInfo;
-        //            if (null != charObj)
-        //            {
-        //                Vector3 pos = charObj.GetMovementStateInfo().GetPosition3D();
-        //                if (hpDamage != 0)
-        //                {
-        //                    if (isCritical)
-        //                    {
-        //                        GfxSystem.PublishGfxEvent("ge_npc_cdamage", "ui", pos.X, pos.Y, pos.Z, hpDamage, isOrdinaryDamage);
-        //                    }
-        //                    else
-        //                    {
-        //                        GfxSystem.PublishGfxEvent("ge_npc_odamage", "ui", pos.X, pos.Y, pos.Z, hpDamage, isOrdinaryDamage);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (receiver == PlayerSelfId || caster == PlayerSelfId)
-        //        {
-        //            UserInfo charObj = WorldSystem.Instance.GetCharacterById(receiver) as UserInfo;
-        //            if (null != charObj)
-        //            {
-        //                Vector3 pos = charObj.GetMovementStateInfo().GetPosition3D();
-        //                if (hpDamage != 0)
-        //                {
-        //                    GfxSystem.PublishGfxEvent("ge_hero_blood", "ui", pos.X, pos.Y, pos.Z, hpDamage);
-        //                }
-        //                if (npDamage != 0)
-        //                {
-        //                    GfxSystem.PublishGfxEvent("ge_hero_energy", "ui", pos.X, pos.Y, pos.Z, npDamage);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-        //private void NpcManager_OnDamage(int receiver, int caster, bool /*isShootDamage*/isOrdinaryDamage, bool isCritical, int hpDamage, int npDamage)
-        //{
-        //    if (caster == PlayerSelfId)
-        //    {
-        //        NpcInfo charObj = NpcManager.GetNpcInfo(receiver);
+        private void UserManager_OnDamage(int receiver, int caster, bool isOrdinaryDamage, bool isCritical, int hpDamage, int npDamage)
+        {
+            if (IsPvpScene())
+            {
+                if (caster == PlayerSelfId || receiver == PlayerSelfId)
+                {
+                    UserInfo charObj = WorldSystem.Instance.GetCharacterById(receiver) as UserInfo;
+                    if (null != charObj)
+                    {
+                        Vector3 pos = charObj.GetMovementStateInfo().GetPosition3D();
+                        if (hpDamage != 0)
+                        {
+                            if (isCritical)
+                            {
+                                GfxSystem.PublishGfxEvent("ge_npc_cdamage", "ui", pos.x, pos.y, pos.z, hpDamage, isOrdinaryDamage);
+                            }
+                            else
+                            {
+                                GfxSystem.PublishGfxEvent("ge_npc_odamage", "ui", pos.x, pos.y, pos.z, hpDamage, isOrdinaryDamage);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (receiver == PlayerSelfId || caster == PlayerSelfId)
+                {
+                    UserInfo charObj = WorldSystem.Instance.GetCharacterById(receiver) as UserInfo;
+                    if (null != charObj)
+                    {
+                        Vector3 pos = charObj.GetMovementStateInfo().GetPosition3D();
+                        if (hpDamage != 0)
+                        {
+                            GfxSystem.PublishGfxEvent("ge_hero_blood", "ui", pos.x, pos.y, pos.z, hpDamage);
+                        }
+                        if (npDamage != 0)
+                        {
+                            GfxSystem.PublishGfxEvent("ge_hero_energy", "ui", pos.x, pos.y, pos.z, npDamage);
+                        }
+                    }
+                }
+            }
+        }
 
-        //        if (IsPveScene() || IsPureClientScene())
-        //        {
-        //            int estimateDamage = hpDamage;
-        //            if (isCritical)
-        //                estimateDamage /= 2;
+        private void NpcManager_OnDamage(int receiver, int caster, bool /*isShootDamage*/isOrdinaryDamage, bool isCritical, int hpDamage, int npDamage)
+        {
+            if (caster == PlayerSelfId)
+            {
+                //NpcInfo charObj = NpcManager.GetNpcInfo(receiver);
 
-        //            if (charObj.Hp + estimateDamage <= 0)
-        //            {
-        //                if (GetBattleNpcCount() == 1)
-        //                {
-        //                    ClientStorySystem.Instance.SendMessage("finalblow", receiver);
-        //                }
-        //            }
-        //        }
+                //if (IsPveScene() || IsPureClientScene())
+                //{
+                //    int estimateDamage = hpDamage;
+                //    if (isCritical)
+                //        estimateDamage /= 2;
 
-        //        if (null != charObj && (int)NpcTypeEnum.SceneObject != charObj.NpcType)
-        //        {
-        //            Vector3 pos = charObj.GetMovementStateInfo().GetPosition3D();
-        //            if (isCritical)
-        //            {
-        //                GfxSystem.PublishGfxEvent("ge_npc_cdamage", "ui", pos.X, pos.Y, pos.Z, hpDamage, isOrdinaryDamage);
-        //            }
-        //            else
-        //            {
-        //                GfxSystem.PublishGfxEvent("ge_npc_odamage", "ui", pos.X, pos.Y, pos.Z, hpDamage, isOrdinaryDamage);
-        //            }
-        //            GfxSystem.PublishGfxEvent("ge_small_monster_healthbar", "ui", charObj.Hp, charObj.GetActualProperty().HpMax, hpDamage);
-        //        }
-        //    }
-        //}
+                //    if (charObj.Hp + estimateDamage <= 0)
+                //    {
+                //        if (GetBattleNpcCount() == 1)
+                //        {
+                //            ClientStorySystem.Instance.SendMessage("finalblow", receiver);
+                //        }
+                //    }
+                //}
 
-        //private void UserManager_GainMoney(int receiver, int money)
-        //{
-        //    UserInfo charObj = WorldSystem.Instance.GetCharacterById(receiver) as UserInfo;
-        //    if (null != charObj)
-        //    {
-        //        Vector3 pos = charObj.GetMovementStateInfo().GetPosition3D();
-        //        GfxSystem.PublishGfxEvent("ge_gain_money", "ui", pos.X, pos.Y, pos.Z, money);
-        //    }
-        //}
+                //if (null != charObj && (int)NpcTypeEnum.SceneObject != charObj.NpcType)
+                //{
+                //    Vector3 pos = charObj.GetMovementStateInfo().GetPosition3D();
+                //    if (isCritical)
+                //    {
+                //        GfxSystem.PublishGfxEvent("ge_npc_cdamage", "ui", pos.x, pos.y, pos.z, hpDamage, isOrdinaryDamage);
+                //    }
+                //    else
+                //    {
+                //        GfxSystem.PublishGfxEvent("ge_npc_odamage", "ui", pos.x, pos.y, pos.z, hpDamage, isOrdinaryDamage);
+                //    }
+                //    GfxSystem.PublishGfxEvent("ge_small_monster_healthbar", "ui", charObj.Hp, charObj.GetActualProperty().HpMax, hpDamage);
+                //}
+            }
+        }
 
-        //private void ChangeHeroFromGfx()
-        //{
-        //    try
-        //    {
-        //        ChangeHero();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogSystem.Error("ExecCommand exception:{0}\n{1}", ex.Message, ex.StackTrace);
-        //    }
-        //}
+        private void UserManager_GainMoney(int receiver, int money)
+        {
+            UserInfo charObj = WorldSystem.Instance.GetCharacterById(receiver) as UserInfo;
+            if (null != charObj)
+            {
+                Vector3 pos = charObj.GetMovementStateInfo().GetPosition3D();
+                GfxSystem.PublishGfxEvent("ge_gain_money", "ui", pos.x, pos.y, pos.z, money);
+            }
+        }
 
-        //private void ChangePlayerMoveMode(int mode)
-        //{
-        //    UserInfo player = WorldSystem.Instance.GetPlayerSelf();
-        //    if (null != player)
-        //    {
-        //        if ((int)MovementMode.HighSpeed == mode)
-        //        {
-        //            player.GetActualProperty().SetMoveSpeed(Operate_Type.OT_Absolute, player.GetBaseProperty().RunSpeed);
-        //            player.GetMovementStateInfo().MovementMode = MovementMode.Normal;
-        //        }
-        //        else if ((int)MovementMode.LowSpeed == mode)
-        //        {
-        //            player.GetActualProperty().SetMoveSpeed(Operate_Type.OT_Absolute, player.GetBaseProperty().WalkSpeed);
-        //            player.GetMovementStateInfo().MovementMode = MovementMode.LowSpeed;
-        //        }
-        //    }
-        //}
-        //private void ChangeNpcMoveMode(int objId, int mode)
-        //{
-        //    CharacterInfo character = WorldSystem.Instance.GetCharacterById(objId);
-        //    if (null != character)
-        //    {
-        //        if ((int)MovementMode.HighSpeed == mode)
-        //        {
-        //            character.GetActualProperty().SetMoveSpeed(Operate_Type.OT_Absolute, character.GetBaseProperty().RunSpeed);
-        //            character.GetMovementStateInfo().MovementMode = MovementMode.Normal;
-        //        }
-        //        else if ((int)MovementMode.LowSpeed == mode)
-        //        {
-        //            character.GetActualProperty().SetMoveSpeed(Operate_Type.OT_Absolute, character.GetBaseProperty().WalkSpeed);
-        //            character.GetMovementStateInfo().MovementMode = MovementMode.LowSpeed;
-        //        }
-        //    }
-        //}
+        private void ChangeHeroFromGfx()
+        {
+            try
+            {
+                ChangeHero();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("ExecCommand exception:{0}\n{1}", ex.Message, ex.StackTrace);
+            }
+        }
 
-        //private void ChangeSceneFromGfx(int sceneId)
-        //{
-        //    try
-        //    {
-        //        if (null == m_CurScene || m_CurScene.IsSuccessEnter)
-        //        {
-        //            if (0 == sceneId)
-        //            {
-        //                if (IsPvpScene() || IsMultiPveScene())
-        //                {
-        //                    NetworkSystem.Instance.QuitBattle();
-        //                }
-        //                LobbyNetworkSystem.Instance.QuitClient();
-        //            }
-        //            ChangeScene(sceneId);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogSystem.Error("ExecCommand exception:{0}\n{1}", ex.Message, ex.StackTrace);
-        //    }
-        //}
+        private void ChangePlayerMoveMode(int mode)
+        {
+            UserInfo player = WorldSystem.Instance.GetPlayerSelf();
+            if (null != player)
+            {
+                if ((int)MovementMode.HighSpeed == mode)
+                {
+                    player.GetActualProperty().SetMoveSpeed(Operate_Type.OT_Absolute, player.GetBaseProperty().RunSpeed);
+                    player.GetMovementStateInfo().MovementMode = MovementMode.Normal;
+                }
+                else if ((int)MovementMode.LowSpeed == mode)
+                {
+                    player.GetActualProperty().SetMoveSpeed(Operate_Type.OT_Absolute, player.GetBaseProperty().WalkSpeed);
+                    player.GetMovementStateInfo().MovementMode = MovementMode.LowSpeed;
+                }
+            }
+        }
+        private void ChangeNpcMoveMode(int objId, int mode)
+        {
+            CharacterInfo character = WorldSystem.Instance.GetCharacterById(objId);
+            if (null != character)
+            {
+                if ((int)MovementMode.HighSpeed == mode)
+                {
+                    character.GetActualProperty().SetMoveSpeed(Operate_Type.OT_Absolute, character.GetBaseProperty().RunSpeed);
+                    character.GetMovementStateInfo().MovementMode = MovementMode.Normal;
+                }
+                else if ((int)MovementMode.LowSpeed == mode)
+                {
+                    character.GetActualProperty().SetMoveSpeed(Operate_Type.OT_Absolute, character.GetBaseProperty().WalkSpeed);
+                    character.GetMovementStateInfo().MovementMode = MovementMode.LowSpeed;
+                }
+            }
+        }
 
-        //private void ResetDsl()
-        //{
-        //    try
-        //    {
-        //        StorySystem.StoryConfigManager.Instance.Clear();
-        //        ClientStorySystem.Instance.ClearStoryInstancePool();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogSystem.Error("Exception:{0}\n{1}", ex.Message, ex.StackTrace);
-        //    }
-        //}
+        private void ChangeSceneFromGfx(int sceneId)
+        {
+            try
+            {
+                if (null == m_CurScene || m_CurScene.IsSuccessEnter)
+                {
+                    if (0 == sceneId)
+                    {
+                        if (IsPvpScene() || IsMultiPveScene())
+                        {
+                           //NetworkSystem.Instance.QuitBattle();
+                        }
+                        //LobbyNetworkSystem.Instance.QuitClient();
+                    }
+                    ChangeScene(sceneId);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("ExecCommand exception:{0}\n{1}", ex.Message, ex.StackTrace);
+            }
+        }
 
-        //private void ExecScript(string scriptFile)
-        //{
-        //    try
-        //    {
-        //        GmCommands.ClientGmStorySystem.Instance.LoadStory(scriptFile);
-        //        GmCommands.ClientGmStorySystem.Instance.StartStory(1);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogSystem.Error("ExecScript exception:{0}\n{1}", ex.Message, ex.StackTrace);
-        //    }
-        //}
+        private void ResetDsl()
+        {
+            try
+            {
+                //StorySystem.StoryConfigManager.Instance.Clear();
+                //ClientStorySystem.Instance.ClearStoryInstancePool();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("Exception:{0}\n{1}", ex.Message, ex.StackTrace);
+            }
+        }
 
-        //private void ExecCommand(string cmd)
-        //{
-        //    try
-        //    {
-        //        GmCommands.ClientGmStorySystem.Instance.LoadStoryText("story(1){onmessage(\"start\"){" + cmd + "}}");
-        //        GmCommands.ClientGmStorySystem.Instance.StartStory(1);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogSystem.Error("ExecCommand exception:{0}\n{1}", ex.Message, ex.StackTrace);
-        //    }
-        //}
+        private void ExecScript(string scriptFile)
+        {
+            try
+            {
+                //GmCommands.ClientGmStorySystem.Instance.LoadStory(scriptFile);
+               // GmCommands.ClientGmStorySystem.Instance.StartStory(1);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("ExecScript exception:{0}\n{1}", ex.Message, ex.StackTrace);
+            }
+        }
 
-        //public void OnRoomServerDisconnected()
-        //{
-        //    GfxSystem.PublishGfxEvent("ge_ui_connect_hint", "ui", false, true);
-        //}
+        private void ExecCommand(string cmd)
+        {
+            try
+            {
+                //GmCommands.ClientGmStorySystem.Instance.LoadStoryText("story(1){onmessage(\"start\"){" + cmd + "}}");
+                //GmCommands.ClientGmStorySystem.Instance.StartStory(1);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("ExecCommand exception:{0}\n{1}", ex.Message, ex.StackTrace);
+            }
+        }
 
-        //public void OnRoomServerConnected()
-        //{
-        //    GfxSystem.PublishGfxEvent("ge_ui_connect_hint", "ui", false, false);
-        //}
+        public void OnRoomServerDisconnected()
+        {
+            GfxSystem.PublishGfxEvent("ge_ui_connect_hint", "ui", false, true);
+        }
 
-        ///**
-        // * @brief 释放
-        // *
-        // * @return 
-        // */
-        //public void Release()
-        //{
-        //    if (null != m_CurScene)
-        //    {
-        //        m_CurScene.Release();
-        //    }
-        //}
+        public void OnRoomServerConnected()
+        {
+            GfxSystem.PublishGfxEvent("ge_ui_connect_hint", "ui", false, false);
+        }
 
-        //public void QuitBattle()
-        //{
-        //    OnRoomServerConnected();
-        //    NetworkSystem.Instance.QuitBattle();
-        //}
+        /**
+         * @brief 释放
+         *
+         * @return 
+         */
+        public void Release()
+        {
+            if (null != m_CurScene)
+            {
+                m_CurScene.Release();
+            }
+        }
 
-        //public void QuitClient()
-        //{
-        //    NetworkSystem.Instance.QuitClient();
-        //    LobbyNetworkSystem.Instance.QuitClient();
-        //}
+        public void QuitBattle()
+        {
+            OnRoomServerConnected();
+            //NetworkSystem.Instance.QuitBattle();
+        }
 
-        //public void ReturnToLogin()
-        //{
-        //    try
-        //    {
-        //        NetworkSystem.Instance.QuitBattle();
-        //        LobbyNetworkSystem.Instance.QuitClient();
-        //        GfxSystem.PublishGfxEvent("ge_return_login", "ui");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogSystem.Error("ReturnToLogin exception:{0}\n{1}", ex.Message, ex.StackTrace);
-        //    }
-        //}
+        public void QuitClient()
+        {
+            //NetworkSystem.Instance.QuitClient();
+            //LobbyNetworkSystem.Instance.QuitClient();
+        }
 
-        //public bool IsPureClientScene()
-        //{
-        //    if (null == m_CurScene)
-        //        return true;
-        //    else
-        //        return m_CurScene.IsPureClientScene;
-        //}
+        public void ReturnToLogin()
+        {
+            try
+            {
+                //NetworkSystem.Instance.QuitBattle();
+                //LobbyNetworkSystem.Instance.QuitClient();
+                GfxSystem.PublishGfxEvent("ge_return_login", "ui");
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("ReturnToLogin exception:{0}\n{1}", ex.Message, ex.StackTrace);
+            }
+        }
 
-        //public bool IsPveScene()
-        //{
-        //    if (null == m_CurScene)
-        //        return false;
-        //    else
-        //        return m_CurScene.IsPve;
-        //}
+        public bool IsPureClientScene()
+        {
+            if (null == m_CurScene)
+                return true;
+            else
+                return m_CurScene.IsPureClientScene;
+        }
 
-        //public bool IsMultiPveScene()
-        //{
-        //    if (null == m_CurScene)
-        //        return false;
-        //    else
-        //        return m_CurScene.IsMultiPve;
-        //}
+        public bool IsPveScene()
+        {
+            if (null == m_CurScene)
+                return false;
+            else
+                return m_CurScene.IsPve;
+        }
 
-        //public bool IsPvpScene()
-        //{
-        //    if (null == m_CurScene)
-        //        return false;
-        //    else
-        //        return m_CurScene.IsPvp;
-        //}
+        public bool IsMultiPveScene()
+        {
+            if (null == m_CurScene)
+                return false;
+            else
+                return m_CurScene.IsMultiPve;
+        }
 
-        //public bool IsExpeditionScene()
-        //{
-        //    if (null == m_CurScene)
-        //        return false;
-        //    else
-        //        return m_CurScene.IsExpedition;
-        //}
-        //public bool IsELiteScene()
-        //{
-        //    if (null == m_CurScene)
-        //        return false;
-        //    else
-        //        return m_CurScene.IsELite;
-        //}
-        //public bool IsServerSelectScene()
-        //{
-        //    if (null == m_CurScene)
-        //        return false;
-        //    else
-        //        return m_CurScene.IsServerSelectScene;
-        //}
+        public bool IsPvpScene()
+        {
+            if (null == m_CurScene)
+                return false;
+            else
+                return m_CurScene.IsPvp;
+        }
+
+        public bool IsExpeditionScene()
+        {
+            if (null == m_CurScene)
+                return false;
+            else
+                return m_CurScene.IsExpedition;
+        }
+        public bool IsELiteScene()
+        {
+            if (null == m_CurScene)
+                return false;
+            else
+                return m_CurScene.IsELite;
+        }
+        public bool IsServerSelectScene()
+        {
+            if (null == m_CurScene)
+                return false;
+            else
+                return m_CurScene.IsServerSelectScene;
+        }
 
 
         //逻辑循环
@@ -430,493 +431,495 @@ namespace StarWars
 
             //单机游戏逻辑启动
             CreateSceneLogics();
-     
+
             StartGame();
             m_CurScene.NotifyUserEnter();
 
-            //    //角色进场景逻辑
-            //    if (!m_CurScene.IsWaitSceneLoad && m_CurScene.IsWaitRoomServerConnect)
-            //    {
-            //        if (this.IsPureClientScene() || this.IsPveScene() || this.IsServerSelectScene() || NetworkSystem.Instance.CanSendMessage)
-            //        {
-            //            GfxSystem.PublishGfxEvent("ge_enter_scene", "ui", m_CurScene.ResId);
-            //            //if (this.IsPureClientScene()) {
-            //            //  GfxSystem.PublishGfxEvent("ge_ShowCYGTSDK", "gt");
-            //            //} else {
-            //            //  GfxSystem.PublishGfxEvent("ge_HideCYGTSDK", "gt");
-            //            //}
+            //角色进场景逻辑
+            if (!m_CurScene.IsWaitSceneLoad && m_CurScene.IsWaitRoomServerConnect)
+            {
+                //if (this.IsPureClientScene() || this.IsPveScene() || this.IsServerSelectScene() || NetworkSystem.Instance.CanSendMessage)
+                //{
+                if (this.IsPureClientScene() || this.IsPveScene() || this.IsServerSelectScene())
+                {
+                    GfxSystem.PublishGfxEvent("ge_enter_scene", "ui", m_CurScene.ResId);
+                    //if (this.IsPureClientScene()) {
+                    //  GfxSystem.PublishGfxEvent("ge_ShowCYGTSDK", "gt");
+                    //} else {
+                    //  GfxSystem.PublishGfxEvent("ge_HideCYGTSDK", "gt");
+                    //}
 
-            //            StorySystem.StoryConfigManager.Instance.Clear();
-            //            ClientStorySystem.Instance.ClearStoryInstancePool();
-            //            for (int i = 1; i < 10; ++i)
-            //            {
-            //                ClientStorySystem.Instance.PreloadStoryInstance(1);
-            //            }
-            //            PlayerControl.Instance.Reset();
+                    //StorySystem.StoryConfigManager.Instance.Clear();
+                    //ClientStorySystem.Instance.ClearStoryInstancePool();
+                    //for (int i = 1; i < 10; ++i)
+                    //{
+                    //    ClientStorySystem.Instance.PreloadStoryInstance(1);
+                    //}
+                    PlayerControl.Instance.Reset();
 
-            //            if (IsObserver)
-            //            {
-            //                DestroyHero();
-            //                CreateSceneLogics();
-            //                UserInfo myself = CreatePlayerSelf(0x0ffffffe, 1);
-            //                if (null != myself)
-            //                {//观战客户端创建一个虚拟玩家（不关联view，血量不要为0，主要目的是为了适应客户端代码里对主角的判断）
-            //                    myself.SetLevel(16);
-            //                    myself.SetHp(Operate_Type.OT_Absolute, 999999);
-            //                }
-            //                m_CurScene.NotifyUserEnter();
+                    //if (IsObserver)
+                    //{
+                    //    DestroyHero();
+                    //    CreateSceneLogics();
+                    //    UserInfo myself = CreatePlayerSelf(0x0ffffffe, 1);
+                    //    if (null != myself)
+                    //    {//观战客户端创建一个虚拟玩家（不关联view，血量不要为0，主要目的是为了适应客户端代码里对主角的判断）
+                    //        myself.SetLevel(16);
+                    //        myself.SetHp(Operate_Type.OT_Absolute, 999999);
+                    //    }
+                    //    m_CurScene.NotifyUserEnter();
 
-            //                StarWarsMessage.Msg_CR_Observer build = new StarWarsMessage.Msg_CR_Observer();
-            //                NetworkSystem.Instance.SendMessage(build);
-            //                LogSystem.Debug("send Msg_CR_Observer to roomserver");
-            //            }
-            //            else if (this.IsPureClientScene() || IsPveScene())
-            //            {
-            //                //单机游戏逻辑启动
-            //                CreateSceneLogics();
-            //                if (IsExpeditionScene())
-            //                    ExpeditionStartGame();
-            //                else
-            //                    StartGame();
-            //                m_CurScene.NotifyUserEnter();
-            //                ClientStorySystem.Instance.StartStory(1);
-            //            }
-            //            else
-            //            {
-            //                //下副本时玩家的角色ID与本地客户端的角色不一致，所以下副本前先删掉本地角色
-            //                DestroyHero();
-            //                CreateSceneLogics();
+                    //    StarWarsMessage.Msg_CR_Observer build = new StarWarsMessage.Msg_CR_Observer();
+                    //    NetworkSystem.Instance.SendMessage(build);
+                    //    LogSystem.Debug("send Msg_CR_Observer to roomserver");
+                    //}
+                    //else if (this.IsPureClientScene() || IsPveScene())
+                    //{
+                    //单机游戏逻辑启动
+                    CreateSceneLogics();
+                    //if (IsExpeditionScene())
+                    //ExpeditionStartGame();
+                    //else
+                    StartGame();
+                    m_CurScene.NotifyUserEnter();
+                    //ClientStorySystem.Instance.StartStory(1);
+                    //}
+                    //else
+                    //{
+                    //    //下副本时玩家的角色ID与本地客户端的角色不一致，所以下副本前先删掉本地角色
+                    //    //DestroyHero();
+                    //    CreateSceneLogics();
 
-            //                if (IsPvpScene() || IsMultiPveScene())
-            //                {
-            //                    StarWarsMessage.Msg_CRC_Create build = new StarWarsMessage.Msg_CRC_Create();
-            //                    NetworkSystem.Instance.SendMessage(build);
-            //                    LogSystem.Debug("send Msg_CRC_Create to roomserver");
-            //                }
-            //            }
+                    //    if (IsPvpScene() || IsMultiPveScene())
+                    //    {
+                    //        //StarWarsMessage.Msg_CRC_Create build = new StarWarsMessage.Msg_CRC_Create();
+                    //        //NetworkSystem.Instance.SendMessage(build);
+                    //        LogSystem.Debug("send Msg_CRC_Create to roomserver");
+                    //    }
+                    //}
 
-            //            if (IsPveScene() || IsPureClientScene())
-            //            {
-            //                SyncGfxUsersInfo();
-            //            }
+                    if (IsPveScene() || IsPureClientScene())
+                    {
+                        //SyncGfxUsersInfo();
+                    }
 
-            //            m_CurScene.IsWaitRoomServerConnect = false;
-            //        }
-            //    }
-            //    if (!m_CurScene.IsSuccessEnter)
-            //    {
-            //        if (curTime > m_LastTryChangeSceneTime + c_ChangeSceneTimeout)
-            //        {
-            //            m_LastTryChangeSceneTime = curTime;
-            //            PromptExceptionAndGotoMainCity();
-            //        }
-            //        return;
-            //    }
-            //    m_Profiler.sceneTickTime = TimeSnapshot.DoCheckPoint();
+                    m_CurScene.IsWaitRoomServerConnect = false;
+                }
+            }
+            if (!m_CurScene.IsSuccessEnter)
+            {
+                if (curTime > m_LastTryChangeSceneTime + c_ChangeSceneTimeout)
+                {
+                    m_LastTryChangeSceneTime = curTime;
+                    //PromptExceptionAndGotoMainCity();
+                }
+                return;
+            }
+            m_Profiler.sceneTickTime = TimeSnapshot.DoCheckPoint();
 
-            //    EntityManager.Instance.Tick();
-            //    m_Profiler.entityMgrTickTime = TimeSnapshot.DoCheckPoint();
+            EntityManager.Instance.Tick();
+            m_Profiler.entityMgrTickTime = TimeSnapshot.DoCheckPoint();
 
-            //    ControlSystemOperation.Tick();
-            //    m_Profiler.controlSystemTickTime = TimeSnapshot.DoCheckPoint();
+            ControlSystemOperation.Tick();
+            m_Profiler.controlSystemTickTime = TimeSnapshot.DoCheckPoint();
 
-            //    m_Profiler.movementSystemTickTime = TimeSnapshot.DoCheckPoint();
+            m_Profiler.movementSystemTickTime = TimeSnapshot.DoCheckPoint();
 
-            //    m_SpatialSystem.Tick();
-            //    m_Profiler.spatialSystemTickTime = TimeSnapshot.DoCheckPoint();
-            //    if (m_Profiler.spatialSystemTickTime > 50000)
-            //    {
-            //        LogSystem.Warn("*** SpatialSystem tick time is {0}", m_Profiler.spatialSystemTickTime);
-            //        for (LinkedListNode<UserInfo> node = UserManager.Users.FirstValue; null != node; node = node.Next)
-            //        {
-            //            UserInfo userInfo = node.Value;
-            //            if (null != userInfo)
-            //            {
-            //                LogSystem.Warn("===>User:{0} Pos:{1}", userInfo.GetId(), userInfo.GetMovementStateInfo().GetPosition3D().ToString());
-            //            }
-            //        }
-            //        for (LinkedListNode<NpcInfo> node = NpcManager.Npcs.FirstValue; null != node; node = node.Next)
-            //        {
-            //            NpcInfo npcInfo = node.Value;
-            //            if (null != npcInfo)
-            //            {
-            //                LogSystem.Warn("===>Npc:{0} Pos:{1}", npcInfo.GetId(), npcInfo.GetMovementStateInfo().GetPosition3D().ToString());
-            //            }
-            //        }
-            //    }
+            m_SpatialSystem.Tick();
+            m_Profiler.spatialSystemTickTime = TimeSnapshot.DoCheckPoint();
+            if (m_Profiler.spatialSystemTickTime > 50000)
+            {
+                LogSystem.Warn("*** SpatialSystem tick time is {0}", m_Profiler.spatialSystemTickTime);
+                for (LinkedListNode<UserInfo> node = UserManager.Users.FirstValue; null != node; node = node.Next)
+                {
+                    UserInfo userInfo = node.Value;
+                    if (null != userInfo)
+                    {
+                        LogSystem.Warn("===>User:{0} Pos:{1}", userInfo.GetId(), userInfo.GetMovementStateInfo().GetPosition3D().ToString());
+                    }
+                }
+                //for (LinkedListNode<NpcInfo> node = NpcManager.Npcs.FirstValue; null != node; node = node.Next)
+                //{
+                //    NpcInfo npcInfo = node.Value;
+                //    if (null != npcInfo)
+                //    {
+                //        LogSystem.Warn("===>Npc:{0} Pos:{1}", npcInfo.GetId(), npcInfo.GetMovementStateInfo().GetPosition3D().ToString());
+                //    }
+                //}
+            }
 
-            //    TickMoveMeetObstacle();
-            //    //obj特殊逻辑处理
-            //    TickUsers();
-            //    m_Profiler.usersTickTime = TimeSnapshot.DoCheckPoint();
+            TickMoveMeetObstacle();
+            //obj特殊逻辑处理
+            TickUsers();
+            m_Profiler.usersTickTime = TimeSnapshot.DoCheckPoint();
 
-            //    TickNpcs();
-            //    m_Profiler.npcsTickTime = TimeSnapshot.DoCheckPoint();
+            //TickNpcs();
+            m_Profiler.npcsTickTime = TimeSnapshot.DoCheckPoint();
 
-            //    try
-            //    {
-            //        TickSystemByCharacters();
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        LogSystem.Error("Exception:{0}\n{1}", e.Message, e.StackTrace);
-            //    }
-            //    m_Profiler.combatSystemTickTime = TimeSnapshot.DoCheckPoint();
+            try
+            {
+                //TickSystemByCharacters();
+            }
+            catch (Exception e)
+            {
+                LogSystem.Error("Exception:{0}\n{1}", e.Message, e.StackTrace);
+            }
+            m_Profiler.combatSystemTickTime = TimeSnapshot.DoCheckPoint();
 
-            //    if (IsPureClientScene() || IsPveScene())
-            //    {
-            //        //TickInteraction();
-            //        TickPve();
-            //    }
+            if (IsPureClientScene() || IsPveScene())
+            {
+                //TickInteraction();
+                TickPve();
+            }
 
-            //    if (IsPveScene())
-            //    {
-            //        TickRecover();
-            //    }
+            if (IsPveScene())
+            {
+                TickRecover();
+            }
 
-            //    GmCommands.ClientGmStorySystem.Instance.Tick();
+            //GmCommands.ClientGmStorySystem.Instance.Tick();
 
-            //    m_SceneLogicSystem.Tick();
-            //    m_Profiler.sceneLogicSystemTickTime = TimeSnapshot.DoCheckPoint();
+            m_SceneLogicSystem.Tick();
+            m_Profiler.sceneLogicSystemTickTime = TimeSnapshot.DoCheckPoint();
 
-            //    long tickTime = TimeSnapshot.End();
-            //    if (tickTime > 30000)
-            //    {
-            //        LogSystem.Debug("*** PerformanceWarning: {0}", m_Profiler.GenerateLogString(tickTime));
-            //    }
+            long tickTime = TimeSnapshot.End();
+            if (tickTime > 30000)
+            {
+                LogSystem.Debug("*** PerformanceWarning: {0}", m_Profiler.GenerateLogString(tickTime));
+            }
         }
 
-        //public void SwitchDebug()
-        //{
-        //    GlobalVariables.Instance.IsDebug = !GlobalVariables.Instance.IsDebug;
-        //    if (IsPvpScene() || IsMultiPveScene())
-        //    {
-        //        Msg_CR_SwitchDebug builder = new Msg_CR_SwitchDebug();
-        //        builder.is_debug = GlobalVariables.Instance.IsDebug;
-        //        NetworkSystem.Instance.SendMessage(builder);
-        //    }
-        //    if (!GlobalVariables.Instance.IsDebug)
-        //    {
-        //        ShowObstacle(false);
-        //    }
-        //    else
-        //    {
-        //        ShowObstacle(true);
-        //    }
-        //}
-        //public void SwitchObserver()
-        //{
-        //    if (m_IsObserver)
-        //    {
-        //        m_IsFollowObserver = !m_IsFollowObserver;
-        //        if (m_IsFollowObserver)
-        //        {
-        //            LinkedListNode<UserInfo> node = null;
-        //            for (node = UserManager.Users.FirstValue; null != node; node = node.Next)
-        //            {
-        //                if (node.Value == m_PlayerSelf)
-        //                    continue;
-        //                if (node.Value.GetId() == m_FollowTargetId)
-        //                {
-        //                    break;
-        //                }
-        //            }
-        //            if (null == node)
-        //            {
-        //                for (node = UserManager.Users.FirstValue; null != node; node = node.Next)
-        //                {
-        //                    if (node.Value == m_PlayerSelf)
-        //                        continue;
-        //                    else
-        //                        break;
-        //                }
-        //            }
-        //            if (null != node)
-        //            {
-        //                m_FollowTargetId = node.Value.GetId();
-        //                if (!node.Value.IsDead())
-        //                {
-        //                    UserView view = EntityManager.Instance.GetUserViewById(m_FollowTargetId);
-        //                    if (null != view)
-        //                    {
-        //                        GfxSystem.SendMessage("GfxGameRoot", "CameraFollow", view.Actor);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-        //public bool InteractObject()
-        //{
-        //    if (m_IsObserver)
-        //    {
-        //        if (m_IsFollowObserver)
-        //        {
-        //            LinkedListNode<UserInfo> node = null;
-        //            for (node = UserManager.Users.FirstValue; null != node; node = node.Next)
-        //            {
-        //                if (node.Value == m_PlayerSelf)
-        //                    continue;
-        //                if (node.Value.GetId() == m_FollowTargetId)
-        //                {
-        //                    node = node.Next;
-        //                    break;
-        //                }
-        //            }
-        //            if (null == node)
-        //            {
-        //                for (node = UserManager.Users.FirstValue; null != node; node = node.Next)
-        //                {
-        //                    if (node.Value == m_PlayerSelf)
-        //                        continue;
-        //                    else
-        //                        break;
-        //                }
-        //            }
-        //            if (null != node)
-        //            {
-        //                m_FollowTargetId = node.Value.GetId();
-        //            }
-        //        }
-        //        return true;
-        //    }
-        //    bool sendMsg = false;
-        //    if (null != m_PlayerSelf)
-        //    {
-        //        int initiator = m_PlayerSelf.GetId();
-        //        int receiver = 0;
+        public void SwitchDebug()
+        {
+            GlobalVariables.Instance.IsDebug = !GlobalVariables.Instance.IsDebug;
+            if (IsPvpScene() || IsMultiPveScene())
+            {
+                //Msg_CR_SwitchDebug builder = new Msg_CR_SwitchDebug();
+                //builder.is_debug = GlobalVariables.Instance.IsDebug;
+                //NetworkSystem.Instance.SendMessage(builder);
+            }
+            if (!GlobalVariables.Instance.IsDebug)
+            {
+                ShowObstacle(false);
+            }
+            else
+            {
+                ShowObstacle(true);
+            }
+        }
+        public void SwitchObserver()
+        {
+            if (m_IsObserver)
+            {
+                m_IsFollowObserver = !m_IsFollowObserver;
+                if (m_IsFollowObserver)
+                {
+                    LinkedListNode<UserInfo> node = null;
+                    for (node = UserManager.Users.FirstValue; null != node; node = node.Next)
+                    {
+                        if (node.Value == m_PlayerSelf)
+                            continue;
+                        if (node.Value.GetId() == m_FollowTargetId)
+                        {
+                            break;
+                        }
+                    }
+                    if (null == node)
+                    {
+                        for (node = UserManager.Users.FirstValue; null != node; node = node.Next)
+                        {
+                            if (node.Value == m_PlayerSelf)
+                                continue;
+                            else
+                                break;
+                        }
+                    }
+                    if (null != node)
+                    {
+                        m_FollowTargetId = node.Value.GetId();
+                        if (!node.Value.IsDead())
+                        {
+                            UserView view = EntityManager.Instance.GetUserViewById(m_FollowTargetId);
+                            if (null != view)
+                            {
+                                GfxSystem.SendMessage("GfxGameRoot", "CameraFollow", view.Actor);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public bool InteractObject()
+        {
+            if (m_IsObserver)
+            {
+                if (m_IsFollowObserver)
+                {
+                    LinkedListNode<UserInfo> node = null;
+                    for (node = UserManager.Users.FirstValue; null != node; node = node.Next)
+                    {
+                        if (node.Value == m_PlayerSelf)
+                            continue;
+                        if (node.Value.GetId() == m_FollowTargetId)
+                        {
+                            node = node.Next;
+                            break;
+                        }
+                    }
+                    if (null == node)
+                    {
+                        for (node = UserManager.Users.FirstValue; null != node; node = node.Next)
+                        {
+                            if (node.Value == m_PlayerSelf)
+                                continue;
+                            else
+                                break;
+                        }
+                    }
+                    if (null != node)
+                    {
+                        m_FollowTargetId = node.Value.GetId();
+                    }
+                }
+                return true;
+            }
+            bool sendMsg = false;
+            if (null != m_PlayerSelf)
+            {
+                int initiator = m_PlayerSelf.GetId();
+                int receiver = 0;
 
-        //        //释放控制为低优先级操作
-        //        if (!sendMsg && null != m_PlayerSelf.ControlledObject)
-        //        {
-        //            receiver = m_PlayerSelf.ControlledObject.GetId();
-        //            sendMsg = true;
-        //        }
+                //释放控制为低优先级操作
+                if (!sendMsg && null != m_PlayerSelf.ControlledObject)
+                {
+                    receiver = m_PlayerSelf.ControlledObject.GetId();
+                    sendMsg = true;
+                }
 
-        //        if (sendMsg)
-        //        {
-        //            Msg_CRC_InteractObject builder = new Msg_CRC_InteractObject();
-        //            //builder.InitiatorId = initiator;
-        //            builder.receiver_id = receiver;
-        //            NetworkSystem.Instance.SendMessage(builder);
-        //        }
-        //    }
-        //    return sendMsg;
-        //}
+                if (sendMsg)
+                {
+                    //Msg_CRC_InteractObject builder = new Msg_CRC_InteractObject();
+                    ////builder.InitiatorId = initiator;
+                    //builder.receiver_id = receiver;
+                    //NetworkSystem.Instance.SendMessage(builder);
+                }
+            }
+            return sendMsg;
+        }
 
-        //public bool ChangeScene(int sceneId)
-        //{
-        //    try
-        //    {
-        //        if (null != m_CurScene)
-        //        {
-        //            if (m_CurScene.ResId == sceneId)
-        //            {
-        //                return true;
-        //            }
-        //            else if (!m_CurScene.IsSuccessEnter && !this.IsServerSelectScene())
-        //            {
-        //                return false;
-        //            }
+        public bool ChangeScene(int sceneId)
+        {
+            try
+            {
+                if (null != m_CurScene)
+                {
+                    if (m_CurScene.ResId == sceneId)
+                    {
+                        return true;
+                    }
+                    else if (!m_CurScene.IsSuccessEnter && !this.IsServerSelectScene())
+                    {
+                        return false;
+                    }
 
-        //            Reset();
-        //            m_CurScene.Release();
-        //            m_CurScene = null;
-        //        }
-        //        else
-        //        {
-        //            Reset();
-        //        }
-        //        m_LastTryChangeSceneTime = TimeUtility.GetLocalMilliseconds();
-        //        m_CurScene = new SceneResource();
-        //        if (null != m_CurScene)
-        //        {
-        //            m_CurScene.Init(sceneId);
-        //            if (null != m_CurScene.SceneConfig)
-        //            {
-        //                if (IsServerSelectScene())
-        //                {
-        //                    //如果是服务器选择场景
-        //                    LobbyClient.Instance.CurrentRole = null;
-        //                }
-        //                Data_SceneConfig scene_config = SceneConfigProvider.Instance.GetSceneConfigById(m_CurScene.ResId);
-        //                m_SpatialSystem.Init(FilePathDefine_Client.C_RootPath + scene_config.m_BlockInfoFile, scene_config.m_ReachableSet);
-        //                m_SpatialSystem.LoadPatch(FilePathDefine_Client.C_RootPath + scene_config.m_BlockInfoFile + ".patch");
-        //                m_SpatialSystem.LoadObstacle(FilePathDefine_Client.C_RootPath + scene_config.m_ObstacleFile, 1 / scene_config.m_TiledDataScale);
+                    Reset();
+                    m_CurScene.Release();
+                    m_CurScene = null;
+                }
+                else
+                {
+                    Reset();
+                }
+                m_LastTryChangeSceneTime = TimeUtility.GetLocalMilliseconds();
+                m_CurScene = new SceneResource();
+                if (null != m_CurScene)
+                {
+                    m_CurScene.Init(sceneId);
+                    //if (null != m_CurScene.SceneConfig)
+                    //{
+                    //    if (IsServerSelectScene())
+                    //    {
+                    //        //如果是服务器选择场景
+                    //        LobbyClient.Instance.CurrentRole = null;
+                    //    }
+                    //    Data_SceneConfig scene_config = SceneConfigProvider.Instance.GetSceneConfigById(m_CurScene.ResId);
+                    //    m_SpatialSystem.Init(FilePathDefine_Client.C_RootPath + scene_config.m_BlockInfoFile, scene_config.m_ReachableSet);
+                    //    m_SpatialSystem.LoadPatch(FilePathDefine_Client.C_RootPath + scene_config.m_BlockInfoFile + ".patch");
+                    //    m_SpatialSystem.LoadObstacle(FilePathDefine_Client.C_RootPath + scene_config.m_ObstacleFile, 1 / scene_config.m_TiledDataScale);
 
-        //                LogSystem.Debug("init SpatialSystem:{0}", FilePathDefine_Client.C_RootPath + scene_config.m_BlockInfoFile);
-        //                LogSystem.Debug("GameSystem.ChangeNextScene:{0}", m_CurScene.ResId);
-        //                return true;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogSystem.Error("Exception:{0}\n{1}", ex.Message, ex.StackTrace);
-        //    }
-        //    return false;
-        //}
+                    //    LogSystem.Debug("init SpatialSystem:{0}", FilePathDefine_Client.C_RootPath + scene_config.m_BlockInfoFile);
+                    //    LogSystem.Debug("GameSystem.ChangeNextScene:{0}", m_CurScene.ResId);
+                    //    return true;
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("Exception:{0}\n{1}", ex.Message, ex.StackTrace);
+            }
+            return false;
+        }
 
-        //public int GetCurSceneId()
-        //{
-        //    if (m_CurScene != null)
-        //    {
-        //        return m_CurScene.ResId;
-        //    }
-        //    return 0;
-        //}
-        //public SceneResource GetCurScene()
-        //{
-        //    return m_CurScene;
-        //}
+        public int GetCurSceneId()
+        {
+            if (m_CurScene != null)
+            {
+                return m_CurScene.ResId;
+            }
+            return 0;
+        }
+        public SceneResource GetCurScene()
+        {
+            return m_CurScene;
+        }
 
-        //public void SetBlockedShader(uint rimColor1, float rimPower1, float rimCutValue1, uint rimColor2, float rimPower2, float rimCutValue2)
-        //{
-        //    UserInfo myself = GetPlayerSelf();
-        //    if (null != myself)
-        //    {
-        //        UserView myselfView = EntityManager.Instance.GetUserViewById(myself.GetId());
-        //        if (null != myselfView)
-        //        {
-        //            GfxSystem.SetBlockedShader(myselfView.Actor, rimColor1, rimPower1, rimCutValue1);
-        //        }
-        //        LinkedListDictionary<int, UserInfo> users = UserManager.Users;
-        //        for (LinkedListNode<UserInfo> node = users.FirstValue; null != node; node = node.Next)
-        //        {
-        //            UserInfo user = node.Value;
-        //            if (null != user && user != myself)
-        //            {
-        //                UserView view = EntityManager.Instance.GetUserViewById(user.GetId());
-        //                if (null != view)
-        //                {
-        //                    if (CharacterInfo.GetRelation(myself, user) == CharacterRelation.RELATION_FRIEND)
-        //                    {
-        //                        GfxSystem.SetBlockedShader(view.Actor, rimColor1, rimPower1, rimCutValue1);
+        public void SetBlockedShader(uint rimColor1, float rimPower1, float rimCutValue1, uint rimColor2, float rimPower2, float rimCutValue2)
+        {
+            UserInfo myself = GetPlayerSelf();
+            if (null != myself)
+            {
+                UserView myselfView = EntityManager.Instance.GetUserViewById(myself.GetId());
+                if (null != myselfView)
+                {
+                    GfxSystem.SetBlockedShader(myselfView.Actor, rimColor1, rimPower1, rimCutValue1);
+                }
+                LinkedListDictionary<int, UserInfo> users = UserManager.Users;
+                for (LinkedListNode<UserInfo> node = users.FirstValue; null != node; node = node.Next)
+                {
+                    UserInfo user = node.Value;
+                    if (null != user && user != myself)
+                    {
+                        UserView view = EntityManager.Instance.GetUserViewById(user.GetId());
+                        if (null != view)
+                        {
+                            if (CharacterInfo.GetRelation(myself, user) == CharacterRelation.RELATION_FRIEND)
+                            {
+                                GfxSystem.SetBlockedShader(view.Actor, rimColor1, rimPower1, rimCutValue1);
 
-        //                    }
-        //                    else
-        //                    {
-        //                        GfxSystem.SetBlockedShader(view.Actor, rimColor2, rimPower2, rimCutValue2);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        LinkedListDictionary<int, NpcInfo> npcs = NpcManager.Npcs;
-        //        for (LinkedListNode<NpcInfo> node = npcs.FirstValue; null != node; node = node.Next)
-        //        {
-        //            NpcInfo npc = node.Value;
-        //            if (null != npc)
-        //            {
-        //                NpcView view = EntityManager.Instance.GetNpcViewById(npc.GetId());
-        //                if (null != view)
-        //                {
-        //                    if (CharacterInfo.GetRelation(myself, npc) == CharacterRelation.RELATION_FRIEND)
-        //                    {
-        //                        GfxSystem.SetBlockedShader(view.Actor, rimColor1, rimPower1, rimCutValue1);
+                            }
+                            else
+                            {
+                                GfxSystem.SetBlockedShader(view.Actor, rimColor2, rimPower2, rimCutValue2);
+                            }
+                        }
+                    }
+                }
+                //LinkedListDictionary<int, NpcInfo> npcs = NpcManager.Npcs;
+                //for (LinkedListNode<NpcInfo> node = npcs.FirstValue; null != node; node = node.Next)
+                //{
+                //    NpcInfo npc = node.Value;
+                //    if (null != npc)
+                //    {
+                //        NpcView view = EntityManager.Instance.GetNpcViewById(npc.GetId());
+                //        if (null != view)
+                //        {
+                //            if (CharacterInfo.GetRelation(myself, npc) == CharacterRelation.RELATION_FRIEND)
+                //            {
+                //                GfxSystem.SetBlockedShader(view.Actor, rimColor1, rimPower1, rimCutValue1);
 
-        //                    }
-        //                    else
-        //                    {
-        //                        GfxSystem.SetBlockedShader(view.Actor, rimColor2, rimPower2, rimCutValue2);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+                //            }
+                //            else
+                //            {
+                //                GfxSystem.SetBlockedShader(view.Actor, rimColor2, rimPower2, rimCutValue2);
+                //            }
+                //        }
+                //    }
+                //}
+            }
+        }
 
-        //public void Reset()
-        //{
-        //    LogSystem.Debug("WorldSystem.Reset Destory Objects...");
-        //    DestroyObstacleObjects();
+        public void Reset()
+        {
+            LogSystem.Debug("WorldSystem.Reset Destory Objects...");
+            DestroyObstacleObjects();
 
-        //    for (LinkedListNode<UserInfo> linkNode = m_UserMgr.Users.FirstValue; null != linkNode; linkNode = linkNode.Next)
-        //    {
-        //        UserInfo info = linkNode.Value;
-        //        if (null != info)
-        //        {
-        //            EntityManager.Instance.DestroyUserView(info.GetId());
-        //        }
-        //    }
-        //    for (LinkedListNode<NpcInfo> linkNode = m_NpcMgr.Npcs.FirstValue; null != linkNode; linkNode = linkNode.Next)
-        //    {
-        //        NpcInfo info = linkNode.Value;
-        //        if (null != info)
-        //        {
-        //            EntityManager.Instance.DestroyNpcView(info.GetId());
-        //        }
-        //    }
-        //    LogSystem.Debug("WorldSystem.Reset Destory Objects Finish.");
+            for (LinkedListNode<UserInfo> linkNode = m_UserMgr.Users.FirstValue; null != linkNode; linkNode = linkNode.Next)
+            {
+                UserInfo info = linkNode.Value;
+                if (null != info)
+                {
+                    EntityManager.Instance.DestroyUserView(info.GetId());
+                }
+            }
+            //for (LinkedListNode<NpcInfo> linkNode = m_NpcMgr.Npcs.FirstValue; null != linkNode; linkNode = linkNode.Next)
+            //{
+            //    NpcInfo info = linkNode.Value;
+            //    if (null != info)
+            //    {
+            //        EntityManager.Instance.DestroyNpcView(info.GetId());
+            //    }
+            //}
+            LogSystem.Debug("WorldSystem.Reset Destory Objects Finish.");
 
-        //    m_UserMgr.Reset();
-        //    m_NpcMgr.Reset();
-        //    m_SceneLogicInfoMgr.Reset();
+            m_UserMgr.Reset();
+            //m_NpcMgr.Reset();
+            m_SceneLogicInfoMgr.Reset();
 
-        //    m_SceneLogicSystem.Reset();
-        //    m_SpatialSystem.Reset();
-        //    m_AiSystem.Reset();
-        //    m_BlackBoard.Reset();
+            m_SceneLogicSystem.Reset();
+            m_SpatialSystem.Reset();
+            //m_AiSystem.Reset();
+            m_BlackBoard.Reset();
 
-        //    ControlSystemOperation.Reset();
+            //ControlSystemOperation.Reset();
 
-        //    ClientStorySystem.Instance.Reset();
-        //    ClientStorySystem.Instance.ClearStoryInstancePool();
-        //    StorySystem.StoryConfigManager.Instance.Clear();
-        //}
-        //public void LoadData()
-        //{
-        //    SceneConfigProvider.Instance.Load(FilePathDefine_Client.C_SceneConfig, "ScenesConfigs");
-        //    SceneConfigProvider.Instance.LoadDropOutConfig(FilePathDefine_Client.C_SceneDropOut, "SceneDropOut");
-        //    SceneConfigProvider.Instance.LoadAllSceneConfig(FilePathDefine_Client.C_RootPath);
+            //ClientStorySystem.Instance.Reset();
+            //ClientStorySystem.Instance.ClearStoryInstancePool();
+            //StorySystem.StoryConfigManager.Instance.Clear();
+        }
+        public void LoadData()
+        {
+            //SceneConfigProvider.Instance.Load(FilePathDefine_Client.C_SceneConfig, "ScenesConfigs");
+            //SceneConfigProvider.Instance.LoadDropOutConfig(FilePathDefine_Client.C_SceneDropOut, "SceneDropOut");
+            //SceneConfigProvider.Instance.LoadAllSceneConfig(FilePathDefine_Client.C_RootPath);
 
-        //    ActionConfigProvider.Instance.Load(FilePathDefine_Client.C_ActionConfig, "ActionConfig");
-        //    NpcConfigProvider.Instance.LoadNpcConfig(FilePathDefine_Client.C_NpcConfig, "NpcConfig");
-        //    NpcConfigProvider.Instance.LoadNpcLevelupConfig(FilePathDefine_Client.C_NpcLevelupConfig, "NpcLevelupConfig");
-        //    PlayerConfigProvider.Instance.LoadPlayerConfig(FilePathDefine_Client.C_PlayerConfig, "PlayerConfig");
-        //    PlayerConfigProvider.Instance.LoadPlayerLevelupConfig(FilePathDefine_Client.C_PlayerLevelupConfig, "PlayerLevelupConfig");
-        //    PlayerConfigProvider.Instance.LoadPlayerLevelupExpConfig(FilePathDefine_Client.C_PlayerLevelupExpConfig, "PlayerLevelupExpConfig");
-        //    CriticalConfigProvider.Instance.Load(FilePathDefine_Client.C_CriticalConfig, "CriticalConfig");
-        //    AttributeScoreConfigProvider.Instance.Load(FilePathDefine_Client.C_AttributeScoreConfig, "AttributeScoreConfig");
+            //ActionConfigProvider.Instance.Load(FilePathDefine_Client.C_ActionConfig, "ActionConfig");
+            //NpcConfigProvider.Instance.LoadNpcConfig(FilePathDefine_Client.C_NpcConfig, "NpcConfig");
+            //NpcConfigProvider.Instance.LoadNpcLevelupConfig(FilePathDefine_Client.C_NpcLevelupConfig, "NpcLevelupConfig");
+            //PlayerConfigProvider.Instance.LoadPlayerConfig(FilePathDefine_Client.C_PlayerConfig, "PlayerConfig");
+            //PlayerConfigProvider.Instance.LoadPlayerLevelupConfig(FilePathDefine_Client.C_PlayerLevelupConfig, "PlayerLevelupConfig");
+            //PlayerConfigProvider.Instance.LoadPlayerLevelupExpConfig(FilePathDefine_Client.C_PlayerLevelupExpConfig, "PlayerLevelupExpConfig");
+            //CriticalConfigProvider.Instance.Load(FilePathDefine_Client.C_CriticalConfig, "CriticalConfig");
+            //AttributeScoreConfigProvider.Instance.Load(FilePathDefine_Client.C_AttributeScoreConfig, "AttributeScoreConfig");
 
-        //    AiActionConfigProvider.Instance.Load(FilePathDefine_Client.C_AiActionConfig, "AiActionConfig");
+            //AiActionConfigProvider.Instance.Load(FilePathDefine_Client.C_AiActionConfig, "AiActionConfig");
 
-        //    ItemConfigProvider.Instance.Load(FilePathDefine_Client.C_ItemConfig, "ItemConfig");
-        //    ItemLevelupConfigProvider.Instance.Load(FilePathDefine_Client.C_ItemLevelupConfig, "ItemLevelupConfig");
-        //    EquipmentConfigProvider.Instance.LoadEquipmentConfig(FilePathDefine_Client.C_EquipmentConfig, "EquipmentConfig");
-        //    BuyStaminaConfigProvider.Instance.Load(FilePathDefine_Client.C_BuyStaminaConfig, "BuyStaminaConfig");
-        //    AppendAttributeConfigProvider.Instance.Load(FilePathDefine_Client.C_AppendAttributeConfig, "AppendAttributeConfig");
-        //    LegacyLevelupConfigProvider.Instance.Load(FilePathDefine_Client.C_LegacyLevelupConfig, "LegacyLevelupConfig");
+            //ItemConfigProvider.Instance.Load(FilePathDefine_Client.C_ItemConfig, "ItemConfig");
+            //ItemLevelupConfigProvider.Instance.Load(FilePathDefine_Client.C_ItemLevelupConfig, "ItemLevelupConfig");
+            //EquipmentConfigProvider.Instance.LoadEquipmentConfig(FilePathDefine_Client.C_EquipmentConfig, "EquipmentConfig");
+            //BuyStaminaConfigProvider.Instance.Load(FilePathDefine_Client.C_BuyStaminaConfig, "BuyStaminaConfig");
+            //AppendAttributeConfigProvider.Instance.Load(FilePathDefine_Client.C_AppendAttributeConfig, "AppendAttributeConfig");
+            //LegacyLevelupConfigProvider.Instance.Load(FilePathDefine_Client.C_LegacyLevelupConfig, "LegacyLevelupConfig");
 
-        //    SkillConfigProvider.Instance.CollectData(SkillConfigType.SCT_SOUND, FilePathDefine_Client.C_SoundConfig, "SoundConfig");
-        //    SkillConfigProvider.Instance.CollectData(SkillConfigType.SCT_SKILL, FilePathDefine_Client.C_SkillSystemConfig, "SkillConfig");
-        //    SkillConfigProvider.Instance.CollectData(SkillConfigType.SCT_IMPACT, FilePathDefine_Client.C_ImpactSystemConfig, "ImpactConfig");
-        //    SkillConfigProvider.Instance.CollectData(SkillConfigType.SCT_EFFECT, FilePathDefine_Client.C_EffectConfig, "EffectConfig");
-        //    SkillLevelupConfigProvider.Instance.Load(FilePathDefine_Client.C_SkillLevelupConfig, "SkillLevelupConfig");
+            //SkillConfigProvider.Instance.CollectData(SkillConfigType.SCT_SOUND, FilePathDefine_Client.C_SoundConfig, "SoundConfig");
+            //SkillConfigProvider.Instance.CollectData(SkillConfigType.SCT_SKILL, FilePathDefine_Client.C_SkillSystemConfig, "SkillConfig");
+            //SkillConfigProvider.Instance.CollectData(SkillConfigType.SCT_IMPACT, FilePathDefine_Client.C_ImpactSystemConfig, "ImpactConfig");
+            //SkillConfigProvider.Instance.CollectData(SkillConfigType.SCT_EFFECT, FilePathDefine_Client.C_EffectConfig, "EffectConfig");
+            //SkillLevelupConfigProvider.Instance.Load(FilePathDefine_Client.C_SkillLevelupConfig, "SkillLevelupConfig");
 
-        //    BuffConfigProvider.Instance.Load(FilePathDefine_Client.C_BuffConfig, "BuffConfig");
+            //BuffConfigProvider.Instance.Load(FilePathDefine_Client.C_BuffConfig, "BuffConfig");
 
-        //    SoundConfigProvider.Instance.Load(FilePathDefine_Client.C_GlobalSoundConfig, "C_GlobalSoundConfig");
-        //    StrDictionaryProvider.Instance.Load(FilePathDefine_Client.C_StrDictionary, "StrDictionary");
+            //SoundConfigProvider.Instance.Load(FilePathDefine_Client.C_GlobalSoundConfig, "C_GlobalSoundConfig");
+            //StrDictionaryProvider.Instance.Load(FilePathDefine_Client.C_StrDictionary, "StrDictionary");
 
-        //    NewbieGuideProvider.Instance.Load(FilePathDefine_Client.C_NewbieGuide, "NewbieGuide");
-        //    SystemGuideConfigProvider.Instance.Load(FilePathDefine_Client.C_SystemGuideConfig, "SystemGuideConfig");
+            //NewbieGuideProvider.Instance.Load(FilePathDefine_Client.C_NewbieGuide, "NewbieGuide");
+            //SystemGuideConfigProvider.Instance.Load(FilePathDefine_Client.C_SystemGuideConfig, "SystemGuideConfig");
 
-        //    UiConfigProvider.Instance.Load(FilePathDefine_Client.C_UiConfig, "UiConfig");
-        //    ServerConfigProvider.Instance.Load(FilePathDefine_Client.C_ServerConfig, "ServerConfig");
-        //    MissionConfigProvider.Instance.Load(FilePathDefine_Client.C_MissionConfig, "MissionConfig");
-        //    WordFilter.Instance.Load(FilePathDefine_Client.C_SensitiveDictionary);
-        //    DynamicSceneConfigProvider.Instance.CollectData(FilePathDefine_Client.C_DynamicSceneConfig, "DynamicSceneConfig");
+            //UiConfigProvider.Instance.Load(FilePathDefine_Client.C_UiConfig, "UiConfig");
+            //ServerConfigProvider.Instance.Load(FilePathDefine_Client.C_ServerConfig, "ServerConfig");
+            //MissionConfigProvider.Instance.Load(FilePathDefine_Client.C_MissionConfig, "MissionConfig");
+            //WordFilter.Instance.Load(FilePathDefine_Client.C_SensitiveDictionary);
+            //DynamicSceneConfigProvider.Instance.CollectData(FilePathDefine_Client.C_DynamicSceneConfig, "DynamicSceneConfig");
 
-        //    ExpeditionMonsterAttrConfigProvider.Instance.Load(FilePathDefine_Client.C_ExpeditionMonsterAttrConfig, "ExpeditionMonsterAttrConfig");
-        //    ExpeditionTollgateConfigProvider.Instance.Load(FilePathDefine_Client.C_ExpeditionTollgateConfig, "ExpeditionTollgateConfig");
-        //    ExpeditionMonsterConfigProvider.Instance.Load(FilePathDefine_Client.C_ExpeditionMonsterConfig, "ExpeditionMonsterConfig");
+            //ExpeditionMonsterAttrConfigProvider.Instance.Load(FilePathDefine_Client.C_ExpeditionMonsterAttrConfig, "ExpeditionMonsterAttrConfig");
+            //ExpeditionTollgateConfigProvider.Instance.Load(FilePathDefine_Client.C_ExpeditionTollgateConfig, "ExpeditionTollgateConfig");
+            //ExpeditionMonsterConfigProvider.Instance.Load(FilePathDefine_Client.C_ExpeditionMonsterConfig, "ExpeditionMonsterConfig");
 
-        //    BuyMoneyConfigProvider.Instance.Load(FilePathDefine_Client.C_BuyMoneyConfig, "BuyMoneyConfig");
-        //    GowConfigProvider.Instance.LoadForClient();
+            //BuyMoneyConfigProvider.Instance.Load(FilePathDefine_Client.C_BuyMoneyConfig, "BuyMoneyConfig");
+            //GowConfigProvider.Instance.LoadForClient();
 
-        //    VipConfigProvider.Instance.Load(FilePathDefine_Client.C_VipConfig, "VipConfig");
-        //    VersionConfigProvider.Instance.Load(FilePathDefine_Client.C_VersionConfig, "VersionConfig");
-        //}
+            //VipConfigProvider.Instance.Load(FilePathDefine_Client.C_VipConfig, "VipConfig");
+            //VersionConfigProvider.Instance.Load(FilePathDefine_Client.C_VersionConfig, "VersionConfig");
+        }
         //public void ReloadNpc()
         //{
         //    foreach (Data_Unit npcUnit in m_CurScene.StaticData.m_UnitMgr.GetData().Values)
@@ -936,50 +939,45 @@ namespace StarWars
         //        }
         //    }
         //}
-        //public void ChangeHero()
-        //{
-        //    try
-        //    {
-        //        UserInfo user = GetPlayerSelf();
-        //        if (null != user)
-        //        {
-        //            Vector3 pos = user.GetMovementStateInfo().GetPosition3D();
-        //            float dir = user.GetMovementStateInfo().GetFaceDir();
-        //            int hp = user.Hp;
-        //            int rage = user.Rage;
+        public void ChangeHero()
+        {
+            try
+            {
+                UserInfo user = GetPlayerSelf();
+                if (null != user)
+                {
+                    Vector3 pos = user.GetMovementStateInfo().GetPosition3D();
+                    float dir = user.GetMovementStateInfo().GetFaceDir();
+                    int hp = user.Hp;
+                    int rage = user.Rage;
 
-        //            EntityManager.Instance.DestroyUserView(user.GetId());
-        //            DestroyCharacterById(user.GetId());
+                    EntityManager.Instance.DestroyUserView(user.GetId());
+                    DestroyCharacterById(user.GetId());
 
-        //            NetworkSystem.Instance.HeroId = (NetworkSystem.Instance.HeroId + 1) % 4;
-        //            if (NetworkSystem.Instance.HeroId == 0)
-        //                NetworkSystem.Instance.HeroId = 1;
+                    //NetworkSystem.Instance.HeroId = (NetworkSystem.Instance.HeroId + 1) % 4;
+                    //if (NetworkSystem.Instance.HeroId == 0)
+                    //    NetworkSystem.Instance.HeroId = 1;
 
-        //            user = CreatePlayerSelf(1, NetworkSystem.Instance.HeroId);
-        //            user.SetCampId(NetworkSystem.Instance.CampId);
-        //            /*Data_Unit unit = m_CurScene.StaticData.ExtractData(DataMap_Type.DT_Unit, GlobalVariables.GetUnitIdByCampId(NetworkSystem.Instance.CampId)) as Data_Unit;
-        //            if (null != unit) {
-        //              user.GetMovementStateInfo().SetPosition(unit.m_Pos);
-        //              user.GetMovementStateInfo().SetFaceDir(unit.m_RotAngle);
-        //              user.SetHp(Operate_Type.OT_Absolute, 1000);
-        //            }*/
-        //            user.GetMovementStateInfo().SetPosition(pos);
-        //            user.GetMovementStateInfo().SetFaceDir(dir);
-        //            user.SetHp(Operate_Type.OT_Absolute, hp);
-        //            user.SetRage(Operate_Type.OT_Absolute, rage);
-        //            EntityManager.Instance.CreatePlayerSelfView(1);
-        //            UserView view = EntityManager.Instance.GetUserViewById(1);
-        //            if (null != view)
-        //            {
-        //                view.Visible = true;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogSystem.Error("Exception:{0}\n{1}", ex.Message, ex.StackTrace);
-        //    }
-        //}
+                    //user = CreatePlayerSelf(1, NetworkSystem.Instance.HeroId);
+                    //user.SetCampId(NetworkSystem.Instance.CampId);
+
+                    user.GetMovementStateInfo().SetPosition(pos);
+                    user.GetMovementStateInfo().SetFaceDir(dir);
+                    user.SetHp(Operate_Type.OT_Absolute, hp);
+                    user.SetRage(Operate_Type.OT_Absolute, rage);
+                    EntityManager.Instance.CreatePlayerSelfView(1);
+                    UserView view = EntityManager.Instance.GetUserViewById(1);
+                    if (null != view)
+                    {
+                        view.Visible = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error("Exception:{0}\n{1}", ex.Message, ex.StackTrace);
+            }
+        }
 
         public void StartGame()
         {
@@ -1312,7 +1310,7 @@ namespace StarWars
         //                                            image_pos = user_image_pos;
         //                                        }
         //                                    }
-        //                                    image_player.GetMovementStateInfo().SetPosition(image_pos.X, image_pos.Y, image_pos.Z);
+        //                                    image_player.GetMovementStateInfo().SetPosition(image_pos.x, image_pos.y, image_pos.z);
         //                                    image_player.GetMovementStateInfo().SetFaceDir(image_dir);
         //                                    EntityManager.Instance.CreateUserView(image_player.GetId());
         //                                    image_player.SetLevel(image_info.Level);
@@ -1591,169 +1589,169 @@ namespace StarWars
         //        }
         //    }
         //}
-        //private void TickPve()
-        //{
-        //    m_AiSystem.Tick();
-        //    m_Profiler.aiSystemTickTime = TimeSnapshot.DoCheckPoint();
+        private void TickPve()
+        {
+            //m_AiSystem.Tick();
+            m_Profiler.aiSystemTickTime = TimeSnapshot.DoCheckPoint();
 
-        //    ClientStorySystem.Instance.Tick();
-        //    m_Profiler.storySystemTickTime = TimeSnapshot.DoCheckPoint();
-        //}
-        //private void TickRecover()
-        //{
-        //    float hp_coefficient = 1.0f;
-        //    float mp_coefficient = 1.0f;
-        //    if (null != m_CurScene && null != m_CurScene.SceneConfig)
-        //    {
-        //        Data_SceneConfig scene_data = m_CurScene.SceneConfig;
-        //        hp_coefficient = scene_data.m_RecoverHpCoefficient;
-        //        mp_coefficient = scene_data.m_RecoverMpCoefficient;
-        //    }
-        //    long curTime = TimeUtility.GetServerMilliseconds();
-        //    if (curTime > m_LastTickTimeForTickPerSecond + c_IntervalPerSecond)
-        //    {
-        //        m_LastTickTimeForTickPerSecond = curTime;
-        //        ///
-        //        for (LinkedListNode<UserInfo> linkNode = m_UserMgr.Users.FirstValue; null != linkNode; linkNode = linkNode.Next)
-        //        {
-        //            UserInfo info = linkNode.Value;
-        //            if (!info.IsDead())
-        //            {
-        //                float hpRecover = info.GetActualProperty().HpRecover * hp_coefficient;
-        //                float epRecover = info.GetActualProperty().EnergyRecover * mp_coefficient;
-        //                if (hpRecover > 0.0001)
-        //                {
-        //                    if (info.Hp + (int)hpRecover >= info.GetActualProperty().HpMax)
-        //                        info.SetHp(Operate_Type.OT_Absolute, (int)info.GetActualProperty().HpMax);
-        //                    else
-        //                        info.SetHp(Operate_Type.OT_Relative, (int)hpRecover);
-        //                }
-        //                if (epRecover > 0.0001)
-        //                {
-        //                    if (info.Energy + (int)epRecover >= info.GetActualProperty().EnergyMax)
-        //                        info.SetEnergy(Operate_Type.OT_Absolute, (int)info.GetActualProperty().EnergyMax);
-        //                    else
-        //                        info.SetEnergy(Operate_Type.OT_Relative, (int)epRecover);
-        //                }
-        //            }
-        //        }
-        //        for (LinkedListNode<NpcInfo> linkNode = m_NpcMgr.Npcs.FirstValue; null != linkNode; linkNode = linkNode.Next)
-        //        {
-        //            NpcInfo info = linkNode.Value;
-        //            if (!info.IsDead())
-        //            {
-        //                float hpRecover = info.GetActualProperty().HpRecover;
-        //                float npRecover = info.GetActualProperty().EnergyRecover;
-        //                if (hpRecover > 0.0001)
-        //                {
-        //                    if (info.Hp + (int)hpRecover >= info.GetActualProperty().HpMax)
-        //                        info.SetHp(Operate_Type.OT_Absolute, (int)info.GetActualProperty().HpMax);
-        //                    else
-        //                        info.SetHp(Operate_Type.OT_Relative, (int)hpRecover);
-        //                }
-        //                if (npRecover > 0.0001)
-        //                {
-        //                    if (info.Energy + (int)npRecover >= info.GetActualProperty().EnergyMax)
-        //                        info.SetEnergy(Operate_Type.OT_Absolute, (int)info.GetActualProperty().EnergyMax);
-        //                    else
-        //                        info.SetEnergy(Operate_Type.OT_Relative, (int)npRecover);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-        //private void TickUsers()
-        //{
-        //    for (LinkedListNode<UserInfo> linkNode = m_UserMgr.Users.FirstValue; null != linkNode; linkNode = linkNode.Next)
-        //    {
-        //        UserInfo info = linkNode.Value;
-        //        if (info.SkillController != null)
-        //        {
-        //            info.SkillController.OnTick();
-        //        }
-        //        if (info.LevelChanged || info.GetSkillStateInfo().BuffChanged || info.GetEquipmentStateInfo().EquipmentChanged || info.GetLegacyStateInfo().LegacyChanged)
-        //        {
-        //            //LogSystem.Debug("UserAttrCalculate LevelChanged:{0} BuffChanged:{1} EquipmentChanged:{2} LegacyChanged:{3}", info.LevelChanged, info.GetSkillStateInfo().BuffChanged, info.GetEquipmentStateInfo().EquipmentChanged, info.GetLegacyStateInfo().LegacyChanged);
-        //            UserAttrCalculator.Calc(info);
-        //            info.LevelChanged = false;
-        //            info.GetSkillStateInfo().BuffChanged = false;
-        //            info.GetEquipmentStateInfo().EquipmentChanged = false;
-        //            info.GetLegacyStateInfo().LegacyChanged = false;
-        //        }
-        //        UserView view = EntityManager.Instance.GetUserViewById(info.GetId());
-        //        if (null != view)
-        //        {
-        //            if (IsPveScene() && !IsExpeditionScene() || IsMultiPveScene())
-        //            {
-        //                int battleNpcCount = GetBattleNpcCount();
-        //                if (battleNpcCount <= 0)
-        //                {
-        //                    view.SetIndicatorInfo(true, 0, 0);
-        //                }
-        //                else if (battleNpcCount <= 3)
-        //                {
-        //                    float minPowDist = 99999;
-        //                    NpcInfo npc = m_NpcMgr.GetNearest(info.GetMovementStateInfo().GetPosition3D(), ref minPowDist);
-        //                    if (null != npc && minPowDist > info.IndicatorDis * info.IndicatorDis)
-        //                    {
-        //                        float dir = Geometry.GetDirFromVector(npc.GetMovementStateInfo().GetPosition3D() - info.GetMovementStateInfo().GetPosition3D());
-        //                        view.SetIndicatorInfo(true, dir, 1);
-        //                    }
-        //                    else
-        //                    {
-        //                        view.SetIndicatorInfo(false, 0.0f, 1);
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    view.SetIndicatorInfo(false, 0.0f, 1);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    // 连击
-        //    if (null != m_PlayerSelf)
-        //    {
-        //        long curTime = TimeUtility.GetLocalMilliseconds();
-        //        CombatStatisticInfo combatInfo = m_PlayerSelf.GetCombatStatisticInfo();
-        //        if (combatInfo.LastHitTime + 1500 < curTime && combatInfo.MultiHitCount > 1)
-        //        {
-        //            combatInfo.MultiHitCount = 1;
-        //            GfxSystem.PublishGfxEvent("ge_hitcount", "ui", 0);
-        //        }
-        //    }
-        //    UserInfo player = WorldSystem.Instance.GetPlayerSelf();
-        //    if (null != player && player.Hp <= 0)
-        //    {
-        //        if (player.DeadTime <= 0)
-        //        {
-        //            player.GetCombatStatisticInfo().AddDeadCount(1);  //死亡计数+1
-        //            if (player.SkillController != null)
-        //            {
-        //                player.SkillController.ForceInterruptCurSkill();
-        //            }
+            //ClientStorySystem.Instance.Tick();
+            m_Profiler.storySystemTickTime = TimeSnapshot.DoCheckPoint();
+        }
+        private void TickRecover()
+        {
+            float hp_coefficient = 1.0f;
+            float mp_coefficient = 1.0f;
+            if (null != m_CurScene && null != m_CurScene.SceneConfig)
+            {
+                Data_SceneConfig scene_data = m_CurScene.SceneConfig;
+                hp_coefficient = scene_data.m_RecoverHpCoefficient;
+                mp_coefficient = scene_data.m_RecoverMpCoefficient;
+            }
+            long curTime = TimeUtility.GetServerMilliseconds();
+            if (curTime > m_LastTickTimeForTickPerSecond + c_IntervalPerSecond)
+            {
+                m_LastTickTimeForTickPerSecond = curTime;
+                ///
+                for (LinkedListNode<UserInfo> linkNode = m_UserMgr.Users.FirstValue; null != linkNode; linkNode = linkNode.Next)
+                {
+                    UserInfo info = linkNode.Value;
+                    if (!info.IsDead())
+                    {
+                        float hpRecover = info.GetActualProperty().HpRecover * hp_coefficient;
+                        float epRecover = info.GetActualProperty().EnergyRecover * mp_coefficient;
+                        if (hpRecover > 0.0001)
+                        {
+                            if (info.Hp + (int)hpRecover >= info.GetActualProperty().HpMax)
+                                info.SetHp(Operate_Type.OT_Absolute, (int)info.GetActualProperty().HpMax);
+                            else
+                                info.SetHp(Operate_Type.OT_Relative, (int)hpRecover);
+                        }
+                        if (epRecover > 0.0001)
+                        {
+                            if (info.Energy + (int)epRecover >= info.GetActualProperty().EnergyMax)
+                                info.SetEnergy(Operate_Type.OT_Absolute, (int)info.GetActualProperty().EnergyMax);
+                            else
+                                info.SetEnergy(Operate_Type.OT_Relative, (int)epRecover);
+                        }
+                    }
+                }
+                //for (LinkedListNode<NpcInfo> linkNode = m_NpcMgr.Npcs.FirstValue; null != linkNode; linkNode = linkNode.Next)
+                //{
+                //    NpcInfo info = linkNode.Value;
+                //    if (!info.IsDead())
+                //    {
+                //        float hpRecover = info.GetActualProperty().HpRecover;
+                //        float npRecover = info.GetActualProperty().EnergyRecover;
+                //        if (hpRecover > 0.0001)
+                //        {
+                //            if (info.Hp + (int)hpRecover >= info.GetActualProperty().HpMax)
+                //                info.SetHp(Operate_Type.OT_Absolute, (int)info.GetActualProperty().HpMax);
+                //            else
+                //                info.SetHp(Operate_Type.OT_Relative, (int)hpRecover);
+                //        }
+                //        if (npRecover > 0.0001)
+                //        {
+                //            if (info.Energy + (int)npRecover >= info.GetActualProperty().EnergyMax)
+                //                info.SetEnergy(Operate_Type.OT_Absolute, (int)info.GetActualProperty().EnergyMax);
+                //            else
+                //                info.SetEnergy(Operate_Type.OT_Relative, (int)npRecover);
+                //        }
+                //    }
+                //}
+            }
+        }
+        private void TickUsers()
+        {
+            for (LinkedListNode<UserInfo> linkNode = m_UserMgr.Users.FirstValue; null != linkNode; linkNode = linkNode.Next)
+            {
+                UserInfo info = linkNode.Value;
+                //if (info.SkillController != null)
+                //{
+                //    info.SkillController.OnTick();
+                //}
+                //if (info.LevelChanged || info.GetSkillStateInfo().BuffChanged || info.GetEquipmentStateInfo().EquipmentChanged || info.GetLegacyStateInfo().LegacyChanged)
+                //{
+                //    //LogSystem.Debug("UserAttrCalculate LevelChanged:{0} BuffChanged:{1} EquipmentChanged:{2} LegacyChanged:{3}", info.LevelChanged, info.GetSkillStateInfo().BuffChanged, info.GetEquipmentStateInfo().EquipmentChanged, info.GetLegacyStateInfo().LegacyChanged);
+                //    UserAttrCalculator.Calc(info);
+                //    info.LevelChanged = false;
+                //    info.GetSkillStateInfo().BuffChanged = false;
+                //    info.GetEquipmentStateInfo().EquipmentChanged = false;
+                //    info.GetLegacyStateInfo().LegacyChanged = false;
+                //}
+                UserView view = EntityManager.Instance.GetUserViewById(info.GetId());
+                if (null != view)
+                {
+                    if (IsPveScene() && !IsExpeditionScene() || IsMultiPveScene())
+                    {
+                        //int battleNpcCount = GetBattleNpcCount();
+                        //if (battleNpcCount <= 0)
+                        //{
+                        //    view.SetIndicatorInfo(true, 0, 0);
+                        //}
+                        //else if (battleNpcCount <= 3)
+                        //{
+                        //    float minPowDist = 99999;
+                        //    NpcInfo npc = m_NpcMgr.GetNearest(info.GetMovementStateInfo().GetPosition3D(), ref minPowDist);
+                        //    if (null != npc && minPowDist > info.IndicatorDis * info.IndicatorDis)
+                        //    {
+                        //        float dir = Geometry.GetDirFromVector(npc.GetMovementStateInfo().GetPosition3D() - info.GetMovementStateInfo().GetPosition3D());
+                        //        view.SetIndicatorInfo(true, dir, 1);
+                        //    }
+                        //    else
+                        //    {
+                        //        view.SetIndicatorInfo(false, 0.0f, 1);
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    view.SetIndicatorInfo(false, 0.0f, 1);
+                        //}
+                    }
+                }
+            }
+            // 连击
+            if (null != m_PlayerSelf)
+            {
+                long curTime = TimeUtility.GetLocalMilliseconds();
+                //CombatStatisticInfo combatInfo = m_PlayerSelf.GetCombatStatisticInfo();
+                //if (combatInfo.LastHitTime + 1500 < curTime && combatInfo.MultiHitCount > 1)
+                //{
+                //    combatInfo.MultiHitCount = 1;
+                //    GfxSystem.PublishGfxEvent("ge_hitcount", "ui", 0);
+                //}
+            }
+            UserInfo player = WorldSystem.Instance.GetPlayerSelf();
+            if (null != player && player.Hp <= 0)
+            {
+                if (player.DeadTime <= 0)
+                {
+                    //player.GetCombatStatisticInfo().AddDeadCount(1);  //死亡计数+1
+                    //if (player.SkillController != null)
+                    //{
+                    //    player.SkillController.ForceInterruptCurSkill();
+                    //}
 
-        //            if (IsPveScene() || IsPureClientScene())
-        //            {
-        //                ClientStorySystem.Instance.SendMessage("userkilled", player.GetId());
-        //                ClientStorySystem.Instance.SendMessage("playerselfkilled", player.GetId());
-        //            }
-        //            player.DeadTime = TimeUtility.GetServerMilliseconds();
-        //            if (WorldSystem.Instance.IsPveScene() && !IsExpeditionScene() || WorldSystem.Instance.IsMultiPveScene())
-        //            {
-        //                GfxSystem.PublishGfxEvent("ge_role_dead", "ui");
-        //            }
-        //            // 禁止输入
-        //            PlayerControl.Instance.EnableMoveInput = false;
-        //            PlayerControl.Instance.EnableRotateInput = false;
-        //            PlayerControl.Instance.EnableSkillInput = false;
-        //        }
-        //        ///
-        //        ExpeditionUserDeadHandle();
-        //    }
-        //    ///
-        //    ExpeditionImageDeadHandle();
-        //}
+                    //if (IsPveScene() || IsPureClientScene())
+                    //{
+                    //    ClientStorySystem.Instance.SendMessage("userkilled", player.GetId());
+                    //    ClientStorySystem.Instance.SendMessage("playerselfkilled", player.GetId());
+                    //}
+                    player.DeadTime = TimeUtility.GetServerMilliseconds();
+                    if (WorldSystem.Instance.IsPveScene() && !IsExpeditionScene() || WorldSystem.Instance.IsMultiPveScene())
+                    {
+                        GfxSystem.PublishGfxEvent("ge_role_dead", "ui");
+                    }
+                    // 禁止输入
+                    PlayerControl.Instance.EnableMoveInput = false;
+                    PlayerControl.Instance.EnableRotateInput = false;
+                    PlayerControl.Instance.EnableSkillInput = false;
+                }
+                ///
+                //ExpeditionUserDeadHandle();
+            }
+
+            //ExpeditionImageDeadHandle();
+        }
         //private void TickNpcs()
         //{
         //    List<NpcInfo> deletes = new List<NpcInfo>();
@@ -1824,7 +1822,7 @@ namespace StarWars
         //        if (IsPureClientScene() || IsPveScene())
         //        {
         //            // 约定npc的高度低于130时，直接判定npc死亡。
-        //            if (130.0f > info.GetMovementStateInfo().GetPosition3D().Y)
+        //            if (130.0f > info.GetMovementStateInfo().GetPosition3D().y)
         //            {
         //                info.NeedDelete = true;
         //                OnNpcKilled(info);
@@ -1867,19 +1865,19 @@ namespace StarWars
         //        ImpactSystem.Instance.Tick(character);
         //    }
         //}
-        //private void TickMoveMeetObstacle()
-        //{
-        //    UserInfo myself = GetPlayerSelf();
-        //    if (null != myself && myself.GetMovementStateInfo().IsMoving && myself.GetMovementStateInfo().IsMoveMeetObstacle)
-        //    {
-        //        long curTime = TimeUtility.GetLocalMilliseconds();
-        //        if (m_LastNotifyMoveMeetObstacleTime + 100 <= curTime)
-        //        {
-        //            NotifyMoveMeetObstacle(true);
-        //            m_LastNotifyMoveMeetObstacleTime = TimeUtility.GetLocalMilliseconds();
-        //        }
-        //    }
-        //}
+        private void TickMoveMeetObstacle()
+        {
+            UserInfo myself = GetPlayerSelf();
+            if (null != myself && myself.GetMovementStateInfo().IsMoving && myself.GetMovementStateInfo().IsMoveMeetObstacle)
+            {
+                long curTime = TimeUtility.GetLocalMilliseconds();
+                if (m_LastNotifyMoveMeetObstacleTime + 100 <= curTime)
+                {
+                    NotifyMoveMeetObstacle(true);
+                    m_LastNotifyMoveMeetObstacleTime = TimeUtility.GetLocalMilliseconds();
+                }
+            }
+        }
 
         //private void DestroyNpc(NpcInfo ni)
         //{
@@ -2263,36 +2261,40 @@ namespace StarWars
         //    }
         //}
 
-        //private void GetPlayerInfoForCache(ref List<int> userList, ref List<int> userSkillList)
-        //{
-        //    UserInfo playerSelf = GetPlayerSelf();
-        //    if (playerSelf != null)
-        //    {
-        //        userList.Add(playerSelf.GetLinkId());
-        //        List<SkillInfo> allSkills = playerSelf.GetSkillStateInfo().GetAllSkill();
-        //        foreach (SkillInfo skill in allSkills)
-        //        {
-        //            if (skill.ConfigData.Category != SkillCategory.kNone)
-        //            {
-        //                userSkillList.Add(skill.ConfigData.GetId());
-        //            }
-        //        }
-        //    }
+        private void GetPlayerInfoForCache(ref List<int> userList, ref List<int> userSkillList)
+        {
+            UserInfo playerSelf = GetPlayerSelf();
+            if (playerSelf != null)
+            {
+                userList.Add(playerSelf.GetLinkId());
+                List<SkillInfo> allSkills = playerSelf.GetSkillStateInfo().GetAllSkill();
+                foreach (SkillInfo skill in allSkills)
+                {
+                    if (skill.ConfigData.Category != SkillCategory.kNone)
+                    {
+                        userSkillList.Add(skill.ConfigData.GetId());
+                    }
+                }
+            }
 
-        //    //List<SkillInfo> userSkills = null;
-        //    //for (LinkedListNode<UserInfo> linkNode = m_UserMgr.Users.FirstValue; null != linkNode; linkNode = linkNode.Next) {
-        //    //  UserInfo info = linkNode.Value;
-        //    //  if (info != null) {
-        //    //    userList.Add(info.GetLinkId());
-        //    //    userSkills = info.GetSkillStateInfo().GetAllSkill();
-        //    //    foreach (SkillInfo skill in userSkills) {
-        //    //      if (skill.ConfigData.Category != SkillCategory.kNone) {
-        //    //        userSkillList.Add(skill.ConfigData.GetId());
-        //    //      }
-        //    //    }
-        //    //  }
-        //    //}
-        //}
+            List<SkillInfo> userSkills = null;
+            for (LinkedListNode<UserInfo> linkNode = m_UserMgr.Users.FirstValue; null != linkNode; linkNode = linkNode.Next)
+            {
+                UserInfo info = linkNode.Value;
+                if (info != null)
+                {
+                    userList.Add(info.GetLinkId());
+                    userSkills = info.GetSkillStateInfo().GetAllSkill();
+                    foreach (SkillInfo skill in userSkills)
+                    {
+                        if (skill.ConfigData.Category != SkillCategory.kNone)
+                        {
+                            userSkillList.Add(skill.ConfigData.GetId());
+                        }
+                    }
+                }
+            }
+        }
         //private void DropNpc(DropOutType dropType, string model, string particle, int value, NpcInfo npc)
         //{
         //    Data_Unit unit = new Data_Unit();
@@ -2339,115 +2341,115 @@ namespace StarWars
         //        return true;
         //    }
         //}
-        //private void ShowObstacle(bool isShow)
-        //{
-        //    if (!m_IsDebugObstacleCreated)
-        //    {
-        //        if (null != m_SpatialSystem && null != m_PlayerSelf)
-        //        {
-        //            CellManager cellMgr = m_SpatialSystem.GetCellManager();
-        //            if (null != cellMgr)
-        //            {
-        //                List<float> vertices = new List<float>();
-        //                List<int> triangles = new List<int>();
+        private void ShowObstacle(bool isShow)
+        {
+            if (!m_IsDebugObstacleCreated)
+            {
+                if (null != m_SpatialSystem && null != m_PlayerSelf)
+                {
+                    CellManager cellMgr = m_SpatialSystem.GetCellManager();
+                    if (null != cellMgr)
+                    {
+                        List<float> vertices = new List<float>();
+                        List<int> triangles = new List<int>();
 
-        //                int maxRows = cellMgr.GetMaxRow();
-        //                int maxCols = cellMgr.GetMaxCol();
-        //                float w = cellMgr.GetCellWidth() / 2;
+                        int maxRows = cellMgr.GetMaxRow();
+                        int maxCols = cellMgr.GetMaxCol();
+                        float w = cellMgr.GetCellWidth() / 2;
 
-        //                uint color = 0xccff0000;
+                        uint color = 0xccff0000;
 
-        //                for (int i = 0; i < maxRows; ++i)
-        //                {
-        //                    for (int j = 0; j < maxCols; ++j)
-        //                    {
-        //                        Vector3 pt = cellMgr.GetCellCenter(i, j);
-        //                        byte status = cellMgr.GetCellStatus(i, j);
-        //                        if (BlockType.GetBlockType(status) != BlockType.NOT_BLOCK)
-        //                        {
-        //                            int stIndex = vertices.Count / 3;
-        //                            //---------------------
-        //                            //左上
-        //                            vertices.Add(pt.X - w);
-        //                            vertices.Add(0);
-        //                            vertices.Add(pt.Z - w);
-        //                            //右上
-        //                            vertices.Add(pt.X + w);
-        //                            vertices.Add(0);
-        //                            vertices.Add(pt.Z - w);
-        //                            //左下
-        //                            vertices.Add(pt.X - w);
-        //                            vertices.Add(0);
-        //                            vertices.Add(pt.Z + w);
-        //                            //右下
-        //                            vertices.Add(pt.X + w);
-        //                            vertices.Add(0);
-        //                            vertices.Add(pt.Z + w);
-        //                            //---------------------
-        //                            //三角形1
-        //                            triangles.Add(stIndex);
-        //                            triangles.Add(stIndex + 2);
-        //                            triangles.Add(stIndex + 1);
-        //                            //三角形2
-        //                            triangles.Add(stIndex + 1);
-        //                            triangles.Add(stIndex + 2);
-        //                            triangles.Add(stIndex + 3);
+                        for (int i = 0; i < maxRows; ++i)
+                        {
+                            for (int j = 0; j < maxCols; ++j)
+                            {
+                                Vector3 pt = cellMgr.GetCellCenter(i, j);
+                                byte status = cellMgr.GetCellStatus(i, j);
+                                if (BlockType.GetBlockType(status) != BlockType.NOT_BLOCK)
+                                {
+                                    int stIndex = vertices.Count / 3;
+                                    //---------------------
+                                    //左上
+                                    vertices.Add(pt.x - w);
+                                    vertices.Add(0);
+                                    vertices.Add(pt.z - w);
+                                    //右上
+                                    vertices.Add(pt.x + w);
+                                    vertices.Add(0);
+                                    vertices.Add(pt.z - w);
+                                    //左下
+                                    vertices.Add(pt.x - w);
+                                    vertices.Add(0);
+                                    vertices.Add(pt.z + w);
+                                    //右下
+                                    vertices.Add(pt.x + w);
+                                    vertices.Add(0);
+                                    vertices.Add(pt.z + w);
+                                    //---------------------
+                                    //三角形1
+                                    triangles.Add(stIndex);
+                                    triangles.Add(stIndex + 2);
+                                    triangles.Add(stIndex + 1);
+                                    //三角形2
+                                    triangles.Add(stIndex + 1);
+                                    triangles.Add(stIndex + 2);
+                                    triangles.Add(stIndex + 3);
 
-        //                            if (stIndex >= 10000)
-        //                            {
-        //                                int actor = GameObjectIdManager.Instance.GenNextId();
-        //                                GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, "Obstacle", true);
-        //                                //GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, color, "Transparent/Diffuse", true);
-        //                                m_DebugObstacleActors.Add(actor);
-        //                                vertices = new List<float>();
-        //                                triangles = new List<int>();
-        //                            }
-        //                        }
-        //                    }
-        //                }
+                                    if (stIndex >= 10000)
+                                    {
+                                        int actor = GameObjectIdManager.Instance.GenNextId();
+                                        GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, "Obstacle", true);
+                                        //GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, color, "Transparent/Diffuse", true);
+                                        m_DebugObstacleActors.Add(actor);
+                                        vertices = new List<float>();
+                                        triangles = new List<int>();
+                                    }
+                                }
+                            }
+                        }
 
-        //                if (vertices.Count > 0)
-        //                {
-        //                    int actor = GameObjectIdManager.Instance.GenNextId();
-        //                    GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, "Obstacle", true);
-        //                    //GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, color, "Transparent/Diffuse", true);
-        //                    m_DebugObstacleActors.Add(actor);
-        //                }
-        //                m_IsDebugObstacleCreated = true;
-        //            }
-        //        }
-        //        return;
-        //    }
-        //    foreach (int actor in m_DebugObstacleActors)
-        //    {
-        //        GfxSystem.SetGameObjectVisible(actor, isShow);
-        //    }
-        //}
-        //private void DestroyObstacleObjects()
-        //{
-        //    foreach (int actor in m_DebugObstacleActors)
-        //    {
-        //        GfxSystem.DestroyGameObject(actor);
-        //    }
-        //    m_IsDebugObstacleCreated = false;
-        //}
+                        if (vertices.Count > 0)
+                        {
+                            int actor = GameObjectIdManager.Instance.GenNextId();
+                            GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, "Obstacle", true);
+                            //GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, color, "Transparent/Diffuse", true);
+                            m_DebugObstacleActors.Add(actor);
+                        }
+                        m_IsDebugObstacleCreated = true;
+                    }
+                }
+                return;
+            }
+            foreach (int actor in m_DebugObstacleActors)
+            {
+                GfxSystem.SetGameObjectVisible(actor, isShow);
+            }
+        }
+        private void DestroyObstacleObjects()
+        {
+            foreach (int actor in m_DebugObstacleActors)
+            {
+                GfxSystem.DestroyGameObject(actor);
+            }
+            m_IsDebugObstacleCreated = false;
+        }
 
-        //public CharacterInfo GetCharacterById(int id)
-        //{
-        //    CharacterInfo obj = null;
-        //    if (null != m_NpcMgr)
-        //        obj = m_NpcMgr.GetNpcInfo(id);
-        //    if (null != m_UserMgr && null == obj)
-        //        obj = m_UserMgr.GetUserInfo(id);
-        //    return obj;
-        //}
-        //public CharacterInfo GetCharacterByUnitId(int unitId)
-        //{
-        //    CharacterInfo obj = null;
-        //    if (null != m_NpcMgr)
-        //        obj = m_NpcMgr.GetNpcInfoByUnitId(unitId);
-        //    return obj;
-        //}
+        public CharacterInfo GetCharacterById(int id)
+        {
+            CharacterInfo obj = null;
+            //if (null != m_NpcMgr)
+            //    obj = m_NpcMgr.GetNpcInfo(id);
+            if (null != m_UserMgr && null == obj)
+                obj = m_UserMgr.GetUserInfo(id);
+            return obj;
+        }
+        public CharacterInfo GetCharacterByUnitId(int unitId)
+        {
+            CharacterInfo obj = null;
+            //if (null != m_NpcMgr)
+            //    obj = m_NpcMgr.GetNpcInfoByUnitId(unitId);
+            return obj;
+        }
         public UserInfo GetPlayerSelf()
         {
             return m_PlayerSelf;
@@ -2610,24 +2612,24 @@ namespace StarWars
             return m_PlayerSelf;
         }
 
-        //public void NotifyMoveMeetObstacle(bool force)
-        //{
-        //    if (!IsAlreadyNotifyMeetObstacle || force)
-        //    {
-        //        if (null != m_PlayerSelf)
-        //        {
-        //            MovementStateInfo msi = m_PlayerSelf.GetMovementStateInfo();
+        public void NotifyMoveMeetObstacle(bool force)
+        {
+            //if (!IsAlreadyNotifyMeetObstacle || force)
+            //{
+            //    if (null != m_PlayerSelf)
+            //    {
+            //        MovementStateInfo msi = m_PlayerSelf.GetMovementStateInfo();
 
-        //            Msg_CRC_MoveMeetObstacle msg = new Msg_CRC_MoveMeetObstacle();
-        //            msg.cur_pos_x = msi.PositionX;
-        //            msg.cur_pos_z = msi.PositionZ;
-        //            msg.send_time = TimeUtility.GetServerMilliseconds();
-        //            NetworkSystem.Instance.SendMessage(msg);
+            //        Msg_CRC_MoveMeetObstacle msg = new Msg_CRC_MoveMeetObstacle();
+            //        msg.cur_pos_x = msi.PositionX;
+            //        msg.cur_pos_z = msi.PositionZ;
+            //        msg.send_time = TimeUtility.GetServerMilliseconds();
+            //        NetworkSystem.Instance.SendMessage(msg);
 
-        //            IsAlreadyNotifyMeetObstacle = true;
-        //        }
-        //    }
-        //}
+            //        IsAlreadyNotifyMeetObstacle = true;
+            //    }
+            //}
+        }
         //public void UpdateObserverCamera(float x, float y)
         //{
         //    if (!m_IsFollowObserver)
@@ -3001,7 +3003,7 @@ namespace StarWars
 
             //m_AiSystem.SetNpcManager(m_NpcMgr);
             //m_AiSystem.SetUserManager(m_UserMgr);
-            //m_SceneLogicSystem.SetSceneLogicInfoManager(m_SceneLogicInfoMgr);
+            m_SceneLogicSystem.SetSceneLogicInfoManager(m_SceneLogicInfoMgr);
         }
 
         //private NpcManager m_NpcMgr = new NpcManager(256);
@@ -3009,7 +3011,7 @@ namespace StarWars
         private SceneLogicInfoManager m_SceneLogicInfoMgr = new SceneLogicInfoManager(256);
 
         //private AiSystem m_AiSystem = new AiSystem();
-        //private SceneLogicSystem m_SceneLogicSystem = new SceneLogicSystem();
+        private SceneLogicSystem m_SceneLogicSystem = new SceneLogicSystem();
         private SpatialSystem m_SpatialSystem = new SpatialSystem();
         private BlackBoard m_BlackBoard = new BlackBoard();
 

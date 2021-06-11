@@ -22,13 +22,13 @@ namespace StarWars
                 return m_SceneStaticData;
             }
         }
-        //public Data_SceneConfig SceneConfig
-        //{
-        //    get
-        //    {
-        //        return m_SceneConfig;
-        //    }
-        //}
+        public Data_SceneConfig SceneConfig
+        {
+            get
+            {
+                return m_SceneConfig;
+            }
+        }
         //public Data_SceneDropOut SceneDropOut
         //{
         //    get
@@ -294,30 +294,30 @@ namespace StarWars
         private bool LoadSceneData(int sceneResId)
         {
             bool result = true;
-            //m_SceneResId = sceneResId;
-            //// 加载场景配置数据
-            //m_SceneConfig = SceneConfigProvider.Instance.GetSceneConfigById(m_SceneResId);
-            //if (null == m_SceneConfig)
-            //    LogSystem.Error("LoadSceneData {0} failed!", sceneResId);
+            m_SceneResId = sceneResId;
+            // 加载场景配置数据
+            m_SceneConfig = SceneConfigProvider.Instance.GetSceneConfigById(m_SceneResId);
+            if (null == m_SceneConfig)
+                LogSystem.Error("LoadSceneData {0} failed!", sceneResId);
             //m_SceneDropOut = SceneConfigProvider.Instance.GetSceneDropOutById(m_SceneConfig.m_DropId);
-            //// 加载本场景xml数据
-            //m_SceneStaticData = SceneConfigProvider.Instance.GetMapDataBySceneResId(m_SceneResId);
-            //HashSet<int> monstList = null;
-            //if (IsExpedition)
-            //{
-            //    monstList = new HashSet<int>();
-            //    RoleInfo curRole = LobbyClient.Instance.CurrentRole;
-            //    ExpeditionPlayerInfo expInfo = curRole.GetExpeditionInfo();
-            //    ExpeditionPlayerInfo.TollgateData data = expInfo.Tollgates[expInfo.ActiveTollgate];
-            //    monstList.UnionWith(data.EnemyList);
-            //}
-            //GfxSystem.LoadScene(m_SceneConfig.m_ClientSceneFile, m_SceneConfig.m_Chapter, m_SceneConfig.GetId(), monstList, OnLoadFinish);
+            // 加载本场景xml数据
+            m_SceneStaticData = SceneConfigProvider.Instance.GetMapDataBySceneResId(m_SceneResId);
+            HashSet<int> monstList = null;
+            if (IsExpedition)
+            {
+                monstList = new HashSet<int>();
+                //RoleInfo curRole = LobbyClient.Instance.CurrentRole;
+                //ExpeditionPlayerInfo expInfo = curRole.GetExpeditionInfo();
+                //ExpeditionPlayerInfo.TollgateData data = expInfo.Tollgates[expInfo.ActiveTollgate];
+                //monstList.UnionWith(data.EnemyList);
+            }
+            GfxSystem.LoadScene(m_SceneConfig.m_ClientSceneFile, m_SceneConfig.m_Chapter, m_SceneConfig.GetId(), monstList, OnLoadFinish);
             return result;
         }
 
         private int m_SceneResId;
         private MapDataProvider m_SceneStaticData;
-        //private Data_SceneConfig m_SceneConfig;
+        private Data_SceneConfig m_SceneConfig;
         //private Data_SceneDropOut m_SceneDropOut;
         private Dictionary<int, int> m_DropMoneyData = new Dictionary<int, int>();
         private Dictionary<int, int> m_DropHpData = new Dictionary<int, int>();
