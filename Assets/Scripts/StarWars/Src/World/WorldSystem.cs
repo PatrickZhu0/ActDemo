@@ -58,9 +58,10 @@ namespace StarWars
             return builder.ToString();
         }
     }
-    /**
-     * @brief 游戏系统
-     */
+
+    /// <summary>
+    /// 游戏系统
+    /// </summary>
     public class WorldSystem
     {
 
@@ -77,11 +78,6 @@ namespace StarWars
         // 标准接口
         //---------------------------------------------------------
 
-        /**
-         * @brief 初始化
-         *
-         * @return 
-         */
         public void Init()
         {
             m_IsObserver = false;
@@ -100,6 +96,8 @@ namespace StarWars
             UserManager.OnGainMoney = new GainMoneyDelegation(UserManager_GainMoney);
 
             ResUpdateHandler.HandleGetPlayerCurSkillInfo = GetPlayerInfoForCache;
+
+            ChangeHeroFromGfx();
         }
 
         private void UserManager_OnDamage(int receiver, int caster, bool isOrdinaryDamage, bool isCritical, int hpDamage, int npDamage)
@@ -193,11 +191,12 @@ namespace StarWars
                 GfxSystem.PublishGfxEvent("ge_gain_money", "ui", pos.x, pos.y, pos.z, money);
             }
         }
-
+         
         private void ChangeHeroFromGfx()
         {
             try
             {
+                Debug.LogError("ChangeHeroFromGfx ChangeHeroFromGfx");
                 ChangeHero();
             }
             catch (Exception ex)
@@ -429,34 +428,39 @@ namespace StarWars
 
             TimeSnapshot.Start();
             TimeSnapshot.DoCheckPoint();
-            if (m_CurScene == null)
-            {
-                return;
-            }
+            //if (m_CurScene == null)
+            //{
+            //    return;
+            //}
 
             //处理延迟调用
             m_DelayActionProcessor.HandleActions(100);
 
-            //单机游戏逻辑启动
-            CreateSceneLogics();
+            ////单机游戏逻辑启动
+            //CreateSceneLogics();
 
             //角色进入场景逻辑
-            GfxSystem.PublishGfxEvent("ge_enter_scene", "ui", m_CurScene.ResId);
-            PlayerControl.Instance.Reset();
-            StartGame();
-            m_CurScene.NotifyUserEnter();
-
-
-            if (!m_CurScene.IsSuccessEnter)
+            //GfxSystem.PublishGfxEvent("ge_enter_scene", "ui", m_CurScene.ResId);
+            if (m_CurScene == null)
             {
-                if (curTime > m_LastTryChangeSceneTime + c_ChangeSceneTimeout)
-                {
-                    m_LastTryChangeSceneTime = curTime;
-
-                    //todo：退回主场景
-                }
-                return;
+                PlayerControl.Instance.Reset();
+                StartGame();
+                m_CurScene = new SceneResource();
             }
+
+            //m_CurScene.NotifyUserEnter();
+
+
+            //if (!m_CurScene.IsSuccessEnter)
+            //{
+            //    if (curTime > m_LastTryChangeSceneTime + c_ChangeSceneTimeout)
+            //    {
+            //        m_LastTryChangeSceneTime = curTime;
+
+            //        //todo：退回主场景
+            //    }
+            //    return;
+            //}
 
             m_Profiler.sceneTickTime = TimeSnapshot.DoCheckPoint();
 
@@ -887,6 +891,7 @@ namespace StarWars
             try
             {
                 UserInfo user = GetPlayerSelf();
+                user = CreatePlayerSelf(1, 1);
                 if (null != user)
                 {
                     Vector3 pos = user.GetMovementStateInfo().GetPosition3D();
@@ -903,6 +908,8 @@ namespace StarWars
 
                     //user = CreatePlayerSelf(1, NetworkSystem.Instance.HeroId);
                     //user.SetCampId(NetworkSystem.Instance.CampId);
+                    //user = CreatePlayerSelf(1,1);
+                    user.SetCampId(1);
 
                     user.GetMovementStateInfo().SetPosition(pos);
                     user.GetMovementStateInfo().SetFaceDir(dir);
@@ -931,23 +938,26 @@ namespace StarWars
                 EntityManager.Instance.DestroyUserView(user.GetId());
                 DestroyCharacterById(user.GetId());
             }
-            //    user = CreatePlayerSelf(1, NetworkSystem.Instance.HeroId);
-            //    user.SetAIEnable(true);
-            //    user.SetCampId(NetworkSystem.Instance.CampId);
-            //    Data_Unit unit = m_CurScene.StaticData.ExtractData(DataMap_Type.DT_Unit, GlobalVariables.GetUnitIdByCampId(NetworkSystem.Instance.CampId)) as Data_Unit;
-            //    if (null != unit)
-            //    {
-            //        user.GetMovementStateInfo().SetPosition(unit.m_Pos);
-            //        user.GetMovementStateInfo().SetFaceDir(unit.m_RotAngle);
-            //        user.SetHp(Operate_Type.OT_Absolute, user.GetActualProperty().HpMax);
-            //        user.SetEnergy(Operate_Type.OT_Absolute, user.GetActualProperty().EnergyMax);
-            //    }
-            //    EntityManager.Instance.CreatePlayerSelfView(1);
-            //    UserView view = EntityManager.Instance.GetUserViewById(1);
-            //    if (null != view)
-            //    {
-            //        view.Visible = true;
-            //    }
+            //user = CreatePlayerSelf(1, NetworkSystem.Instance.HeroId);
+            user = CreatePlayerSelf(1, 1);
+            user.SetAIEnable(true);
+            //user.SetCampId(NetworkSystem.Instance.CampId);
+            user.SetCampId(1);
+            //Data_Unit unit = m_CurScene.StaticData.ExtractData(DataMap_Type.DT_Unit, GlobalVariables.GetUnitIdByCampId(NetworkSystem.Instance.CampId)) as Data_Unit;
+            //if (null != unit)
+            //{
+            //    user.GetMovementStateInfo().SetPosition(unit.m_Pos);
+            //    user.GetMovementStateInfo().SetFaceDir(unit.m_RotAngle);
+            //    user.SetHp(Operate_Type.OT_Absolute, user.GetActualProperty().HpMax);
+            //    user.SetEnergy(Operate_Type.OT_Absolute, user.GetActualProperty().EnergyMax);
+            //}
+            Debug.LogError("XX");
+            EntityManager.Instance.CreatePlayerSelfView(1);
+            UserView view = EntityManager.Instance.GetUserViewById(1);
+            if (null != view)
+            {
+                view.Visible = true;
+            }
 
             //    if (null != LobbyClient.Instance.CurrentRole)
             //    {
@@ -2342,7 +2352,7 @@ namespace StarWars
                                     {
                                         int actor = GameObjectIdManager.Instance.GenNextId();
                                         GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, "Obstacle", true);
-                                        //GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, color, "Transparent/Diffuse", true);
+                                        GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, color, "Transparent/Diffuse", true);
                                         m_DebugObstacleActors.Add(actor);
                                         vertices = new List<float>();
                                         triangles = new List<int>();
@@ -2355,7 +2365,7 @@ namespace StarWars
                         {
                             int actor = GameObjectIdManager.Instance.GenNextId();
                             GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, "Obstacle", true);
-                            //GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, color, "Transparent/Diffuse", true);
+                            GfxSystem.CreateGameObjectWithMeshData(actor, vertices, triangles, color, "Transparent/Diffuse", true);
                             m_DebugObstacleActors.Add(actor);
                         }
                         m_IsDebugObstacleCreated = true;

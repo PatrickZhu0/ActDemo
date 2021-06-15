@@ -92,6 +92,7 @@ namespace StarWars
 
         private void HandleInput()
         {
+            Debug.LogError("HandleInput");
             m_LastMousePos = m_CurMousePos;
             m_CurMousePos = Input.mousePosition;
 
@@ -111,6 +112,7 @@ namespace StarWars
                 {
                     m_KeyPressed[c] = true;
                     FireKeyboard(c, (int)Keyboard.Event.Down);
+                    Debug.LogError("GetKeyDown = " + (KeyCode)c);
                 }
                 else if (Input.GetKeyUp((KeyCode)c))
                 {

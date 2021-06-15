@@ -23,13 +23,15 @@ namespace StarWars
                 MovementStateInfo msi = m_User.GetMovementStateInfo();
                 Vector3 pos = msi.GetPosition3D();
                 float dir = msi.GetFaceDir();
-                CreateActor(m_User.GetId(), m_User.GetModel(), pos, dir, m_User.Scale);
-                CreateIndicatorActor(m_User.GetId(), m_User.GetIndicatorModel());
+                //CreateActor(m_User.GetId(), m_User.GetModel(), pos, dir, m_User.Scale);
+                CreateActor(m_User.GetId(), "Hero/3_Cike/3_Cike_01", pos, dir, m_User.Scale);
+                //CreateIndicatorActor(m_User.GetId(), m_User.GetIndicatorModel
+                //CreateIndicatorActor(1, "Hero/3_Cike_01");
                 //InitAnimationSets();
                 ObjectInfo.IsPlayer = true;
                 if (user.GetId() == WorldSystem.Instance.PlayerSelfId)
                 {
-                //    GfxSystem.MarkPlayerSelf(Actor);
+                    GfxSystem.MarkPlayerSelf(Actor);
                 }
             }
         }
@@ -40,6 +42,7 @@ namespace StarWars
         }
         public void Update()
         {
+            Debug.LogError("AAAAAAAAAAA User View ----- Update");
             UpdateAttr();
             UpdateSpatial();
             UpdateAnimation();
@@ -90,6 +93,7 @@ namespace StarWars
 
         private void UpdateSpatial()
         {
+            Debug.LogError("User View ------ UpdateSpatial ");
             if (null != m_User)
             {
                 MovementStateInfo msi = m_User.GetMovementStateInfo();

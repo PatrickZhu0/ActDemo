@@ -13,6 +13,7 @@ namespace StarWars
 
     /// <summary>
     /// 显示层 引擎渲染实施类
+    /// 使用委托可以向线程内传递参数
     /// </summary>
     public sealed partial class GfxSystem
     {

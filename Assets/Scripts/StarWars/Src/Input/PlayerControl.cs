@@ -125,7 +125,7 @@ namespace StarWars
             m_IsJoystickControl = false;
             if (!m_IsJoystickControl)
             {
-                pm_.Update(EnableMoveInput);
+                pm_.Update(true);
             }
             MovementStateInfo msi = playerself.GetMovementStateInfo();
             Vector3 pos = msi.GetPosition3D();
@@ -151,7 +151,7 @@ namespace StarWars
                     if (!m_LastTickIsMoving || !Geometry.IsSameFloat(moveDir, m_lastMoveDir))
                     {
                         msi.SetMoveDir(moveDir);
-                        //ControlSystemOperation.AdjustCharacterMoveDir(playerself.GetId(), moveDir);
+                        ControlSystemOperation.AdjustCharacterMoveDir(playerself.GetId(), moveDir);
                         msi.IsMoving = true;
                         msi.TargetPosition = Vector3.zero;
 
@@ -165,7 +165,7 @@ namespace StarWars
                         if (reface || !m_LastTickIsMoving || !Geometry.IsSameFloat(pm_.MoveDir, m_lastDir))
                         {
                             msi.SetFaceDir(pm_.MoveDir);
-                            //ControlSystemOperation.AdjustCharacterFaceDir(playerself.GetId(), pm_.MoveDir);
+                            ControlSystemOperation.AdjustCharacterFaceDir(playerself.GetId(), pm_.MoveDir);
                             msi.SetWantFaceDir(pm_.MoveDir);
 
                             if (WorldSystem.Instance.IsPvpScene() || WorldSystem.Instance.IsMultiPveScene())
@@ -672,7 +672,6 @@ namespace StarWars
 
         public void Update(bool move_enable)
         {
-            GfxSystem.GfxLog("PlayerControl Update");
             UserInfo playerself = WorldSystem.Instance.GetPlayerSelf();
             if (playerself == null || playerself.IsDead())
             {
@@ -681,17 +680,17 @@ namespace StarWars
             KeyHit kh = KeyHit.None;
             if (move_enable)
             {
-                if (StarWarsSpatial.SpatialObjType.kNPC == playerself.GetRealControlledObject().SpaceObject.GetObjType())
-                {
-                    //NpcInfo npcInfo = playerself.GetRealControlledObject().CastNpcInfo();
-                    //if (null != npcInfo)
-                    //{
-                    //    if (!npcInfo.CanMove)
-                    //    {
-                    //        return;
-                    //    }
-                    //}
-                }
+                //if (DashFireSpatial.SpatialObjType.kNPC == playerself.GetRealControlledObject().SpaceObject.GetObjType())
+                //{
+                //    NpcInfo npcInfo = playerself.GetRealControlledObject().CastNpcInfo();
+                //    if (null != npcInfo)
+                //    {
+                //        if (!npcInfo.CanMove)
+                //        {
+                //            return;
+                //        }
+                //    }
+                //}
                 if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.W)))
                     kh |= KeyHit.Up;
                 if (GfxSystem.IsKeyPressed(GetKeyCode(KeyIndex.A)))
@@ -704,7 +703,7 @@ namespace StarWars
 
             Motion m = kh == KeyHit.None ? Motion.Stop : Motion.Moving;
             MotionChanged = MotionStatus != m || last_key_hit_ != kh;
-
+            Debug.LogError("Motion m " + m);
             if (MotionChanged)
             {
                 //GfxSystem.GfxLog("MotionChanged:{0}!={1} || {2}!={3}", MotionStatus, m, last_key_hit_, kh);
@@ -735,13 +734,7 @@ namespace StarWars
             if (index >= KeyIndex.W && index <= KeyIndex.D)
             {
                 Keyboard.Code[] list = s_Normal;
-                /*if (WorldSystem.Instance.IsPvpScene()) {
-                  int campId = WorldSystem.Instance.CampId;
-                  if (campId == (int)CampIdEnum.Blue)
-                    list = s_Blue;
-                  else if (campId == (int)CampIdEnum.Red)
-                    list = s_Red;
-                }*/
+
                 ret = list[(int)index];
             }
             return ret;

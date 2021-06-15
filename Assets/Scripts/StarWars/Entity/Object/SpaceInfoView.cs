@@ -28,15 +28,15 @@ namespace StarWars
         {
             m_ObjId = objId;
             m_Actor = GameObjectIdManager.Instance.GenNextId();
-            //if (isPlayer)
-            //    GfxSystem.CreateGameObject(m_Actor, "BlueCylinder", m_ObjectInfo);
-            //else
-            //    GfxSystem.CreateGameObject(m_Actor, "RedCylinder", m_ObjectInfo);
+            if (isPlayer)
+                GfxSystem.CreateGameObject(m_Actor, "BlueCylinder", m_ObjectInfo);
+            else
+                GfxSystem.CreateGameObject(m_Actor, "RedCylinder", m_ObjectInfo);
         }
 
         public void Destroy()
         {
-            //GfxSystem.DestroyGameObject(m_Actor);
+            GfxSystem.DestroyGameObject(m_Actor);
         }
 
         public void Update(float x, float y, float z, float dir)

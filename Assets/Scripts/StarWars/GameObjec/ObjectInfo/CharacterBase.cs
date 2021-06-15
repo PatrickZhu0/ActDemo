@@ -198,7 +198,8 @@ namespace StarWars
         /// <returns></returns>
         public int GetId()
         {
-            return m_Id;
+            //return m_Id;
+            return 1;
         }
 
         /// <summary>
@@ -749,7 +750,8 @@ namespace StarWars
 
         public bool IsDead()
         {
-            return Hp <= 0;
+            //return Hp <= 0
+            return false;
         }
 
         //临时加的，不要调用

@@ -98,7 +98,7 @@ namespace StarWars
             m_ObjectInfo.sx = scale;
             m_ObjectInfo.sy = scale;
             m_ObjectInfo.sz = scale;
-            //GfxSystem.CreateGameObject(m_Actor, model, m_ObjectInfo);
+            GfxSystem.CreateGameObject(m_Actor, model, m_ObjectInfo);
         }
 
         protected void CreateBornEffect(int parentActor, string effect)

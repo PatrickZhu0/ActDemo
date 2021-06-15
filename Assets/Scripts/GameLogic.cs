@@ -35,7 +35,6 @@ public class GameLogic : MonoBehaviour
                 {
                     //ResUpdateControler.InitContext();
                 }
-                WorldSystem.Instance.CreatePlayerSelf(1, 1);
 
                 string dataPath = Application.dataPath;
                 string persistentDataPath = Application.persistentDataPath + "/DataFile";

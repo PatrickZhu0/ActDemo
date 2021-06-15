@@ -144,6 +144,7 @@ namespace StarWars
         internal UnityEngine.Object GetSharedResource(string res)
         {
             UnityEngine.Object obj = null;
+            Debug.Log("AAA res === " + res);
             if (string.IsNullOrEmpty(res))
             {
                 return obj;
@@ -156,7 +157,7 @@ namespace StarWars
             {
                 if (GlobalVariables.Instance.IsPublish)
                 {
-                    //obj = ResUpdateHandler.LoadAssetFromABWithoutExtention(res);
+                    obj = ResUpdateHandler.LoadAssetFromABWithoutExtention(res);
                 }
                 if (obj == null)
                 {

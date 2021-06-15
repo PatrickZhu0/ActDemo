@@ -16,10 +16,10 @@ using UnityEngine;
 
 namespace StarWars
 {
-    /**
-     * @brief 角色管理器
-     * @remarks 这个类在GameObjects采取数据驱动的方式后，它的职责变为GameObjects的View层，它在每个Tick负责更新各个GameObject的显示
-     */
+    /// <summary>
+    /// 角色管理器
+    /// 这个类在GameObjects采取数据驱动的方式后，它的职责变为GameObjects的View层，它在每个Tick负责更新各个GameObject的显示
+    /// </summary>
     public sealed class EntityManager
     {
         #region Singleton
@@ -44,26 +44,24 @@ namespace StarWars
 
         public void Tick()
         {
-            //lock (GfxSystem.SyncLock)
-            //{
-            //    foreach (UserView view in m_UserViews.Values)
-            //    {
-            //        view.Update();
-            //    }
-
-            //    foreach (NpcView view in m_NpcViews.Values)
-            //    {
-            //        view.Update();
-            //    }
-            //}
-            //if (m_SpaceInfoViews.Count > 0)
-            //{
-            //    if (!GlobalVariables.Instance.IsDebug)
-            //    {
-            //        EntityManager.Instance.MarkSpaceInfoViews();
-            //        EntityManager.Instance.DestroyUnusedSpaceInfoViews();
-            //    }
-            //}
+            Debug.LogError("Entity Managet .Tick() ..." + GfxSystem.SyncLock);
+            lock (GfxSystem.SyncLock)
+            {
+                Debug.LogError("Entity Managet .m_UserViews.count ..." + m_UserViews.Count);
+                foreach (UserView view in m_UserViews.Values)
+                {
+                    Debug.LogError(view.ObjId);
+                    view.Update();
+                }
+            }
+            if (m_SpaceInfoViews.Count > 0)
+            {
+                if (!GlobalVariables.Instance.IsDebug)
+                {
+                    EntityManager.Instance.MarkSpaceInfoViews();
+                    EntityManager.Instance.DestroyUnusedSpaceInfoViews();
+                }
+            }
         }
 
         public void CreatePlayerSelfView(int objId)
@@ -73,7 +71,7 @@ namespace StarWars
             if (null != view)
             {
                 //GfxSystem.SendMessage("GfxGameRoot", "CameraFollowImmediately", view.Actor);
-                //GfxSystem.ResetInputState();
+                GfxSystem.ResetInputState();
             }
         }
 
@@ -81,6 +79,7 @@ namespace StarWars
         {
             if (!m_UserViews.ContainsKey(objId))
             {
+
                 UserInfo obj = WorldSystem.Instance.UserManager.GetUserInfo(objId);
                 if (null != obj)
                 {
@@ -101,35 +100,6 @@ namespace StarWars
                     view.Destroy();
                 }
                 m_UserViews.Remove(objId);
-            }
-        }
-
-        public void CreateNpcView(int objId)
-        {
-            if (!m_NpcViews.ContainsKey(objId))
-            {
-
-                //NpcInfo obj = WorldSystem.Instance.NpcManager.GetNpcInfo(objId);
-                //if (null != obj)
-                //{
-                //    NpcView view = new NpcView();
-                //    view.Create(obj);
-                //    m_NpcViews.Add(objId, view);
-                //}
-                //WorldSystem.Instance.SyncGfxNpcInfo(objId);
-            }
-        }
-
-        public void DestroyNpcView(int objId)
-        {
-            if (m_NpcViews.ContainsKey(objId))
-            {
-                //NpcView view = m_NpcViews[objId];
-                //if (view != null)
-                //{
-                //    view.Destroy();
-                //}
-                //m_NpcViews.Remove(objId);
             }
         }
 
@@ -205,26 +175,24 @@ namespace StarWars
             deletes.Clear();
         }
 
-        /**
-         * @brief 检验是否在某位置
-         *
-         * @param pos
-         *
-         * @return 
-         */
+        /// <summary>
+        /// 检验是否在某位置
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="pos"></param>
+        /// <returns></returns>
         public bool IsAtPosition(CharacterInfo entity, Vector2 pos)
         {
             //return Vector2.Distance(entity.GetMovementStateInfo().GetPosition2D(), pos) < ClientConfig.s_PositionRefix;
             return Vector2.Distance(entity.GetMovementStateInfo().GetPosition2D(), pos) < 1;
         }
 
-        /**
-         * @brief 预估移动时间
-         *
-         * @param pos
-         *
-         * @return 
-         */
+        /// <summary>
+        /// 预估移动时间
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="pos"></param>
+        /// <returns></returns>
         public float PredictMoveDuration(CharacterInfo character, Vector2 pos)
         {
             float distance = Vector2.Distance(character.GetMovementStateInfo().GetPosition2D(), pos);
